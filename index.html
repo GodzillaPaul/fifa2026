@@ -1,1 +1,2737 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2026 世足決鬥之路｜UI Refresh v15</title>
+<style>
+:root{
+  --bg:#061521;--panel:rgba(7,27,42,.82);--panel2:rgba(255,255,255,.08);--line:#d6e51f;--gold:#ffe100;--text:#f3fbff;--muted:#a9c2d3;--blue:#1e88e5;--danger:#ff6b4a;--ok:#5ff0b5;
+}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:radial-gradient(circle at 50% 35%,#12496a 0%,#082237 42%,#04101a 100%);color:var(--text);min-height:100vh;}
+body:before{content:"2026";position:fixed;inset:0;display:flex;align-items:flex-start;justify-content:center;font-size:31vw;font-weight:900;letter-spacing:-2vw;color:rgba(255,255,255,.09);pointer-events:none;line-height:.85;z-index:-1}body:after{content:"";position:fixed;left:0;right:0;bottom:0;height:34vh;background:linear-gradient(0deg,rgba(25,85,38,.95),rgba(25,85,38,.28),transparent);z-index:-1}
+.header{padding:24px 28px 10px;text-align:center}.kicker{font-weight:800;color:var(--gold);letter-spacing:.2em}.title{margin:4px 0;font-size:clamp(32px,5vw,72px);font-weight:1000;color:var(--gold);text-shadow:0 4px 18px rgba(0,0,0,.65)}.sub{color:#d7edf6;font-weight:700}.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px auto 8px}.btn{border:1px solid rgba(255,255,255,.22);background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));color:white;border-radius:999px;padding:10px 16px;font-weight:800;cursor:pointer;backdrop-filter:blur(10px)}.btn.primary{background:linear-gradient(180deg,#ffe957,#ffbe20);color:#092034;border:0}.btn:hover{transform:translateY(-1px)}
+.layout{display:grid;grid-template-columns:360px minmax(900px,1fr) 360px;gap:18px;padding:12px 20px 28px;max-width:1920px;margin:auto}.side{display:grid;gap:12px;align-content:start}.group{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;box-shadow:0 14px 38px rgba(0,0,0,.25)}.group h3{margin:0;padding:10px 14px;background:linear-gradient(90deg,#e9451c,#f79b24);font-size:16px;display:flex;justify-content:space-between;align-items:center}.group table{width:100%;border-collapse:collapse;font-size:13px}.group th,.group td{padding:6px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center}.group th{color:#9fd0ff;background:rgba(0,0,0,.18)}.team{text-align:left!important;font-weight:800}.pos{width:28px;color:#fff}.q{color:var(--ok);font-weight:900}.third{color:#ffdc5a;font-weight:900}.matches{padding:9px 10px 12px;display:grid;gap:7px}.match{display:grid;grid-template-columns:1fr 48px 48px 1fr;gap:6px;align-items:center;background:rgba(255,255,255,.06);border-radius:12px;padding:7px}.match small{grid-column:1/-1;color:var(--muted);font-weight:700}.match input{width:48px;border:0;border-radius:9px;padding:7px;text-align:center;font-weight:900;background:white;color:#061521}.match .name{font-weight:800;font-size:12px}.match .right{text-align:right}.main{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28);overflow:auto}.bracket{min-width:900px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:center}.round{display:grid;gap:14px}.round h2{text-align:center;color:var(--gold);font-size:18px;margin:0 0 4px}.ko{position:relative;background:rgba(255,255,255,.92);color:#092034;border-radius:16px;padding:10px;min-height:88px;box-shadow:0 10px 25px rgba(0,0,0,.24);border:3px solid transparent}.ko.done{border-color:var(--line)}.ko .mno{display:inline-block;background:#1d70d6;color:white;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:900}.ko .date{float:right;font-size:12px;font-weight:900;color:#557}.koRow{display:grid;grid-template-columns:1fr 42px;gap:6px;align-items:center;margin-top:8px}.koTeam{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.koScore{width:42px;border:1px solid #cfd8df;border-radius:8px;padding:6px;text-align:center;font-weight:900}.winner{color:#005d35}.vsBadge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--gold);color:#061521;border-radius:999px;padding:6px 7px;font-size:11px;font-weight:1000;border:2px solid #061521}.finalCard{background:linear-gradient(180deg,#fff7b2,#f4c138);min-height:120px}.cup{text-align:center;font-size:56px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.3));}.status{max-width:1160px;margin:0 auto 12px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#dceef7;font-size:14px;line-height:1.7}.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalCard{width:min(900px,96vw);max-height:86vh;overflow:auto;background:#071927;border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:18px}.modal textarea{width:100%;height:360px;border-radius:14px;padding:14px;background:#03101b;color:#eaf8ff;border:1px solid #2d5268;font-family:ui-monospace,Menlo,monospace;font-size:12px}.note{color:#9fc0d2;font-size:13px;line-height:1.6}.printOnly{display:none}@media(max-width:1350px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(2,minmax(320px,1fr))}.main{order:-1}}@media(max-width:720px){.layout{padding:8px;}.side{grid-template-columns:1fr}.match{grid-template-columns:1fr 42px 42px 1fr}.header{padding:16px 8px}.toolbar{padding:0 8px}.bracket{min-width:760px}}@media print{body{background:white;color:#000}.toolbar,.status,.matches{display:none}.layout{display:block;padding:0}.side{display:none}.main{box-shadow:none;border:0}.bracket{min-width:0;gap:8px}.ko{break-inside:avoid;border:1px solid #bbb;box-shadow:none}.title{color:#111;text-shadow:none}.sub,.kicker{color:#333}.printOnly{display:block}}
 
+/* === v2: 兩頁式版面 === */
+.pageTabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px auto 8px}.tabBtn{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#dff5ff;border-radius:999px;padding:11px 20px;font-weight:1000;cursor:pointer;letter-spacing:.05em}.tabBtn.active{background:linear-gradient(180deg,#ffe957,#ffbe20);color:#092034;border:0;box-shadow:0 10px 28px rgba(255,225,0,.24)}.page{display:none;max-width:1680px;margin:auto;padding:12px 20px 30px}.page.active{display:block}.groupsGrid{display:grid;grid-template-columns:repeat(3,minmax(320px,1fr));gap:16px;align-items:start}.groupsHero{max-width:1200px;margin:0 auto 14px;padding:16px 18px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap}.groupsHero strong{color:var(--gold);font-size:20px}.miniStat{display:flex;gap:8px;flex-wrap:wrap}.pill{border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.18);border-radius:999px;padding:7px 11px;font-weight:900;color:#d9f4ff}.bracketPage{max-width:1920px}.bracketShell{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.28);overflow:auto}.group .matches{display:grid}.group table th:nth-child(4),.group table td:nth-child(4),.group table th:nth-child(5),.group table td:nth-child(5){display:table-cell}.match{grid-template-columns:82px 1fr 48px 48px 1fr}.match small{grid-column:auto;color:#ffef7a}.match .roundTag{font-weight:900;color:#97d9ff;font-size:11px}@media(max-width:1180px){.groupsGrid{grid-template-columns:repeat(2,minmax(300px,1fr))}}@media(max-width:720px){.page{padding:8px}.groupsGrid{grid-template-columns:1fr}.match{grid-template-columns:1fr 42px 42px 1fr}.match small{grid-column:1/-1}.groupsHero{align-items:flex-start}.tabBtn{width:calc(50% - 8px);padding:10px 8px}}@media print{.pageTabs,.toolbar{display:none}.page{display:block;padding:0}.page:not(.active){display:none}.groupsGrid{grid-template-columns:repeat(2,1fr);gap:8px}.groupsHero{color:#000;border:1px solid #ccc;background:#fff}.pill{color:#000;background:#fff}.bracketShell{box-shadow:none;border:0}.match input,.koScore{border:1px solid #888}}
+
+
+/* === v3: 東西區雙半區樹枝圖 === */
+.bracketSplit{min-width:1500px;display:grid;grid-template-columns:1fr 300px 1fr;gap:18px;align-items:center}
+.conference{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:center}
+.conference.right{direction:ltr}
+.conferenceTitle{grid-column:1/-1;text-align:center;color:var(--gold);font-size:22px;font-weight:1000;letter-spacing:.12em;margin-bottom:2px}
+.champCenter{display:grid;gap:16px;align-items:center;justify-items:center}
+.champBox{width:100%;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:14px;text-align:center}
+.champBox h2{margin:0 0 10px;color:var(--gold);font-size:20px}
+.championName{margin-top:10px;background:linear-gradient(180deg,#fff7b2,#f4c138);color:#092034;border-radius:18px;padding:14px;font-size:22px;font-weight:1000;min-height:58px;display:flex;align-items:center;justify-content:center}
+.finalVs{background:var(--gold);color:#061521;border-radius:999px;padding:10px 14px;font-weight:1000;border:3px solid rgba(0,0,0,.25);box-shadow:0 10px 26px rgba(0,0,0,.28)}
+.bracketHint{text-align:center;color:#d7edf6;font-weight:800;margin:4px 0 14px}
+@media(max-width:1100px){.bracketSplit{min-width:1180px;grid-template-columns:1fr 240px 1fr}.conference{gap:10px}.ko{min-height:82px;padding:8px}.koTeam{font-size:13px}}
+@media print{.bracketSplit{min-width:0;grid-template-columns:1fr;gap:8px}.conference{grid-template-columns:repeat(4,1fr)}.champCenter{grid-row:auto}.champBox{border:1px solid #ccc;background:#fff;color:#000}.championName{border:1px solid #888}}
+
+
+
+/* === v5: 固定橫式大螢幕 UI/UX/IX 升級：不滑動、兩頁滿版 === */
+html,body{width:100vw;height:100vh;overflow:hidden;overscroll-behavior:none;}
+body{background:
+ radial-gradient(circle at 50% 12%,rgba(52,148,196,.46),transparent 28%),
+ radial-gradient(circle at 12% 10%,rgba(255,225,0,.18),transparent 18%),
+ linear-gradient(180deg,#061827 0%,#03111d 58%,#052917 100%);}
+body:before{align-items:center;font-size:min(30vw,460px);opacity:.72;color:rgba(255,255,255,.055)}
+body:after{height:28vh;background:linear-gradient(0deg,rgba(20,88,39,.96),rgba(28,118,52,.35),transparent)}
+.header{height:108px;padding:12px 24px 6px;display:grid;align-content:center;position:relative;z-index:2}
+.title{font-size:clamp(32px,4.1vw,62px);line-height:.92;margin:0;text-shadow:0 8px 24px rgba(0,0,0,.72)}
+.kicker{font-size:13px}.sub{font-size:13px;opacity:.9}
+.toolbar{position:fixed;right:18px;top:18px;margin:0;z-index:20;justify-content:flex-end;max-width:560px}.toolbar .btn{padding:8px 12px;font-size:12px;background:rgba(9,30,47,.72)}
+.pageTabs{position:fixed;left:18px;top:18px;margin:0;z-index:20}.tabBtn{padding:9px 16px;font-size:13px;box-shadow:0 10px 26px rgba(0,0,0,.22)}
+.page{height:calc(100vh - 108px);max-width:none;width:100vw;padding:10px 18px 18px;overflow:hidden}.page.active{display:flex;flex-direction:column}.groupsHero{height:56px;max-width:none;width:100%;margin:0 0 10px;padding:10px 14px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.04));box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.groupsHero strong{font-size:18px}.note{font-size:12px;line-height:1.35}.pill{padding:6px 10px;font-size:12px;background:rgba(255,255,255,.08)}
+.groupsGrid{flex:1;display:grid!important;grid-template-columns:repeat(4,1fr)!important;grid-template-rows:repeat(3,1fr);gap:10px;min-height:0;overflow:hidden}.group{min-height:0;border-radius:16px;background:linear-gradient(180deg,rgba(12,36,55,.88),rgba(4,17,29,.82));box-shadow:0 12px 32px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.10)}
+.group h3{height:34px;padding:7px 11px;font-size:14px;background:linear-gradient(90deg,#f04b1f,#ffb020);color:white;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.group table{font-size:11px}.group th,.group td{padding:3px 4px}.group th:nth-child(4),.group td:nth-child(4),.group th:nth-child(5),.group td:nth-child(5),.group th:nth-child(6),.group td:nth-child(6),.group th:nth-child(9),.group td:nth-child(9){display:none!important}.team{max-width:96px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.groupFoot{height:34px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04)}.groupFoot .mini{font-size:11px;color:#b7d5e8;font-weight:900}.editGroupBtn{border:0;border-radius:999px;background:linear-gradient(180deg,#fff171,#ffbf24);color:#092034;font-weight:1000;padding:6px 10px;cursor:pointer;box-shadow:0 8px 18px rgba(255,210,0,.18)}
+.bracketPage{max-width:none}.bracketShell{flex:1;position:relative;padding:12px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(0,0,0,.12));box-shadow:0 24px 70px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.12)}.bracketHint{height:26px;margin:0;font-size:13px}.bracketStage{position:absolute;left:12px;right:12px;top:44px;bottom:12px;overflow:hidden}.bracketSplit{transform-origin:top left;transition:transform .18s ease;min-width:1500px}.conference{gap:11px}.conferenceTitle{font-size:18px;margin:0}.round{gap:10px}.round h2{font-size:15px;margin:0;color:#fff36a;text-shadow:0 2px 14px rgba(255,225,0,.28)}.ko{border-radius:14px;min-height:74px;padding:8px;box-shadow:0 10px 22px rgba(0,0,0,.22)}.ko .mno{font-size:11px;padding:3px 8px}.ko .date{font-size:11px}.koRow{grid-template-columns:minmax(0,1fr) 36px;gap:5px;margin-top:6px}.koTeam{font-size:13px}.koScore{width:36px;padding:5px;border-radius:8px}.cup{font-size:36px;height:32px}.champBox{padding:12px;border-radius:20px;background:rgba(255,255,255,.13);backdrop-filter:blur(12px)}.champBox h2{font-size:17px;margin-bottom:8px}.championName{font-size:18px;min-height:46px;padding:10px}.finalVs{font-size:14px;padding:8px 12px}.finalCard{min-height:100px}.vsBadge{font-size:10px;padding:5px 6px}
+.groupEditor{display:none;position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:40;align-items:center;justify-content:center;padding:24px}.groupEditor.show{display:flex}.groupEditorCard{width:min(980px,92vw);height:min(620px,82vh);background:linear-gradient(180deg,#08243a,#061624);border:1px solid rgba(255,255,255,.18);border-radius:26px;box-shadow:0 30px 90px rgba(0,0,0,.48);padding:18px;display:flex;flex-direction:column;overflow:hidden}.groupEditorHead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}.groupEditorHead h2{margin:0;color:var(--gold);font-size:24px}.groupMatchGrid{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;overflow:hidden}.groupMatch{display:grid;grid-template-columns:80px 1fr 54px 54px 1fr;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:16px;padding:10px}.groupMatch .dateTag{color:#ffe66b;font-weight:1000;font-size:13px}.groupMatch .name{font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.groupMatch .right{text-align:right}.groupMatch input{width:54px;border:0;border-radius:10px;padding:9px;text-align:center;font-weight:1000;background:white;color:#061521;font-size:16px}.closeX{border:0;border-radius:999px;background:rgba(255,255,255,.13);color:white;font-weight:1000;padding:9px 13px;cursor:pointer}.landscapeWarn{display:none}
+@media (orientation:portrait){.landscapeWarn{display:flex;position:fixed;inset:0;background:#061521;z-index:999;align-items:center;justify-content:center;text-align:center;padding:28px;color:white;font-size:22px;font-weight:1000;line-height:1.6}.landscapeWarn span{color:var(--gold)}}
+@media(max-width:1200px){.header{height:88px}.page{height:calc(100vh - 88px)}.title{font-size:34px}.groupsHero{height:48px}.groupsGrid{gap:7px}.group h3{height:30px;font-size:12px}.group table{font-size:10px}.groupFoot{height:30px}.toolbar .btn:not(.primary){display:none}.tabBtn{padding:8px 12px}.pageTabs{top:12px;left:12px}.toolbar{top:12px;right:12px}.groupMatchGrid{grid-template-columns:1fr}.groupEditorCard{height:86vh}.groupMatch{grid-template-columns:70px 1fr 48px 48px 1fr}.groupMatch input{width:48px}}
+
+/* === v6: 拿掉說明文字區，釋放樹枝圖畫面 === */
+.status{display:none!important}
+#pageBracket > .groupsHero{display:none!important}
+#pageBracket .bracketHint{display:none!important}
+#pageBracket .bracketShell{padding:12px!important}
+#pageBracket .bracketStage{top:12px!important;bottom:12px!important}
+
+/* === v7: 樹枝圖寬版滿版：拉開半區、放大到舞台寬度 === */
+#pageBracket{padding:6px 10px 10px!important}
+#pageBracket .bracketShell{padding:8px!important;border-radius:22px!important}
+#pageBracket .bracketStage{left:8px!important;right:8px!important;top:8px!important;bottom:8px!important}
+#pageBracket .bracketSplit{min-width:1880px!important;grid-template-columns:minmax(0,1.18fr) 330px minmax(0,1.18fr)!important;gap:26px!important}
+#pageBracket .conference{gap:18px!important}
+#pageBracket .round{gap:12px!important}
+#pageBracket .ko{min-height:76px!important}
+#pageBracket .champCenter{gap:14px!important}
+#pageBracket .champBox{box-shadow:0 18px 44px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.16)}
+@media(max-width:1200px){#pageBracket .bracketSplit{min-width:1620px!important;gap:18px!important;grid-template-columns:minmax(0,1.12fr) 280px minmax(0,1.12fr)!important}#pageBracket .conference{gap:12px!important}}
+
+/* === v8: 強制橫向吃滿到最右側，避免樹枝圖縮在中間 === */
+#pageBracket .bracketSplit{min-width:2100px!important;grid-template-columns:minmax(0,1.25fr) 300px minmax(0,1.25fr)!important;gap:30px!important;}
+#pageBracket .conference{gap:16px!important;}
+#pageBracket .round{gap:9px!important;}
+#pageBracket .ko{min-height:66px!important;padding:7px!important;border-radius:12px!important;}
+#pageBracket .koRow{margin-top:4px!important;}
+#pageBracket .koTeam{font-size:12px!important;}
+#pageBracket .koScore{width:32px!important;padding:4px!important;}
+#pageBracket .champBox{padding:10px!important;}
+#pageBracket .championName{min-height:42px!important;font-size:16px!important;}
+#pageBracket .finalCard{min-height:88px!important;}
+#pageBracket .cup{font-size:30px!important;height:26px!important;}
+#pageBracket .conferenceTitle{font-size:15px!important;}
+#pageBracket .round h2{font-size:13px!important;}
+
+
+/* === v9: 對戰卡片視覺升級：資訊分層、留白加大、減少擁擠感 === */
+#pageBracket .bracketSplit{
+  min-width:2280px!important;
+  grid-template-columns:minmax(0,1.28fr) 320px minmax(0,1.28fr)!important;
+  gap:34px!important;
+}
+#pageBracket .conference{
+  gap:20px!important;
+}
+#pageBracket .round{
+  gap:10px!important;
+}
+#pageBracket .ko{
+  min-height:82px!important;
+  padding:8px 9px 9px!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(234,241,247,.94))!important;
+  border:1px solid rgba(255,255,255,.70)!important;
+  box-shadow:0 10px 22px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.90)!important;
+  overflow:hidden;
+}
+#pageBracket .ko.done{
+  border:2px solid rgba(255,225,0,.92)!important;
+  box-shadow:0 0 0 1px rgba(255,225,0,.25),0 12px 28px rgba(0,0,0,.24),0 0 22px rgba(255,225,0,.14)!important;
+}
+#pageBracket .koHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:5px;
+}
+#pageBracket .ko .mno{
+  font-size:10px!important;
+  padding:3px 8px!important;
+  line-height:1;
+  background:linear-gradient(180deg,#2c8fff,#075fc2)!important;
+  box-shadow:0 4px 10px rgba(0,92,190,.22);
+}
+#pageBracket .ko .date{
+  float:none!important;
+  font-size:10px!important;
+  color:#506074!important;
+  font-weight:1000!important;
+}
+#pageBracket .teamBlock{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 31px;
+  align-items:center;
+  gap:6px;
+  min-height:22px;
+  padding:2px 0;
+}
+#pageBracket .teamName{
+  font-size:12px;
+  font-weight:1000;
+  color:#092034;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  letter-spacing:.01em;
+}
+#pageBracket .winnerRow{
+  background:linear-gradient(90deg,rgba(255,225,0,.28),rgba(255,225,0,0));
+  border-radius:8px;
+  padding-left:4px;
+}
+#pageBracket .winner{
+  color:#005d35!important;
+}
+#pageBracket .koScore{
+  width:31px!important;
+  height:22px!important;
+  padding:2px!important;
+  border-radius:7px!important;
+  border:1px solid rgba(9,32,52,.15)!important;
+  background:#fff!important;
+  color:#092034!important;
+  font-size:12px!important;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.08);
+}
+#pageBracket .miniVs{
+  width:28px;
+  margin:-1px auto;
+  text-align:center;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fff367,#ffc400);
+  color:#061521;
+  font-size:9px;
+  font-weight:1000;
+  line-height:14px;
+  box-shadow:0 3px 8px rgba(0,0,0,.18);
+}
+#pageBracket .vsBadge{
+  display:none!important;
+}
+#pageBracket .koRow{
+  display:none!important;
+}
+#pageBracket .finalCard{
+  min-height:116px!important;
+  background:linear-gradient(180deg,#fff7ba,#f3bd2f)!important;
+}
+#pageBracket .cup{
+  font-size:26px!important;
+  height:24px!important;
+  margin:-2px 0 1px;
+}
+#pageBracket .champBox{
+  padding:12px!important;
+  border-radius:22px!important;
+}
+#pageBracket .championName{
+  min-height:44px!important;
+  font-size:17px!important;
+}
+#pageBracket .conferenceTitle{
+  font-size:15px!important;
+  letter-spacing:.14em!important;
+}
+#pageBracket .round h2{
+  font-size:13px!important;
+  margin-bottom:2px!important;
+}
+
+
+/* === v10: 對戰卡片改成橫式：國家｜比分｜VS｜比分｜國家，降低擁擠感 === */
+#pageBracket .bracketSplit{
+  min-width:2360px!important;
+  grid-template-columns:minmax(0,1.34fr) 300px minmax(0,1.34fr)!important;
+  gap:30px!important;
+}
+#pageBracket .conference{gap:22px!important;}
+#pageBracket .round{gap:13px!important;}
+#pageBracket .ko{
+  min-height:58px!important;
+  padding:7px 9px!important;
+  border-radius:15px!important;
+}
+#pageBracket .koHead{
+  margin-bottom:4px!important;
+}
+#pageBracket .koLine{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px 34px 28px minmax(0,1fr);
+  align-items:center;
+  gap:5px;
+  min-height:26px;
+}
+#pageBracket .sideTeam{
+  min-width:0;
+  font-size:12px;
+  font-weight:1000;
+  color:#092034;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.1;
+}
+#pageBracket .sideTeam.left{text-align:left;}
+#pageBracket .sideTeam.right{text-align:right;}
+#pageBracket .sideTeam.winner{
+  color:#005d35!important;
+  background:linear-gradient(90deg,rgba(255,224,0,.32),rgba(255,224,0,0));
+  border-radius:7px;
+  padding:3px 4px;
+}
+#pageBracket .sideTeam.right.winner{
+  background:linear-gradient(270deg,rgba(255,224,0,.32),rgba(255,224,0,0));
+}
+#pageBracket .koScore{
+  width:28px!important;
+  height:24px!important;
+  padding:1px!important;
+  border-radius:8px!important;
+  text-align:center!important;
+  font-size:12px!important;
+}
+#pageBracket .hVs{
+  width:34px;
+  height:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fff367,#ffc400);
+  color:#061521;
+  font-size:9px;
+  font-weight:1000;
+  box-shadow:0 3px 8px rgba(0,0,0,.16);
+}
+#pageBracket .teamBlock,#pageBracket .miniVs{display:none!important;}
+#pageBracket .finalCard{
+  min-height:94px!important;
+  padding:9px 10px!important;
+}
+#pageBracket .finalCard .koLine{
+  grid-template-columns:minmax(0,1fr) 32px 38px 32px minmax(0,1fr);
+}
+#pageBracket .finalCard .sideTeam{font-size:13px;}
+#pageBracket .finalCard .koScore{width:32px!important;height:26px!important;}
+#pageBracket .cup{
+  font-size:22px!important;
+  height:18px!important;
+  margin:-3px 0 1px!important;
+}
+#pageBracket .champBox{padding:10px!important;}
+#pageBracket .championName{min-height:40px!important;font-size:16px!important;}
+
+/* === v11: ESPN 自動比分同步狀態 === */
+.syncBadge{
+  margin-top:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:#cfefff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.syncDot{width:8px;height:8px;border-radius:50%;background:#8aa7b7;box-shadow:0 0 0 3px rgba(138,167,183,.14)}
+.syncBadge.live .syncDot{background:#2cff9a;box-shadow:0 0 0 3px rgba(44,255,154,.14),0 0 18px rgba(44,255,154,.45)}
+.syncBadge.warn .syncDot{background:#ffcf3f;box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+.syncBadge.error .syncDot{background:#ff5252;box-shadow:0 0 0 3px rgba(255,82,82,.16)}
+
+
+/* === v12: 小組按鈕改為「比賽結果」，彈窗以直播比分視覺呈現 === */
+.groupMatch{grid-template-columns:82px 1.2fr 48px 34px 48px 1.2fr!important;position:relative;padding:12px 14px!important}
+.groupMatch .scoreBox{width:48px;border:0;border-radius:12px;padding:8px 4px;text-align:center;font-weight:1000;background:white;color:#061521;font-size:17px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.groupMatch .vsText{justify-self:center;align-self:center;border-radius:999px;background:linear-gradient(180deg,#fff36b,#ffc400);color:#071829;font-size:11px;font-weight:1000;padding:5px 7px;box-shadow:0 6px 14px rgba(255,205,0,.18)}
+.matchStatus{position:absolute;right:12px;top:8px;font-size:10px;font-weight:1000;letter-spacing:.03em;border-radius:999px;padding:3px 7px;background:rgba(255,255,255,.12);color:#cde6f7}
+.matchStatus.live{background:rgba(35,220,117,.16);color:#88ffb4;box-shadow:0 0 16px rgba(35,220,117,.16)}
+.matchStatus.final{background:rgba(255,221,70,.18);color:#ffe66b}
+.groupEditorHead .subLine{font-size:12px;color:#b9d8ea;font-weight:900;margin-top:3px}
+@media(max-width:1200px){.groupMatch{grid-template-columns:68px 1fr 42px 28px 42px 1fr!important}.groupMatch .scoreBox{width:42px;font-size:15px}.matchStatus{display:none}}
+
+
+<style id="v13-readonly-style">
+/* v13 readonly live board */
+.readOnlyGroup{display:flex;flex-direction:column;min-height:0}.readOnlyGroup table{font-size:10.6px}.readOnlyGroup th,.readOnlyGroup td{padding:4px 5px}.readonlyMatches{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:7px 8px 8px;background:rgba(0,0,0,.16);border-top:1px solid rgba(255,255,255,.08)}.readonlyMatch{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.055);border-radius:10px;padding:5px 6px;min-width:0}.readonlyMatch.live{border-color:rgba(45,255,166,.55);box-shadow:0 0 0 1px rgba(45,255,166,.18),0 0 16px rgba(45,255,166,.12)}.readonlyMatch.final{background:rgba(255,255,255,.085)}.readonlyMeta{display:flex;justify-content:space-between;gap:6px;color:#9fc7d9;font-size:9.5px;font-weight:900;margin-bottom:3px}.readonlyMeta b{color:#ffdf5a}.readonlyMatch.live .readonlyMeta b{color:#3dffb0}.readonlyTeams{display:grid;grid-template-columns:minmax(0,1fr) 18px 22px 18px minmax(0,1fr);gap:3px;align-items:center;font-size:10.5px;font-weight:1000}.readonlyTeams span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.readonlyTeams .away{text-align:right}.readonlyTeams strong{font-size:13px;color:#fff;background:rgba(255,255,255,.12);border-radius:7px;text-align:center;padding:2px 0;line-height:1.2}.readonlyTeams em{font-size:8px;color:#ffd94a;text-align:center;font-style:normal;font-weight:1000}.groupFoot,.editGroupBtn{display:none!important}.groupEditor{display:none!important}.koLine{display:grid;grid-template-columns:minmax(0,1fr) 34px 26px 34px minmax(0,1fr);gap:6px;align-items:center;margin-top:9px}.koTeamName{font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.koTeamName.right{text-align:right}.koScoreText{background:rgba(9,32,52,.08);border:1px solid rgba(9,32,52,.18);border-radius:10px;text-align:center;padding:7px 0;font-size:18px;color:#092034}.koVsText{text-align:center;font-style:normal;font-weight:1000;color:#8b6b00;font-size:11px}.koScore,.scoreBox,.groupMatch input,.match input{display:none!important}.toolbar .btn.primary,.toolbar .btn[onclick="resetScores()"],.toolbar .btn[onclick="saveData()"]{display:none!important}@media(max-width:1200px){.readonlyMatches{grid-template-columns:1fr;gap:3px;padding:5px}.readonlyMatch{padding:4px 5px}.readonlyTeams{font-size:9.5px}.readonlyTeams strong{font-size:12px}.readOnlyGroup table{font-size:9.5px}.readOnlyGroup th,.readOnlyGroup td{padding:3px 4px}}
+
+
+/* === v14: 小組卡片只顯示排名；比賽結果集中放進彈窗 === */
+.groupResultBtn{
+  margin:7px 10px 10px; width:calc(100% - 20px); border:0; border-radius:999px;
+  padding:8px 10px; cursor:pointer; font-weight:1000; letter-spacing:.04em;
+  color:#071521; background:linear-gradient(180deg,#fff069,#ffbd1c);
+  box-shadow:0 10px 22px rgba(255,206,40,.20), inset 0 1px 0 rgba(255,255,255,.65);
+}
+.groupResultBtn:hover{filter:brightness(1.04); transform:translateY(-1px)}
+.groupResultBtn span{opacity:.72;font-size:11px;margin-left:6px}
+.groupEditor{display:none!important}
+.groupEditor.show{display:flex!important}
+.groupEditorCard{width:min(1120px,92vw)!important;height:min(560px,78vh)!important}
+.groupMatchGrid{grid-template-columns:1fr!important;gap:9px!important;overflow:auto!important;padding-right:4px}
+.groupMatch.resultOnly{
+  grid-template-columns:92px minmax(0,1fr) 52px 38px 52px minmax(0,1fr) 78px!important;
+  padding:12px 14px!important; border-radius:18px!important; min-height:58px;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.055))!important;
+}
+.groupMatch.resultOnly.live{border-color:rgba(61,255,176,.58)!important;box-shadow:0 0 0 1px rgba(61,255,176,.20),0 0 20px rgba(61,255,176,.10)}
+.groupMatch.resultOnly.final{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.07))!important}
+.resultDate{font-size:13px;font-weight:1000;color:#9fd0ff}.resultTeam{font-weight:1000;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.resultTeam.away{text-align:right}.resultScore{font-size:22px;font-weight:1000;text-align:center;color:#fff;background:rgba(255,255,255,.12);border-radius:12px;padding:7px 0;line-height:1}.resultVs{font-size:11px;font-weight:1000;color:#ffe100;text-align:center}.resultState{justify-self:end;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:1000;background:rgba(255,255,255,.10);color:#d8edf8}.resultState.live{color:#061521;background:#3dffb0}.resultState.final{color:#061521;background:#ffe100}.readOnlyGroup table{flex:1}.readOnlyGroup th,.readOnlyGroup td{padding:5px 5px!important}.readonlyMatches{display:none!important}
+@media(max-width:1200px){.groupMatch.resultOnly{grid-template-columns:72px minmax(0,1fr) 42px 30px 42px minmax(0,1fr) 62px!important;padding:10px!important}.resultTeam{font-size:14px}.resultScore{font-size:18px}.resultState{font-size:10px;padding:5px 7px}}
+
+</style>
+
+<style id="v15-ui-refresh">
+/* === v15: overall visual, UI, and interaction refresh === */
+:root{
+  --bg:#061521;
+  --panel:rgba(7,27,42,.82);
+  --line:#d8f05c;
+  --gold:#ffd34d;
+  --text:#f4fbff;
+  --muted:#a8c4d6;
+  --cyan:#5fd9ff;
+  --coral:#ff765f;
+  --field:#0b6b3d;
+}
+html,body{width:100vw;height:100vh;overflow:hidden}
+body{
+  background:
+    linear-gradient(180deg,rgba(5,20,33,.92),rgba(5,19,31,.86) 58%,rgba(7,54,34,.92)),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 88px),
+    linear-gradient(135deg,#071725 0%,#0a3143 42%,#073721 100%)!important;
+}
+body:before{
+  content:"2026";
+  align-items:flex-start!important;
+  padding-top:88px;
+  font-size:min(25vw,420px)!important;
+  letter-spacing:-.06em!important;
+  color:rgba(255,255,255,.045)!important;
+}
+body:after{
+  height:30vh!important;
+  background:
+    linear-gradient(0deg,rgba(7,77,43,.92),rgba(14,105,56,.34),transparent),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 2px,transparent 2px 74px)!important;
+}
+.header{
+  height:112px!important;
+  padding:14px 28px 8px!important;
+}
+.kicker{
+  color:#9fe8ff!important;
+  font-size:12px!important;
+  letter-spacing:.24em!important;
+}
+.title{
+  color:#fff3a2!important;
+  font-size:clamp(34px,3.6vw,58px)!important;
+  line-height:.96!important;
+  letter-spacing:0!important;
+  text-shadow:0 10px 34px rgba(0,0,0,.72)!important;
+}
+.sub{color:#cce6f4!important;font-size:13px!important}
+.syncBadge{
+  margin-top:7px!important;
+  padding:5px 11px!important;
+  border-color:rgba(159,232,255,.22)!important;
+  background:rgba(7,26,42,.62)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.toolbar{top:18px!important;right:20px!important}
+.toolbar .btn,.btn{
+  border-radius:10px!important;
+  border-color:rgba(255,255,255,.16)!important;
+  background:rgba(8,28,44,.74)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 10px 24px rgba(0,0,0,.18)!important;
+  transition:transform .16s ease,background .16s ease,box-shadow .16s ease;
+}
+.btn:hover,.tabBtn:hover,.groupResultBtn:hover{transform:translateY(-1px)}
+.pageTabs{
+  top:18px!important;
+  left:20px!important;
+  padding:4px!important;
+  gap:4px!important;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:rgba(3,16,27,.54);
+  backdrop-filter:blur(14px);
+}
+.tabBtn{
+  border-radius:10px!important;
+  padding:9px 14px!important;
+  letter-spacing:0!important;
+  color:#cfe9f7!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.tabBtn.active{
+  color:#071725!important;
+  background:linear-gradient(180deg,#fff2a6,#ffc645)!important;
+  box-shadow:0 8px 18px rgba(255,202,55,.18)!important;
+}
+.page{
+  height:calc(100vh - 112px)!important;
+  padding:8px 20px 20px!important;
+}
+.groupsHero{
+  height:58px!important;
+  border-radius:12px!important;
+  border-color:rgba(159,232,255,.18)!important;
+  background:rgba(8,32,50,.58)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+.groupsHero strong{color:#fff1a0!important;font-size:18px!important}
+.note{color:#bcd8e7!important}
+.pill{
+  border-radius:9px!important;
+  background:rgba(255,255,255,.07)!important;
+  color:#def4ff!important;
+}
+.groupsGrid{
+  gap:12px!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  align-items:stretch!important;
+}
+.group{
+  min-height:0!important;
+  border-radius:12px!important;
+  border:1px solid rgba(159,232,255,.16)!important;
+  background:linear-gradient(180deg,rgba(9,35,54,.84),rgba(4,19,31,.86))!important;
+  box-shadow:0 16px 30px rgba(0,0,0,.20),inset 0 1px 0 rgba(255,255,255,.09)!important;
+  overflow:hidden!important;
+}
+.group h3{
+  height:36px!important;
+  padding:8px 12px!important;
+  color:#fff!important;
+  background:linear-gradient(90deg,#d9452b,#f0a63b)!important;
+  text-shadow:none!important;
+}
+.group h3 span{color:#fff5c7}
+.readOnlyGroup{
+  height:100%!important;
+  max-height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+.readOnlyGroup table{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  height:auto!important;
+  table-layout:fixed!important;
+  font-size:11.8px!important;
+}
+.readOnlyGroup th,.readOnlyGroup td{
+  padding:5px 6px!important;
+  border-bottom-color:rgba(255,255,255,.075)!important;
+}
+.group th{
+  color:#9fe8ff!important;
+  background:rgba(0,0,0,.18)!important;
+}
+.team{max-width:none!important}
+.pos.q{
+  color:#071725!important;
+  background:#72f0b9;
+  border-radius:999px;
+  display:inline-block;
+  min-width:20px;
+}
+.pos.third{color:#ffe681!important}
+.groupResultBtn{
+  flex:0 0 auto!important;
+  border-radius:10px!important;
+  margin:6px 10px 9px!important;
+  padding:7px 10px!important;
+  background:linear-gradient(180deg,#fff3a0,#ffc13d)!important;
+  box-shadow:0 10px 20px rgba(255,199,53,.15),inset 0 1px 0 rgba(255,255,255,.66)!important;
+}
+.bracketPage{padding:4px 18px 18px!important}
+#pageBracket .bracketShell{
+  border-radius:14px!important;
+  border:1px solid rgba(159,232,255,.16)!important;
+  background:
+    linear-gradient(180deg,rgba(7,28,45,.70),rgba(2,13,23,.54)),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 70px)!important;
+  box-shadow:0 24px 58px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.09)!important;
+}
+#pageBracket .bracketStage{
+  left:18px!important;
+  right:18px!important;
+  top:16px!important;
+  bottom:16px!important;
+}
+#pageBracket .bracketSplit{
+  min-width:0!important;
+  width:100%!important;
+  grid-template-columns:minmax(0,1fr) 270px minmax(0,1fr)!important;
+  gap:24px!important;
+  align-items:center!important;
+}
+#pageBracket .conference{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:16px!important;
+}
+#pageBracket .conferenceTitle{
+  font-size:16px!important;
+  letter-spacing:.18em!important;
+  color:#fff3a0!important;
+  padding-bottom:4px;
+}
+#pageBracket .round{
+  gap:10px!important;
+}
+#pageBracket .round h2{
+  color:#9fe8ff!important;
+  font-size:13px!important;
+  letter-spacing:0!important;
+  text-shadow:none!important;
+}
+#pageBracket .ko{
+  min-height:74px!important;
+  padding:8px 9px!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#fbfdff,#e9f0f5)!important;
+  border:1px solid rgba(255,255,255,.88)!important;
+  box-shadow:0 9px 18px rgba(0,0,0,.18),inset 0 1px 0 #fff!important;
+}
+#pageBracket .ko.done{
+  border:2px solid rgba(255,211,77,.95)!important;
+  box-shadow:0 0 0 1px rgba(255,211,77,.18),0 12px 24px rgba(0,0,0,.22)!important;
+}
+#pageBracket .koHead{
+  margin-bottom:7px!important;
+}
+#pageBracket .ko .mno{
+  border-radius:8px!important;
+  background:#0c6ec9!important;
+  font-size:10px!important;
+  padding:4px 7px!important;
+}
+#pageBracket .ko .date{
+  color:#5d6b78!important;
+  font-size:10.5px!important;
+}
+#pageBracket .koLine{
+  grid-template-columns:minmax(0,1fr) 32px 28px 32px minmax(0,1fr)!important;
+  gap:6px!important;
+  margin-top:0!important;
+}
+#pageBracket .koTeamName{
+  color:#092034;
+  font-size:12.5px;
+  line-height:1.18;
+}
+#pageBracket .koScoreText{
+  min-height:25px;
+  padding:5px 0!important;
+  border-radius:8px!important;
+  background:#f7fbff!important;
+  color:#092034!important;
+  font-size:16px!important;
+}
+#pageBracket .koVsText{
+  color:#805d00!important;
+  font-size:9.5px!important;
+}
+#pageBracket .winner{
+  color:#00633a!important;
+}
+#pageBracket .winnerRow{
+  background:linear-gradient(90deg,rgba(255,211,77,.26),rgba(255,211,77,0))!important;
+  border-radius:8px!important;
+}
+#pageBracket .champCenter{
+  gap:12px!important;
+}
+#pageBracket .champBox{
+  padding:12px!important;
+  border-radius:14px!important;
+  background:rgba(8,31,48,.70)!important;
+  border:1px solid rgba(159,232,255,.18)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+#pageBracket .champBox h2{
+  color:#fff3a0!important;
+  font-size:16px!important;
+  letter-spacing:0!important;
+}
+#pageBracket .finalCard{
+  min-height:100px!important;
+  background:linear-gradient(180deg,#fff6bf,#f4c247)!important;
+}
+#pageBracket .cup{
+  font-size:26px!important;
+  height:24px!important;
+  margin:-2px 0 4px!important;
+}
+#pageBracket .championName{
+  min-height:42px!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,#fff3a0,#ffc13d)!important;
+  font-size:16px!important;
+}
+#pageBracket .finalVs{
+  border-radius:10px!important;
+  background:#5fd9ff!important;
+  color:#051521!important;
+  border:0!important;
+  box-shadow:0 10px 20px rgba(0,0,0,.18)!important;
+}
+.groupEditorCard{
+  border-radius:14px!important;
+  border:1px solid rgba(159,232,255,.18)!important;
+  background:linear-gradient(180deg,#09243a,#061522)!important;
+}
+.closeX{border-radius:10px!important}
+.groupMatch.resultOnly{
+  border-radius:12px!important;
+  background:rgba(255,255,255,.075)!important;
+}
+@media(max-width:1200px){
+  .header{height:92px!important}
+  .page{height:calc(100vh - 92px)!important}
+  #pageBracket .conference{gap:12px!important}
+  #pageBracket .ko{min-height:68px!important}
+  #pageBracket .koTeamName{font-size:11.5px}
+}
+@media(max-width:1400px){
+  .header{height:88px!important;padding-top:9px!important}
+  .kicker{display:none!important}
+  .title{font-size:38px!important}
+  .sub{font-size:12px!important}
+  .syncBadge{margin-top:4px!important;padding:4px 10px!important}
+  .page{height:calc(100vh - 88px)!important;padding:5px 12px 10px!important}
+  .groupsHero{height:44px!important;margin-bottom:6px!important;padding:6px 12px!important}
+  .groupsHero strong{font-size:16px!important}
+  .note{font-size:10.5px!important;line-height:1.2!important}
+  .pill{font-size:11px!important;padding:5px 8px!important}
+  .groupsGrid{gap:6px!important}
+  .group h3{height:27px!important;font-size:11.5px!important;padding:5px 9px!important}
+  .readOnlyGroup table{font-size:9.8px!important;line-height:1!important}
+  .readOnlyGroup th,.readOnlyGroup td{padding:3px 4px!important}
+  .groupResultBtn{margin:5px 8px 7px!important;width:calc(100% - 16px)!important;padding:5px 8px!important;font-size:10.5px!important;line-height:1.05!important}
+  .pageTabs{top:14px!important;left:14px!important}
+  .tabBtn{padding:8px 12px!important;font-size:12px!important}
+  .toolbar{top:14px!important;right:14px!important}
+  .toolbar .btn{padding:8px 10px!important;font-size:11px!important}
+  #pageBracket{padding:4px 10px 10px!important}
+  #pageBracket .bracketStage{left:12px!important;right:12px!important;top:12px!important;bottom:12px!important}
+  #pageBracket .bracketSplit{grid-template-columns:minmax(0,1fr) 220px minmax(0,1fr)!important;gap:16px!important}
+  #pageBracket .conference{gap:9px!important}
+  #pageBracket .round{gap:7px!important}
+  #pageBracket .conferenceTitle{font-size:13px!important;padding-bottom:2px!important}
+  #pageBracket .round h2{font-size:11px!important}
+  #pageBracket .ko{min-height:58px!important;padding:6px 7px!important;border-radius:10px!important}
+  #pageBracket .koHead{margin-bottom:4px!important}
+  #pageBracket .ko .mno{font-size:8.5px!important;padding:3px 5px!important}
+  #pageBracket .ko .date{font-size:8.5px!important}
+  #pageBracket .koLine{grid-template-columns:minmax(0,1fr) 24px 18px 24px minmax(0,1fr)!important;gap:4px!important}
+  #pageBracket .koTeamName{font-size:10.3px!important}
+  #pageBracket .koScoreText{min-height:20px!important;font-size:12px!important;padding:3px 0!important}
+  #pageBracket .koVsText{font-size:8px!important}
+  #pageBracket .champBox{padding:8px!important}
+  #pageBracket .champBox h2{font-size:13px!important;margin-bottom:6px!important}
+  #pageBracket .champCenter{gap:8px!important}
+  #pageBracket .finalCard{min-height:76px!important}
+  #pageBracket .cup{font-size:18px!important;height:15px!important;margin:-2px 0 2px!important}
+  #pageBracket .championName{min-height:34px!important;font-size:13px!important}
+  #pageBracket .finalVs{font-size:11px!important;padding:6px 9px!important}
+}
+@media(max-height:820px){
+  .groupsGrid{gap:6px!important}
+  .group h3{height:28px!important;padding:5px 10px!important;font-size:12px!important}
+  .readOnlyGroup table{font-size:10px!important;line-height:1!important}
+  .readOnlyGroup th,.readOnlyGroup td{padding:3px 5px!important}
+  .groupResultBtn{
+    margin:5px 10px 7px!important;
+    padding:5px 10px!important;
+    font-size:11px!important;
+    line-height:1.05!important;
+  }
+}
+.readOnlyGroup table th:nth-child(4),
+.readOnlyGroup table td:nth-child(4),
+.readOnlyGroup table th:nth-child(5),
+.readOnlyGroup table td:nth-child(5){
+  display:table-cell!important;
+}
+.readOnlyGroup table th:nth-child(6),
+.readOnlyGroup table td:nth-child(6){
+  display:none!important;
+}
+.readOnlyGroup table th:nth-child(1),
+.readOnlyGroup table td:nth-child(1){width:34px}
+.readOnlyGroup table th:nth-child(3),
+.readOnlyGroup table td:nth-child(3),
+.readOnlyGroup table th:nth-child(4),
+.readOnlyGroup table td:nth-child(4),
+.readOnlyGroup table th:nth-child(5),
+.readOnlyGroup table td:nth-child(5){width:42px}
+.resultDate{
+  min-width:92px;
+  color:#b7e3ff!important;
+  line-height:1.18!important;
+}
+.resultDate .twLabel{
+  display:block;
+  color:#ffe680;
+  font-size:11px;
+  letter-spacing:.04em;
+  margin-bottom:2px;
+}
+/* === v17: compact KO cards, no bottom clipping === */
+#pageBracket .bracketShell{
+  overflow:hidden!important;
+}
+#pageBracket .bracketStage{
+  overflow:hidden!important;
+}
+#pageBracket .bracketSplit{
+  height:100%!important;
+  align-items:stretch!important;
+}
+#pageBracket .conference{
+  height:100%!important;
+  align-content:center!important;
+}
+#pageBracket .round{
+  gap:7px!important;
+  align-content:center!important;
+  min-height:0!important;
+}
+#pageBracket .round h2{
+  font-size:12px!important;
+  margin:0 0 3px!important;
+  line-height:1!important;
+}
+#pageBracket .ko{
+  min-height:58px!important;
+  height:58px!important;
+  padding:6px 8px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:5px!important;
+}
+#pageBracket .koHead,
+#pageBracket .cup,
+#pageBracket .koLine{
+  display:none!important;
+}
+#pageBracket .koTeamsDate{
+  display:block;
+  min-width:0;
+  color:#092034;
+  font-size:8.8px;
+  font-weight:1000;
+  line-height:1.08;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#pageBracket .koCountry{
+  display:inline;
+  color:#092034;
+  font-size:inherit;
+  font-weight:inherit;
+  line-height:1.05;
+}
+#pageBracket .koCountry.winner{color:#00633a!important}
+#pageBracket .koDateCenter{
+  display:inline;
+  margin:0 1px;
+  color:#5c6a77;
+  font-size:inherit;
+  font-weight:1000;
+  line-height:1;
+  white-space:nowrap;
+}
+#pageBracket .koScoreLine{
+  display:grid;
+  grid-template-columns:34px 24px 34px;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+}
+#pageBracket .koScorePill{
+  height:24px;
+  min-width:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:#f7fbff;
+  border:1px solid rgba(9,32,52,.16);
+  color:#092034;
+  font-size:15px;
+  font-weight:1000;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+}
+#pageBracket .koVsPill{
+  color:#846300;
+  font-size:10px;
+  font-weight:1000;
+  text-align:center;
+}
+#pageBracket .finalCard{
+  height:70px!important;
+  min-height:70px!important;
+}
+#pageBracket .champBox{
+  padding:10px!important;
+}
+#pageBracket .champBox .ko{
+  height:70px!important;
+  min-height:70px!important;
+}
+#pageBracket .championName{
+  min-height:36px!important;
+  padding:8px!important;
+}
+#pageBracket .champCenter{
+  align-content:center!important;
+  gap:9px!important;
+}
+@media(max-height:820px){
+  #pageBracket .round{gap:6px!important}
+  #pageBracket .ko{
+    height:54px!important;
+    min-height:54px!important;
+    padding:5px 7px!important;
+    gap:4px!important;
+  }
+  #pageBracket .koTeamsDate{font-size:8.4px!important}
+  #pageBracket .koScorePill{height:22px;min-width:31px;font-size:13px}
+#pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:64px!important;
+    min-height:64px!important;
+  }
+}
+/* === v18: requested match-state rules === */
+.toolbar .btn[onclick="openDataEditor()"]{
+  display:none!important;
+}
+.readOnlyGroup:not(.qualified) .pos.q{
+  color:#fff!important;
+  background:transparent!important;
+  border-radius:0!important;
+  min-width:auto!important;
+  display:inline!important;
+}
+.readOnlyGroup:not(.qualified) .pos.third{
+  color:#fff!important;
+}
+.readOnlyGroup.qualified .pos.q{
+  color:#071725!important;
+  background:#72f0b9!important;
+  border-radius:999px!important;
+  display:inline-block!important;
+  min-width:20px!important;
+}
+.readOnlyGroup.qualified .pos.third{
+  color:#ffe681!important;
+}
+.koTeamsDate.pending{
+  color:#5c6a77!important;
+  font-size:7.4px!important;
+}
+.countdownBadge{
+  justify-content:center;
+  gap:10px!important;
+  color:#e8f7ff!important;
+}
+.countdownBadge strong{
+  color:#fff3a0;
+  font-size:13px;
+}
+.countUnit{
+  display:inline-flex;
+  align-items:baseline;
+  gap:2px;
+  padding:2px 6px;
+  border-radius:7px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+.countUnit b{
+  color:#fff3a0;
+  font-size:14px;
+}
+.flagTeam{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  max-width:100%;
+  vertical-align:middle;
+}
+.flagEmoji{
+  flex:0 0 auto;
+  font-size:15px;
+  line-height:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.22));
+}
+.flagName{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.resultTeam .flagTeam{
+  width:100%;
+}
+.resultTeam.away .flagTeam{
+  justify-content:flex-end;
+}
+#pageBracket .koCountry .flagTeam{
+  display:inline-flex;
+  gap:3px;
+}
+#pageBracket .koCountry .flagEmoji{
+  font-size:10px;
+}
+/* === v20: richer visual hierarchy, larger teams and flags === */
+body{
+  background:
+    radial-gradient(circle at 50% 8%,rgba(100,210,255,.18),transparent 24%),
+    linear-gradient(180deg,rgba(3,13,23,.95),rgba(6,26,40,.90) 54%,rgba(5,66,38,.94)),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 92px)!important;
+}
+.header{
+  height:104px!important;
+}
+.page{
+  height:calc(100vh - 104px)!important;
+}
+.title{
+  color:#fff2a8!important;
+  text-shadow:0 10px 30px rgba(0,0,0,.58),0 0 24px rgba(255,215,88,.12)!important;
+}
+.syncBadge.countdownBadge{
+  width:min(760px,72vw);
+  margin-top:8px!important;
+  padding:6px 13px!important;
+  background:linear-gradient(90deg,rgba(10,44,63,.68),rgba(7,28,43,.52))!important;
+  border-color:rgba(134,225,255,.20)!important;
+}
+.countUnit{
+  min-width:52px;
+  justify-content:center;
+  background:rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10);
+}
+.groupsHero{
+  height:50px!important;
+  margin-bottom:8px!important;
+  background:linear-gradient(90deg,rgba(11,42,62,.82),rgba(8,28,42,.62))!important;
+}
+.groupsGrid{
+  gap:8px!important;
+}
+.group{
+  border-radius:14px!important;
+  border-color:rgba(139,222,255,.20)!important;
+  background:linear-gradient(180deg,rgba(9,38,57,.94),rgba(3,18,31,.91))!important;
+  box-shadow:0 16px 32px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+.group h3{
+  height:32px!important;
+  padding:6px 12px!important;
+  font-size:15px!important;
+  background:linear-gradient(90deg,#e65337 0%,#f2a23c 100%)!important;
+}
+.readOnlyGroup table{
+  font-size:12.4px!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+}
+.readOnlyGroup th{
+  color:#9fe8ff!important;
+  font-size:12px!important;
+  padding:4px 6px!important;
+}
+.readOnlyGroup td{
+  padding:5px 6px!important;
+  font-size:13px!important;
+}
+.readOnlyGroup td.team{
+  font-size:16px!important;
+  font-weight:1000!important;
+  color:#f8fcff!important;
+}
+.readOnlyGroup tbody tr{
+  background:linear-gradient(90deg,rgba(255,255,255,.025),transparent);
+}
+.readOnlyGroup tbody tr + tr td{
+  border-top:1px solid rgba(255,255,255,.065)!important;
+}
+.readOnlyGroup .pos{
+  font-size:14px!important;
+  font-weight:1000!important;
+  color:#e9f6ff!important;
+}
+.flagTeam{
+  gap:8px!important;
+}
+.flagEmoji{
+  font-size:22px!important;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.26));
+}
+.flagName{
+  letter-spacing:0;
+}
+.groupResultBtn{
+  margin:5px 10px 8px!important;
+  padding:6px 10px!important;
+  border-radius:12px!important;
+  font-size:13px!important;
+  background:linear-gradient(180deg,#fff0a0,#ffc348)!important;
+  color:#061827!important;
+}
+.groupMatch.resultOnly{
+  grid-template-columns:96px minmax(0,1.2fr) 56px 34px 56px minmax(0,1.2fr) 76px!important;
+  min-height:62px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.065))!important;
+}
+.resultTeam{
+  font-size:19px!important;
+}
+.resultTeam .flagEmoji{
+  font-size:24px!important;
+}
+.resultScore{
+  font-size:23px!important;
+  border-radius:13px!important;
+}
+#pageBracket .koCountry .flagEmoji{
+  font-size:11px!important;
+}
+@media(max-width:1400px), (max-height:820px){
+  .header{height:88px!important}
+  .page{height:calc(100vh - 88px)!important}
+  .syncBadge.countdownBadge{margin-top:4px!important;padding:4px 10px!important}
+  .groupsHero{height:42px!important;margin-bottom:6px!important}
+  .group h3{height:28px!important;font-size:13px!important;padding:5px 10px!important}
+  .readOnlyGroup table{font-size:10.8px!important}
+  .readOnlyGroup th{font-size:10.5px!important;padding:3px 5px!important}
+  .readOnlyGroup td{font-size:11.5px!important;padding:3px 5px!important}
+  .readOnlyGroup td.team{font-size:13.5px!important}
+  .flagEmoji{font-size:18px!important}
+  .groupResultBtn{font-size:11px!important;padding:5px 9px!important;margin:5px 9px 7px!important}
+  .countUnit{min-width:42px}
+}
+@media(min-width:1500px) and (min-height:840px){
+  .header{height:110px!important}
+  .page{height:calc(100vh - 110px)!important;padding:10px 22px 22px!important}
+  .groupsHero{height:54px!important;margin-bottom:10px!important}
+  .groupsGrid{gap:12px!important}
+  .group h3{height:36px!important;font-size:16px!important;padding:7px 14px!important}
+  .readOnlyGroup table{font-size:13px!important}
+  .readOnlyGroup th{font-size:12.5px!important;padding:5px 7px!important}
+  .readOnlyGroup td{font-size:13.5px!important;padding:6px 7px!important}
+  .readOnlyGroup td.team{font-size:18px!important}
+  .readOnlyGroup .pos{font-size:15px!important}
+  .flagEmoji{font-size:26px!important}
+  .groupResultBtn{font-size:14px!important;padding:7px 12px!important;margin:6px 12px 10px!important}
+  .syncBadge.countdownBadge{padding:7px 14px!important}
+  .countUnit b{font-size:15px}
+  .groupMatch.resultOnly{
+    min-height:68px!important;
+    grid-template-columns:108px minmax(0,1.18fr) 60px 38px 60px minmax(0,1.18fr) 82px!important;
+  }
+  .resultTeam{font-size:21px!important}
+  .resultTeam .flagEmoji{font-size:28px!important}
+}
+/* === v21: restore breathing room on knockout bracket cards === */
+#pageBracket .round{
+  gap:9px!important;
+}
+#pageBracket .ko{
+  height:68px!important;
+  min-height:68px!important;
+  padding:9px 10px!important;
+  gap:7px!important;
+  border-radius:13px!important;
+}
+#pageBracket .koTeamsDate{
+  font-size:9.8px!important;
+  line-height:1.15!important;
+}
+#pageBracket .koScoreLine{
+  grid-template-columns:38px 28px 38px!important;
+  gap:8px!important;
+}
+#pageBracket .koScorePill{
+  height:28px!important;
+  min-width:38px!important;
+  font-size:16px!important;
+  border-radius:9px!important;
+}
+#pageBracket .koVsPill{
+  font-size:11px!important;
+}
+#pageBracket .finalCard,
+#pageBracket .champBox .ko{
+  height:82px!important;
+  min-height:82px!important;
+}
+#pageBracket .champBox{
+  padding:12px!important;
+}
+#pageBracket .champCenter{
+  gap:12px!important;
+}
+@media(max-height:820px){
+  #pageBracket .round{gap:7px!important}
+  #pageBracket .ko{
+    height:58px!important;
+    min-height:58px!important;
+    padding:7px 9px!important;
+    gap:5px!important;
+  }
+  #pageBracket .koTeamsDate{font-size:8.8px!important}
+  #pageBracket .koScoreLine{grid-template-columns:34px 24px 34px!important;gap:7px!important}
+  #pageBracket .koScorePill{
+    height:23px!important;
+    min-width:34px!important;
+    font-size:14px!important;
+  }
+  #pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:68px!important;
+    min-height:68px!important;
+  }
+}
+@media(min-width:1500px) and (min-height:840px){
+  #pageBracket .round{gap:12px!important}
+  #pageBracket .ko{
+    height:88px!important;
+    min-height:88px!important;
+    padding:13px 14px!important;
+    gap:10px!important;
+    border-radius:15px!important;
+  }
+  #pageBracket .koTeamsDate{
+    font-size:12px!important;
+    line-height:1.18!important;
+  }
+  #pageBracket .koScoreLine{
+    grid-template-columns:46px 32px 46px!important;
+    gap:10px!important;
+  }
+  #pageBracket .koScorePill{
+    height:34px!important;
+    min-width:46px!important;
+    font-size:19px!important;
+    border-radius:11px!important;
+  }
+  #pageBracket .koVsPill{font-size:12px!important}
+  #pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:104px!important;
+    min-height:104px!important;
+  }
+  #pageBracket .champBox{padding:14px!important}
+  #pageBracket .champCenter{gap:16px!important}
+}
+/* === v22: presentation-grade motion and finish === */
+:root{
+  --glass-edge:rgba(143,229,255,.22);
+  --glass-fill:rgba(8,31,48,.72);
+  --card-fill:rgba(7,28,43,.92);
+  --card-fill-2:rgba(3,16,28,.94);
+  --accent-warm:#ffd36a;
+  --accent-cool:#80e7ff;
+}
+body{
+  background:
+    linear-gradient(180deg,rgba(3,13,24,.96),rgba(5,23,38,.92) 55%,rgba(3,61,38,.96)),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(255,255,255,.028) 1px,transparent 1px)!important;
+  background-size:auto,96px 96px,96px 96px!important;
+}
+body:before{
+  opacity:.74!important;
+  color:rgba(255,255,255,.052)!important;
+  text-shadow:0 0 80px rgba(120,220,255,.08);
+}
+.header{
+  filter:drop-shadow(0 18px 28px rgba(0,0,0,.18));
+}
+.title{
+  background:linear-gradient(180deg,#fff8c7 0%,#ffe074 72%,#f1b83c 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent!important;
+}
+.sub{
+  color:#c4deea!important;
+}
+.pageTabs{
+  background:rgba(2,13,23,.66)!important;
+  border-color:rgba(151,232,255,.18)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.tabBtn{
+  transition:transform .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease!important;
+}
+.tabBtn.active{
+  box-shadow:0 10px 26px rgba(255,205,80,.26),inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
+.toolbar .btn{
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease!important;
+}
+.toolbar .btn:hover{
+  border-color:rgba(139,231,255,.32)!important;
+  background:rgba(15,48,70,.82)!important;
+  box-shadow:0 16px 30px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.16)!important;
+}
+.syncBadge.countdownBadge{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+.syncBadge.countdownBadge:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);
+  transform:translateX(-110%);
+  animation:countSheen 5.6s ease-in-out infinite;
+  pointer-events:none;
+}
+.syncDot{
+  animation:dotPulse 1.8s ease-in-out infinite;
+}
+.countUnit{
+  border:1px solid rgba(255,255,255,.07);
+}
+.groupsHero{
+  border-color:var(--glass-edge)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+.pill{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10);
+}
+.group{
+  position:relative;
+  transform:translateZ(0);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+.group:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,.10),transparent 28%,transparent 70%,rgba(128,231,255,.08));
+  pointer-events:none;
+  opacity:.65;
+}
+.group:hover{
+  transform:translateY(-2px);
+  border-color:rgba(161,236,255,.34)!important;
+  box-shadow:0 22px 44px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.14)!important;
+}
+.group h3{
+  position:relative;
+  z-index:1;
+  background:linear-gradient(90deg,#d94c34 0%,#ec7a35 48%,#f3b447 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 8px 18px rgba(0,0,0,.16)!important;
+}
+.readOnlyGroup table,
+.groupResultBtn{
+  position:relative;
+  z-index:1;
+}
+.readOnlyGroup tbody tr{
+  transition:background .16s ease;
+}
+.readOnlyGroup tbody tr:hover{
+  background:rgba(128,231,255,.075)!important;
+}
+.readOnlyGroup td.team{
+  text-shadow:0 2px 10px rgba(0,0,0,.28);
+}
+.flagEmoji{
+  transform-origin:center;
+}
+.readOnlyGroup tbody tr:hover .flagEmoji,
+.groupMatch.resultOnly:hover .flagEmoji{
+  transform:scale(1.08);
+}
+.groupResultBtn{
+  transition:transform .18s ease,filter .18s ease,box-shadow .18s ease!important;
+  box-shadow:0 12px 24px rgba(255,191,62,.18),inset 0 1px 0 rgba(255,255,255,.70)!important;
+}
+.groupResultBtn:hover{
+  filter:brightness(1.06) saturate(1.05)!important;
+  box-shadow:0 18px 30px rgba(255,191,62,.24),inset 0 1px 0 rgba(255,255,255,.78)!important;
+}
+.page.active{
+  animation:pageIn .34s ease both;
+}
+.readOnlyGroup{
+  animation:cardIn .34s ease both;
+  animation-delay:calc(var(--card-order,0) * 28ms);
+}
+.readOnlyGroup:nth-child(1){--card-order:1}
+.readOnlyGroup:nth-child(2){--card-order:2}
+.readOnlyGroup:nth-child(3){--card-order:3}
+.readOnlyGroup:nth-child(4){--card-order:4}
+.readOnlyGroup:nth-child(5){--card-order:5}
+.readOnlyGroup:nth-child(6){--card-order:6}
+.readOnlyGroup:nth-child(7){--card-order:7}
+.readOnlyGroup:nth-child(8){--card-order:8}
+.readOnlyGroup:nth-child(9){--card-order:9}
+.readOnlyGroup:nth-child(10){--card-order:10}
+.readOnlyGroup:nth-child(11){--card-order:11}
+.readOnlyGroup:nth-child(12){--card-order:12}
+.groupEditor.show .groupEditorCard{
+  animation:modalIn .22s ease both;
+}
+.groupEditor{
+  backdrop-filter:blur(10px);
+}
+.groupEditorCard{
+  box-shadow:0 34px 90px rgba(0,0,0,.50),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+.groupMatch.resultOnly{
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.groupMatch.resultOnly:hover{
+  transform:translateY(-1px);
+  border-color:rgba(151,232,255,.30)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.075))!important;
+}
+.resultScore{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 10px 18px rgba(0,0,0,.16);
+}
+#pageBracket .bracketShell{
+  border-color:rgba(145,232,255,.20)!important;
+  box-shadow:0 26px 62px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.10)!important;
+}
+#pageBracket .ko{
+  background:linear-gradient(180deg,#ffffff 0%,#edf4f8 100%)!important;
+  box-shadow:0 12px 26px rgba(0,0,0,.20),inset 0 1px 0 #fff!important;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  animation:koIn .32s ease both;
+}
+#pageBracket .ko:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 34px rgba(0,0,0,.25),inset 0 1px 0 #fff!important;
+  filter:saturate(1.03);
+}
+#pageBracket .koScorePill{
+  box-shadow:inset 0 1px 0 #fff,0 8px 14px rgba(0,0,0,.10)!important;
+}
+#pageBracket .champBox{
+  background:linear-gradient(180deg,rgba(10,36,55,.78),rgba(4,18,31,.76))!important;
+  box-shadow:0 20px 42px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+#pageBracket .finalCard{
+  background:linear-gradient(180deg,#fff8c6 0%,#f8d96f 48%,#efbd42 100%)!important;
+}
+#pageBracket .championName{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.70),0 12px 22px rgba(255,194,68,.15);
+}
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes koIn{
+  from{opacity:0;transform:scale(.985)}
+  to{opacity:1;transform:scale(1)}
+}
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(10px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes countSheen{
+  0%,62%{transform:translateX(-110%)}
+  100%{transform:translateX(110%)}
+}
+@keyframes dotPulse{
+  0%,100%{transform:scale(1);opacity:.82}
+  50%{transform:scale(1.35);opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+/* === v23: roomier knockout cards and stable date row === */
+#pageBracket .koTeamsDate{
+  display:grid!important;
+  grid-template-columns:minmax(20px,1fr) max-content minmax(20px,1fr)!important;
+  align-items:center!important;
+  gap:3px!important;
+  width:100%!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-align:center!important;
+}
+#pageBracket .koCountry{
+  display:block!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+#pageBracket .koDateCenter{
+  display:block!important;
+  min-width:max-content!important;
+  margin:0!important;
+  padding:0 1px!important;
+  white-space:nowrap!important;
+}
+@media(max-height:820px){
+  #pageBracket .round{gap:7px!important}
+  #pageBracket .ko{
+    height:60px!important;
+    min-height:60px!important;
+    padding:8px 9px!important;
+    gap:5px!important;
+  }
+  #pageBracket .koTeamsDate{
+    font-size:9px!important;
+    line-height:1.1!important;
+  }
+  #pageBracket .koScorePill{
+    height:25px!important;
+    min-width:35px!important;
+    font-size:14px!important;
+  }
+  #pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:70px!important;
+    min-height:70px!important;
+  }
+}
+#pageBracket .koTeamsDate.pending .koCountry{
+  font-size:0!important;
+  text-overflow:clip!important;
+}
+#pageBracket .koTeamsDate.pending .koCountry::after{
+  content:"待";
+  font-size:9px!important;
+  font-weight:1000!important;
+  color:#092034!important;
+}
+/* === v24: layout cleanup after visual QA === */
+body{
+  position:relative!important;
+  isolation:isolate;
+}
+body:before,
+body:after{
+  z-index:0!important;
+  pointer-events:none!important;
+}
+.header,
+.page{
+  position:relative!important;
+  z-index:2!important;
+}
+.pageTabs,
+.toolbar{
+  z-index:30!important;
+}
+.header{
+  height:128px!important;
+  padding:14px 28px 10px!important;
+  display:grid!important;
+  grid-template-rows:auto auto auto auto!important;
+  align-content:center!important;
+  justify-items:center!important;
+  row-gap:2px!important;
+  overflow:visible!important;
+}
+.title{
+  font-size:clamp(38px,3.65vw,62px)!important;
+  line-height:.96!important;
+  margin:0!important;
+}
+.sub{
+  line-height:1.18!important;
+}
+.syncBadge.countdownBadge{
+  justify-self:center!important;
+  align-self:center!important;
+  width:auto!important;
+  max-width:min(760px,56vw)!important;
+  min-height:30px!important;
+  margin:5px auto 0!important;
+  padding:6px 14px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-wrap:nowrap!important;
+  gap:8px!important;
+  line-height:1!important;
+  border-radius:999px!important;
+}
+.syncBadge.countdownBadge strong{
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.countUnit{
+  min-height:20px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+.page{
+  height:calc(100vh - 128px)!important;
+  padding:8px 22px 22px!important;
+}
+.groupsHero{
+  min-height:56px!important;
+  height:56px!important;
+  margin-bottom:10px!important;
+  align-items:center!important;
+  overflow:hidden!important;
+}
+.groupsGrid{
+  position:relative!important;
+  z-index:2!important;
+}
+#pageBracket .bracketShell{
+  position:relative!important;
+  z-index:2!important;
+}
+@media(max-width:1400px), (max-height:820px){
+  .header{
+    height:96px!important;
+    padding:9px 16px 7px!important;
+    row-gap:1px!important;
+  }
+  .title{
+    font-size:clamp(30px,3.7vw,44px)!important;
+  }
+  .sub{
+    font-size:11px!important;
+  }
+  .syncBadge.countdownBadge{
+    min-height:24px!important;
+    max-width:min(620px,58vw)!important;
+    margin-top:3px!important;
+    padding:4px 10px!important;
+    gap:6px!important;
+    font-size:11px!important;
+  }
+  .countUnit{
+    min-width:38px!important;
+    min-height:18px!important;
+    padding:2px 5px!important;
+  }
+  .page{
+    height:calc(100vh - 96px)!important;
+    padding:6px 12px 12px!important;
+  }
+  .groupsHero{
+    height:44px!important;
+    min-height:44px!important;
+    margin-bottom:7px!important;
+  }
+}
+@media(min-width:1500px) and (min-height:840px){
+  .header{
+    height:128px!important;
+  }
+  .page{
+    height:calc(100vh - 128px)!important;
+  }
+}
+/* === v25: remove subtitle and give knockout cards more height === */
+.sub{
+  display:none!important;
+}
+.header{
+  height:110px!important;
+  grid-template-rows:auto auto auto!important;
+  row-gap:4px!important;
+}
+.page{
+  height:calc(100vh - 110px)!important;
+  padding-top:8px!important;
+}
+.syncBadge.countdownBadge{
+  margin-top:6px!important;
+}
+#pageBracket .round{
+  gap:13px!important;
+}
+#pageBracket .ko{
+  height:86px!important;
+  min-height:86px!important;
+  padding:12px 13px!important;
+  gap:9px!important;
+  border-radius:15px!important;
+}
+#pageBracket .koTeamsDate{
+  font-size:11px!important;
+  line-height:1.16!important;
+}
+#pageBracket .koScoreLine{
+  grid-template-columns:44px 32px 44px!important;
+  gap:10px!important;
+}
+#pageBracket .koScorePill{
+  height:32px!important;
+  min-width:44px!important;
+  font-size:18px!important;
+  border-radius:11px!important;
+}
+#pageBracket .koVsPill{
+  font-size:12px!important;
+}
+#pageBracket .finalCard,
+#pageBracket .champBox .ko{
+  height:106px!important;
+  min-height:106px!important;
+}
+#pageBracket .champBox{
+  padding:15px!important;
+}
+#pageBracket .champCenter{
+  gap:17px!important;
+}
+@media(max-width:1400px), (max-height:820px){
+  .header{
+    height:82px!important;
+    padding-top:7px!important;
+    padding-bottom:6px!important;
+  }
+  .page{
+    height:calc(100vh - 82px)!important;
+    padding-top:6px!important;
+  }
+  .syncBadge.countdownBadge{
+    min-height:24px!important;
+    margin-top:4px!important;
+  }
+  #pageBracket .round{
+    gap:7px!important;
+  }
+  #pageBracket .ko{
+    height:64px!important;
+    min-height:64px!important;
+    padding:8px 9px!important;
+    gap:6px!important;
+  }
+  #pageBracket .koTeamsDate{
+    font-size:9.1px!important;
+  }
+  #pageBracket .koScorePill{
+    height:26px!important;
+    min-width:36px!important;
+    font-size:15px!important;
+  }
+  #pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:76px!important;
+    min-height:76px!important;
+  }
+  #pageBracket .champBox{
+    padding:9px!important;
+  }
+  #pageBracket .champCenter{
+    gap:9px!important;
+  }
+}
+@media(min-width:1500px) and (min-height:840px){
+  .header{
+    height:110px!important;
+  }
+  .page{
+    height:calc(100vh - 110px)!important;
+  }
+  #pageBracket .ko{
+    height:104px!important;
+    min-height:104px!important;
+    padding:16px 16px!important;
+    gap:12px!important;
+  }
+  #pageBracket .koTeamsDate{
+    font-size:12.8px!important;
+  }
+  #pageBracket .koScoreLine{
+    grid-template-columns:50px 34px 50px!important;
+    gap:12px!important;
+  }
+  #pageBracket .koScorePill{
+    height:38px!important;
+    min-width:50px!important;
+    font-size:20px!important;
+  }
+  #pageBracket .finalCard,
+  #pageBracket .champBox .ko{
+    height:126px!important;
+    min-height:126px!important;
+  }
+}
+/* === v26: preserve taller KO cards on short screens without clipping === */
+@media(max-width:1400px), (max-height:820px){
+  .header{
+    height:78px!important;
+  }
+  .page{
+    height:calc(100vh - 78px)!important;
+    padding:4px 8px 6px!important;
+  }
+  #pageBracket{
+    padding:4px 8px 6px!important;
+  }
+  #pageBracket .bracketShell{
+    padding:5px!important;
+  }
+  #pageBracket .bracketStage{
+    top:6px!important;
+    bottom:4px!important;
+    left:8px!important;
+    right:8px!important;
+  }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="kicker">WORLD CUP 2026</div>
+  <h1 class="title">2026 世足 決鬥之路</h1>
+  <div class="sub">ESPN 線上比分自動更新 → 小組排名與淘汰賽晉級自動推進</div>
+  <div class="syncBadge warn" id="syncBadge"><span class="syncDot"></span><span>比分自動同步準備中</span></div>
+  <div class="toolbar">
+    <button class="btn" onclick="openDataEditor()">編輯賽程/隊名 JSON</button>
+    <button class="btn" onclick="window.print()">列印賽程表</button>
+  </div>
+</header>
+<div class="pageTabs">
+  <button class="tabBtn active" id="tabGroups" onclick="showPage('groups')">第一頁｜世預賽小組</button>
+  <button class="tabBtn" id="tabBracket" onclick="showPage('bracket')">第二頁｜樹枝狀對戰</button>
+</div>
+<div class="status" id="status"></div>
+<section class="page active" id="pageGroups">
+  <div class="groupsHero">
+    <div><strong>世預賽小組賽</strong><br><span class="note">比分由 ESPN 自動更新；每組賽果直接顯示在卡片內，排名與晉級自動計算。</span></div>
+    <div class="miniStat" id="groupSummary"></div>
+  </div>
+  <div class="groupsGrid" id="groupsGrid"></div>
+</section>
+<section class="page bracketPage" id="pageBracket">
+  <div class="groupsHero">
+    <div><strong>淘汰賽樹枝狀賽程</strong><br><span class="note">第一頁產生的晉級隊伍會自動帶入；淘汰賽比分更新後會一路推進到冠軍。</span></div>
+    <div class="miniStat"><span class="pill">左半區 × 右半區 → 總冠軍</span></div>
+  </div>
+  <div class="bracketShell"><div class="bracketHint">左半區、右半區一路往中間推進，最後在中央決出總冠軍</div><div class="bracketStage" id="bracketStage"><div class="bracket" id="bracket"></div></div></div>
+</section>
+<div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">ESPN 會自動更新；此版不開放手動輸入比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
+<script>
+const defaultData = {
+ groups:{
+  A:['墨西哥','南非','韓國','捷克'], B:['加拿大','波赫','卡達','瑞士'], C:['巴西','摩洛哥','海地','蘇格蘭'], D:['美國','巴拉圭','澳洲','土耳其'],
+  E:['德國','古拉索','象牙海岸','厄瓜多'], F:['荷蘭','日本','突尼西亞','紐西蘭'], G:['比利時','埃及','伊朗','紐西蘭'], H:['西班牙','維德角','沙烏地','烏拉圭'],
+  I:['法國','塞內加爾','挪威','約旦'], J:['阿根廷','阿爾及利亞','奧地利','約旦'], K:['葡萄牙','剛果','烏茲別克','哥倫比亞'], L:['英格蘭','克羅埃西亞','迦納','巴拿馬']
+ },
+ matches:[]
+};
+let matchNo=1; for(const g of Object.keys(defaultData.groups)){const t=defaultData.groups[g]; [[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]].forEach((p,i)=>defaultData.matches.push({id:'G'+matchNo++,group:g,date:'6/'+(11+Math.floor((matchNo-2)/4)),home:t[p[0]],away:t[p[1]],hs:null,as:null}));}
+const koTemplate=[
+ {id:73,round:'32強',date:'6/28',a:'2A',b:'2B',next:89,slot:'a'}, {id:74,round:'32強',date:'6/29',a:'1E',b:'最佳第三 A/B/C/D/F',next:89,slot:'b'},
+ {id:75,round:'32強',date:'6/29',a:'1F',b:'2C',next:90,slot:'a'}, {id:76,round:'32強',date:'6/30',a:'1C',b:'2F',next:90,slot:'b'},
+ {id:77,round:'32強',date:'6/30',a:'1I',b:'最佳第三 C/D/F/G/H',next:91,slot:'a'}, {id:78,round:'32強',date:'7/1',a:'2E',b:'2I',next:91,slot:'b'},
+ {id:79,round:'32強',date:'7/1',a:'1A',b:'最佳第三 C/E/F/H/I',next:92,slot:'a'}, {id:80,round:'32強',date:'7/2',a:'1L',b:'最佳第三 E/H/I/J/K',next:92,slot:'b'},
+ {id:81,round:'32強',date:'7/2',a:'1D',b:'最佳第三 B/E/F/I/J',next:93,slot:'a'}, {id:82,round:'32強',date:'7/3',a:'1G',b:'最佳第三 A/E/H/I/J',next:93,slot:'b'},
+ {id:83,round:'32強',date:'7/3',a:'2K',b:'2L',next:94,slot:'a'}, {id:84,round:'32強',date:'7/4',a:'1H',b:'2J',next:94,slot:'b'},
+ {id:85,round:'32強',date:'7/4',a:'1B',b:'最佳第三 E/F/G/I/J',next:95,slot:'a'}, {id:86,round:'32強',date:'7/5',a:'1J',b:'2H',next:95,slot:'b'},
+ {id:87,round:'32強',date:'7/5',a:'1K',b:'最佳第三 D/E/I/J/L',next:96,slot:'a'}, {id:88,round:'32強',date:'7/6',a:'2D',b:'2G',next:96,slot:'b'},
+ {id:89,round:'16強',date:'7/10',a:'勝73',b:'勝74',next:97,slot:'a'}, {id:90,round:'16強',date:'7/10',a:'勝75',b:'勝76',next:97,slot:'b'},
+ {id:91,round:'16強',date:'7/11',a:'勝77',b:'勝78',next:99,slot:'a'}, {id:92,round:'16強',date:'7/12',a:'勝79',b:'勝80',next:99,slot:'b'},
+ {id:93,round:'16強',date:'7/11',a:'勝81',b:'勝82',next:98,slot:'a'}, {id:94,round:'16強',date:'7/12',a:'勝83',b:'勝84',next:98,slot:'b'},
+ {id:95,round:'16強',date:'7/12',a:'勝85',b:'勝86',next:100,slot:'a'}, {id:96,round:'16強',date:'7/13',a:'勝87',b:'勝88',next:100,slot:'b'},
+ {id:97,round:'8強',date:'7/15',a:'勝89',b:'勝90',next:101,slot:'a'}, {id:98,round:'8強',date:'7/16',a:'勝93',b:'勝94',next:101,slot:'b'},
+ {id:99,round:'8強',date:'7/16',a:'勝91',b:'勝92',next:102,slot:'a'}, {id:100,round:'8強',date:'7/17',a:'勝95',b:'勝96',next:102,slot:'b'},
+ {id:101,round:'準決賽',date:'7/19',a:'勝97',b:'勝98',next:104,slot:'a'}, {id:102,round:'準決賽',date:'7/20',a:'勝99',b:'勝100',next:104,slot:'b'},
+ {id:103,round:'季軍戰',date:'7/19',a:'敗101',b:'敗102'}, {id:104,round:'決賽',date:'7/20',a:'勝101',b:'勝102'}
+].map(m=>({...m,ascore:null,bscore:null}));
+let data=JSON.parse(localStorage.getItem('wc2026Data')||'null')||defaultData; let ko=JSON.parse(localStorage.getItem('wc2026KO')||'null')||koTemplate;
+function rankGroup(g){let rows=data.groups[g].map(n=>({team:n,p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0})); const by=Object.fromEntries(rows.map(r=>[r.team,r])); data.matches.filter(m=>m.group===g).forEach(m=>{if(m.hs==null||m.as==null||m.hs===''||m.as==='')return; let h=by[m.home],a=by[m.away],hs=+m.hs,as=+m.as; h.p++;a.p++;h.gf+=hs;h.ga+=as;a.gf+=as;a.ga+=hs;h.gd=h.gf-h.ga;a.gd=a.gf-a.ga;if(hs>as){h.w++;a.l++;h.pts+=3}else if(hs<as){a.w++;h.l++;a.pts+=3}else{h.d++;a.d++;h.pts++;a.pts++}}); return rows.sort((x,y)=>y.pts-x.pts||y.gd-x.gd||y.gf-x.gf||x.team.localeCompare(y.team));}
+function qualifiers(){let q={}, thirds=[]; Object.keys(data.groups).forEach(g=>{let r=rankGroup(g); q['1'+g]=r[0]?.team||'1'+g; q['2'+g]=r[1]?.team||'2'+g; thirds.push({...r[2],group:g});}); thirds.sort((x,y)=>y.pts-x.pts||y.gd-x.gd||y.gf-x.gf); q.thirds=thirds.slice(0,8).map(x=>x.team+'（'+x.group+'）'); return q;}
+function labelToTeam(label,q){if(!label)return ''; if(q[label])return q[label]; let win=label.match(/^勝(\d+)/), lose=label.match(/^敗(\d+)/); if(win){let m=ko.find(x=>x.id==win[1]); return winnerOf(m)||label} if(lose){let m=ko.find(x=>x.id==lose[1]); return loserOf(m)||label} if(label.startsWith('最佳第三')) return q.thirds.length?q.thirds.join(' / '):label; return label;}
+function winnerOf(m){if(!m||m.ascore==null||m.bscore==null||m.ascore===''||m.bscore===''||+m.ascore===+m.bscore)return ''; let q=qualifiers(); return +m.ascore>+m.bscore?labelToTeam(m.a,q):labelToTeam(m.b,q)}
+function loserOf(m){if(!m||m.ascore==null||m.bscore==null||m.ascore===''||m.bscore===''||+m.ascore===+m.bscore)return ''; let q=qualifiers(); return +m.ascore<+m.bscore?labelToTeam(m.a,q):labelToTeam(m.b,q)}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已輸入 ${played}/${total} 場</span><span class="pill">小組數 ${Object.keys(data.groups).length}</span><span class="pill">最佳第三 ${q.thirds.length}/8</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let matches=data.matches.filter(m=>m.group===g).map((m,i)=>`<div class="match"><small>${m.date}<span class="roundTag">　第${i+1}戰</span></small><div class="name">${m.home}</div><input type="number" min="0" value="${m.hs??''}" onchange="setScore('${m.id}','hs',this.value)"><input type="number" min="0" value="${m.as??''}" onchange="setScore('${m.id}','as',this.value)"><div class="name right">${m.away}</div></div>`).join('');
+  let html=`<section class="group"><h3>${g} 組 <span>小組排名</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>勝</th><th>平</th><th>負</th><th>積</th><th>淨</th><th>進</th></tr></thead><tbody>${r.map((x,i)=>`<tr><td class="pos ${i<2?'q':i==2?'third':''}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.pts}</td><td>${x.gd}</td><td>${x.gf}</td></tr>`).join('')}</tbody></table><div class="matches">${matches}</div></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function showPage(which){
+ document.getElementById('pageGroups').classList.toggle('active',which==='groups');
+ document.getElementById('pageBracket').classList.toggle('active',which==='bracket');
+ document.getElementById('tabGroups').classList.toggle('active',which==='groups');
+ document.getElementById('tabBracket').classList.toggle('active',which==='bracket');
+}
+function renderBracket(){
+ let q=qualifiers();
+ const byIds=(ids)=>ids.map(id=>ko.find(m=>m.id===id)).filter(Boolean).map(m=>card(m,q)).join('');
+ const roundCol=(title,ids)=>`<section class="round"><h2>${title}</h2>${byIds(ids)}</section>`;
+ const west = `
+  <div class="conference left">
+    <div class="conferenceTitle">左半區</div>
+    ${roundCol('32強',[73,74,75,76,81,82,83,84])}
+    ${roundCol('16強',[89,90,93,94])}
+    ${roundCol('8強',[97,98])}
+    ${roundCol('準決賽',[101])}
+  </div>`;
+ const east = `
+  <div class="conference right">
+    <div class="conferenceTitle">右半區</div>
+    ${roundCol('準決賽',[102])}
+    ${roundCol('8強',[99,100])}
+    ${roundCol('16強',[91,92,95,96])}
+    ${roundCol('32強',[77,78,79,80,85,86,87,88])}
+  </div>`;
+ const finalWinner = winnerOf(ko.find(m=>m.id===104)) || '冠軍待定';
+ const center = `
+  <div class="champCenter">
+    <div class="champBox"><h2>總冠軍戰</h2>${card(ko.find(m=>m.id===104),q)}<div class="championName">🏆 ${finalWinner}</div></div>
+    <div class="finalVs">兩區冠軍會師</div>
+    <div class="champBox"><h2>季軍戰</h2>${card(ko.find(m=>m.id===103),q)}</div>
+  </div>`;
+ document.getElementById('bracket').className='bracketSplit';
+ document.getElementById('bracket').innerHTML=`${west}${center}${east}`;
+ document.getElementById('status').innerHTML=`目前已輸入 <b>${data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length}</b> 場小組賽比分；最佳第三名暫列：<b>${q.thirds.join('、')||'尚未產生'}</b>。第二頁已改成「左半區／右半區」往中間拼總冠軍。`;
+}
+function card(m,q){
+ let ta=labelToTeam(m.a,q), tb=labelToTeam(m.b,q), w=winnerOf(m);
+ const winA=w===ta, winB=w===tb;
+ return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
+   <div class="koHead"><span class="mno">賽事${m.id}</span><span class="date">${m.date}</span></div>
+   ${m.round==='決賽'?'<div class="cup">🏆</div>':''}
+   <div class="teamBlock ${winA?'winnerRow':''}">
+     <div class="teamName ${winA?'winner':''}">${ta}</div>
+     <input class="koScore" type="number" min="0" value="${m.ascore??''}" onchange="setKO(${m.id},'ascore',this.value)">
+   </div>
+   <div class="miniVs">VS</div>
+   <div class="teamBlock ${winB?'winnerRow':''}">
+     <div class="teamName ${winB?'winner':''}">${tb}</div>
+     <input class="koScore" type="number" min="0" value="${m.bscore??''}" onchange="setKO(${m.id},'bscore',this.value)">
+   </div>
+ </div>`;}
+function setScore(id,key,val){let m=data.matches.find(x=>x.id===id); m[key]=val===''?null:+val; render();}
+function setKO(id,key,val){let m=ko.find(x=>x.id===id); m[key]=val===''?null:+val; render();}
+function render(){renderGroups();renderBracket();}
+function saveData(){localStorage.setItem('wc2026Data',JSON.stringify(data));localStorage.setItem('wc2026KO',JSON.stringify(ko));alert('已儲存到這台裝置的瀏覽器。');}
+function resetScores(){if(!confirm('確定清空所有比分？'))return; data.matches.forEach(m=>{m.hs=null;m.as=null}); ko.forEach(m=>{m.ascore=null;m.bscore=null}); saveData();render();}
+function openDataEditor(){document.getElementById('jsonText').value=JSON.stringify({data,ko},null,2);document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function applyJson(){try{let obj=JSON.parse(document.getElementById('jsonText').value); data=obj.data; ko=obj.ko; saveData(); closeModal(); render();}catch(e){alert('JSON 格式錯誤：'+e.message)}}
+
+
+/* === v5 function overrides === */
+let currentEditGroup = null;
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已輸入 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">最佳第三 ${q.thirds.length}/8</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=data.matches.filter(m=>m.group===g && m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+  let html=`<section class="group compactGroup"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>勝</th><th>平</th><th>負</th><th>積</th><th>淨</th><th>進</th></tr></thead><tbody>${r.map((x,i)=>`<tr><td class="pos ${i<2?'q':i==2?'third':''}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td><b>${x.pts}</b></td><td>${x.gd}</td><td>${x.gf}</td></tr>`).join('')}</tbody></table><div class="groupFoot"><span class="mini">前二＋最佳第三晉級</span><button class="editGroupBtn" onclick="openGroupEditor('${g}')">比賽結果</button></div></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+ if(currentEditGroup) renderGroupEditor(currentEditGroup);
+}
+function resultStateLabel(m){
+  if(m.espnState==='in') return '<span class="matchStatus live">LIVE</span>';
+  if(m.espnState==='post') return '<span class="matchStatus final">完賽</span>';
+  if(m.hs!==null && m.as!==null && m.hs!=='' && m.as!=='') return '<span class="matchStatus final">已有比分</span>';
+  return '<span class="matchStatus">未開賽</span>';
+}
+function renderGroupEditor(g){
+ const box=document.getElementById('groupMatchGrid'); if(!box)return;
+ const ms=data.matches.filter(m=>m.group===g);
+ document.getElementById('groupEditorTitle').innerHTML=`${g} 組｜比賽結果`;
+ box.innerHTML=ms.map((m,i)=>`<div class="groupMatch">${resultStateLabel(m)}<div class="dateTag">${m.date}<br>第${i+1}戰</div><div class="name">${m.home}</div><input class="scoreBox" type="number" min="0" value="${m.hs??''}" onchange="setScore('${m.id}','hs',this.value)"><div class="vsText">VS</div><input class="scoreBox" type="number" min="0" value="${m.as??''}" onchange="setScore('${m.id}','as',this.value)"><div class="name right">${m.away}</div></div>`).join('');
+}
+function openGroupEditor(g){currentEditGroup=g;renderGroupEditor(g);document.getElementById('groupEditor').classList.add('show')}
+function closeGroupEditor(){document.getElementById('groupEditor').classList.remove('show');currentEditGroup=null}
+function showPage(which){
+ document.getElementById('pageGroups').classList.toggle('active',which==='groups');
+ document.getElementById('pageBracket').classList.toggle('active',which==='bracket');
+ document.getElementById('tabGroups').classList.toggle('active',which==='groups');
+ document.getElementById('tabBracket').classList.toggle('active',which==='bracket');
+ requestAnimationFrame(fitFixedUI);
+}
+function fitFixedUI(){
+ const stage=document.getElementById('bracketStage');
+ const bracket=document.getElementById('bracket');
+ if(stage && bracket && document.getElementById('pageBracket').classList.contains('active')){
+   bracket.style.transform='scale(1)';
+   bracket.style.width='2100px';
+   const bw=bracket.scrollWidth || 2100;
+   const bh=bracket.scrollHeight || 590;
+   const sw=stage.clientWidth;
+   const sh=stage.clientHeight;
+   const scaleX=sw/bw;
+   const scaleY=Math.min(scaleX, sh/bh);
+   bracket.style.transform=`scale(${scaleX}, ${scaleY})`;
+   bracket.style.width=bw+'px';
+ }
+}
+const oldRenderBracket = renderBracket;
+renderBracket = function(){oldRenderBracket(); requestAnimationFrame(fitFixedUI)};
+window.addEventListener('resize',()=>requestAnimationFrame(fitFixedUI));
+
+
+/* === v11: ESPN 線上比分自動同步，不需要手動按鈕 === */
+const ESPN_SYNC = {
+  enabled: true,
+  intervalMs: 60000,
+  league: 'fifa.world',
+  directBase: 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=',
+  // 若 GitHub Pages / 本機 file 開啟遇到 CORS，先走公開代理備援；正式上線建議改 Cloudflare Worker。
+  proxyBase: 'https://api.allorigins.win/raw?url='
+};
+
+const teamAliasRows = [
+ ['墨西哥','Mexico','MEX'],['南非','South Africa','RSA','South Africa'],['韓國','South Korea','Korea Republic','Republic of Korea','KOR'],['捷克','Czechia','Czech Republic','CZE'],
+ ['加拿大','Canada','CAN'],['波赫','Bosnia and Herzegovina','Bosnia-Herzegovina','Bosnia','BIH'],['卡達','Qatar','QAT'],['瑞士','Switzerland','SUI'],
+ ['巴西','Brazil','BRA'],['摩洛哥','Morocco','MAR'],['海地','Haiti','HAI'],['蘇格蘭','Scotland','SCO'],
+ ['美國','United States','USA','USMNT','United States of America'],['巴拉圭','Paraguay','PAR'],['澳洲','Australia','AUS'],['土耳其','Turkey','Türkiye','TUR'],
+ ['德國','Germany','GER'],['古拉索','Curacao','Curaçao','CUW'],['象牙海岸','Ivory Coast','Côte d’Ivoire','Cote d Ivoire','CIV'],['厄瓜多','Ecuador','ECU'],
+ ['荷蘭','Netherlands','Holland','NED'],['日本','Japan','JPN'],['突尼西亞','Tunisia','TUN'],['紐西蘭','New Zealand','NZL'],
+ ['比利時','Belgium','BEL'],['埃及','Egypt','EGY'],['伊朗','Iran','IRN'],
+ ['西班牙','Spain','ESP'],['維德角','Cape Verde','Cabo Verde','CPV'],['沙烏地','Saudi Arabia','Saudi','KSA'],['烏拉圭','Uruguay','URU'],
+ ['法國','France','FRA'],['塞內加爾','Senegal','SEN'],['挪威','Norway','NOR'],['約旦','Jordan','JOR'],
+ ['阿根廷','Argentina','ARG'],['阿爾及利亞','Algeria','ALG'],['奧地利','Austria','AUT'],
+ ['葡萄牙','Portugal','POR'],['剛果','Congo DR','DR Congo','Congo','COD'],['烏茲別克','Uzbekistan','UZB'],['哥倫比亞','Colombia','COL'],
+ ['英格蘭','England','ENG'],['克羅埃西亞','Croatia','CRO'],['迦納','Ghana','GHA'],['巴拿馬','Panama','PAN']
+];
+const aliasToLocal = new Map();
+function normalizeTeamName(s){
+  return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9\u4e00-\u9fff]+/g,' ').trim();
+}
+teamAliasRows.forEach(row=>row.forEach(alias=>aliasToLocal.set(normalizeTeamName(alias), row[0])));
+Object.values(defaultData.groups).flat().forEach(t=>aliasToLocal.set(normalizeTeamName(t), t));
+function canonicalTeamFromESPN(team){
+  const raw = [team?.displayName, team?.shortDisplayName, team?.name, team?.abbreviation, team?.location]
+    .filter(Boolean).map(normalizeTeamName);
+  for(const r of raw){ if(aliasToLocal.has(r)) return aliasToLocal.get(r); }
+  for(const r of raw){
+    for(const [alias,local] of aliasToLocal.entries()){
+      if(alias && r && (r===alias || r.includes(alias) || alias.includes(r))) return local;
+    }
+  }
+  return '';
+}
+function silentSaveData(){
+  localStorage.setItem('wc2026Data',JSON.stringify(data));
+  localStorage.setItem('wc2026KO',JSON.stringify(ko));
+}
+function monthDayToDateKey(md){
+  const [m,d]=String(md||'').split('/').map(x=>parseInt(x,10));
+  if(!m||!d) return '';
+  return `2026${String(m).padStart(2,'0')}${String(d).padStart(2,'0')}`;
+}
+function todayKey(offsetDays=0){
+  const dt=new Date();
+  dt.setDate(dt.getDate()+offsetDays);
+  return `${dt.getFullYear()}${String(dt.getMonth()+1).padStart(2,'0')}${String(dt.getDate()).padStart(2,'0')}`;
+}
+function scheduledDateKeysForInitialSync(){
+  const cutoff=Number(todayKey(1));
+  const keys=new Set([...data.matches.map(m=>monthDayToDateKey(m.date)), ...ko.map(m=>monthDayToDateKey(m.date))].filter(Boolean));
+  return [...keys].filter(k=>Number(k)<=cutoff).sort();
+}
+function liveWindowDateKeys(){
+  return [todayKey(-1),todayKey(0),todayKey(1)];
+}
+function setSyncBadge(text,state='warn'){
+  const el=document.getElementById('syncBadge');
+  if(!el) return;
+  el.className='syncBadge '+state;
+  el.innerHTML=`<span class="syncDot"></span><span>${text}</span>`;
+}
+async function fetchEspnScoreboard(dateKey){
+  const url=ESPN_SYNC.directBase+dateKey;
+  try{
+    const res=await fetch(url,{cache:'no-store'});
+    if(!res.ok) throw new Error('ESPN '+res.status);
+    return await res.json();
+  }catch(err){
+    const proxy=ESPN_SYNC.proxyBase+encodeURIComponent(url);
+    const res=await fetch(proxy,{cache:'no-store'});
+    if(!res.ok) throw new Error('Proxy '+res.status);
+    return await res.json();
+  }
+}
+function scoreIsUsable(event){
+  const state=event?.status?.type?.state;
+  return state==='in' || state==='post';
+}
+function applyScoreToLocal(dateKey, teamA, scoreA, teamB, scoreB, espnState=''){
+  if(!teamA || !teamB || scoreA==='' || scoreB==='') return 0;
+  let changed=0;
+  const sameTeams=(x,y,a,b)=> (x===a&&y===b) || (x===b&&y===a);
+  for(const m of data.matches){
+    if(monthDayToDateKey(m.date)!==dateKey) continue;
+    if(!sameTeams(m.home,m.away,teamA,teamB)) continue;
+    const newHs = m.home===teamA ? scoreA : scoreB;
+    const newAs = m.away===teamB ? scoreB : scoreA;
+    if(m.hs!==newHs || m.as!==newAs || m.espnState!==espnState){ m.hs=newHs; m.as=newAs; m.espnState=espnState; changed++; }
+  }
+  const q=qualifiers();
+  for(const m of ko){
+    if(monthDayToDateKey(m.date)!==dateKey) continue;
+    const localA=labelToTeam(m.a,q), localB=labelToTeam(m.b,q);
+    if(!sameTeams(localA,localB,teamA,teamB)) continue;
+    const newA = localA===teamA ? scoreA : scoreB;
+    const newB = localB===teamB ? scoreB : scoreA;
+    if(m.ascore!==newA || m.bscore!==newB || m.espnState!==espnState){ m.ascore=newA; m.bscore=newB; m.espnState=espnState; changed++; }
+  }
+  return changed;
+}
+async function autoSyncScores(full=false){
+  if(!ESPN_SYNC.enabled) return;
+  const dates = full ? scheduledDateKeysForInitialSync() : liveWindowDateKeys();
+  if(!dates.length){ setSyncBadge('等待 2026 世足賽程開始', 'warn'); return; }
+  setSyncBadge('ESPN 比分同步中…','warn');
+  let touched=0, seen=0, failed=0;
+  for(const dateKey of dates){
+    try{
+      const json=await fetchEspnScoreboard(dateKey);
+      const events=json?.events||[];
+      for(const ev of events){
+        if(!scoreIsUsable(ev)) continue;
+        const comp=ev.competitions?.[0];
+        const cs=comp?.competitors||[];
+        if(cs.length<2) continue;
+        const home=cs.find(c=>c.homeAway==='home') || cs[0];
+        const away=cs.find(c=>c.homeAway==='away') || cs[1];
+        const hTeam=canonicalTeamFromESPN(home.team);
+        const aTeam=canonicalTeamFromESPN(away.team);
+        const hScore=Number(home.score), aScore=Number(away.score);
+        if(!Number.isFinite(hScore)||!Number.isFinite(aScore)) continue;
+        seen++;
+        touched += applyScoreToLocal(dateKey,hTeam,hScore,aTeam,aScore, ev?.status?.type?.state || '');
+      }
+    }catch(err){
+      failed++;
+      console.warn('ESPN sync failed',dateKey,err);
+    }
+  }
+  if(touched){ silentSaveData(); render(); }
+  const time=new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+  if(failed && !seen) setSyncBadge(`ESPN 暫時連不上，${time} 會再試`, 'error');
+  else setSyncBadge(`ESPN 自動同步中｜${time}｜更新 ${touched} 筆`, touched?'live':'warn');
+}
+function startAutoScoreSync(){
+  autoSyncScores(true);
+  setInterval(()=>autoSyncScores(false), ESPN_SYNC.intervalMs);
+}
+
+
+/* === v13: 純自動比分顯示版；拿掉比賽結果按鈕與所有比分輸入框 === */
+function scoreText(v){ return (v===null || v===undefined || v==='') ? '—' : String(v); }
+function matchStateClass(m){
+  if(m.espnState==='in') return 'live';
+  if(m.espnState==='post') return 'final';
+  if(m.hs!==null && m.as!==null && m.hs!=='' && m.as!=='') return 'final';
+  return '';
+}
+function readonlyGroupMatches(g){
+  const ms=data.matches.filter(m=>m.group===g);
+  return `<div class="readonlyMatches">${ms.map((m,i)=>`<div class="readonlyMatch ${matchStateClass(m)}">
+    <div class="readonlyMeta"><span>${m.date}</span><b>${m.espnState==='in'?'LIVE':(m.espnState==='post'?'完賽':'第'+(i+1)+'戰')}</b></div>
+    <div class="readonlyTeams"><span class="home">${m.home}</span><strong>${scoreText(m.hs)}</strong><em>VS</em><strong>${scoreText(m.as)}</strong><span class="away">${m.away}</span></div>
+  </div>`).join('')}</div>`;
+}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已更新 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">最佳第三 ${q.thirds.length}/8</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=data.matches.filter(m=>m.group===g && m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+  let html=`<section class="group compactGroup readOnlyGroup"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>勝</th><th>平</th><th>負</th><th>積</th><th>淨</th><th>進</th></tr></thead><tbody>${r.map((x,i)=>`<tr><td class="pos ${i<2?'q':i==2?'third':''}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td><b>${x.pts}</b></td><td>${x.gd}</td><td>${x.gf}</td></tr>`).join('')}</tbody></table>${readonlyGroupMatches(g)}</section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function openGroupEditor(g){ return; }
+function closeGroupEditor(){ document.getElementById('groupEditor')?.classList.remove('show'); }
+function card(m,q){
+ let ta=labelToTeam(m.a,q), tb=labelToTeam(m.b,q), w=winnerOf(m);
+ const winA=w===ta, winB=w===tb;
+ const state=m.espnState==='in'?'LIVE':(m.espnState==='post'?'完賽':'');
+ return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
+   <div class="koHead"><span class="mno">賽事${m.id}</span><span class="date">${m.date}${state?'｜'+state:''}</span></div>
+   ${m.round==='決賽'?'<div class="cup">🏆</div>':''}
+   <div class="koLine ${winA?'winnerRow':''}">
+     <span class="koTeamName ${winA?'winner':''}">${ta}</span>
+     <strong class="koScoreText">${scoreText(m.ascore)}</strong>
+     <em class="koVsText">VS</em>
+     <strong class="koScoreText">${scoreText(m.bscore)}</strong>
+     <span class="koTeamName right ${winB?'winner':''}">${tb}</span>
+   </div>
+ </div>`;
+}
+function setScore(id,key,val){return;}
+function setKO(id,key,val){return;}
+
+
+/* === v14: 比賽結果回到按鈕彈窗；首頁不直接塞 6 場結果 === */
+function resultStateText(m){
+  if(m.espnState==='in') return 'LIVE';
+  if(m.espnState==='post') return '完賽';
+  if(m.hs!==null && m.as!==null && m.hs!=='' && m.as!=='') return '已有比分';
+  return '未開賽';
+}
+function resultStateClassName(m){
+  if(m.espnState==='in') return 'live';
+  if(m.espnState==='post') return 'final';
+  if(m.hs!==null && m.as!==null && m.hs!=='' && m.as!=='') return 'final';
+  return '';
+}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已更新 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">最佳第三 ${q.thirds.length}/8</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=data.matches.filter(m=>m.group===g && m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+  let html=`<section class="group compactGroup readOnlyGroup"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th><th>進</th></tr></thead><tbody>${r.map((x,i)=>`<tr><td class="pos ${i<2?'q':i==2?'third':''}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td><td>${x.gf}</td></tr>`).join('')}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function renderGroupEditor(g){
+ const box=document.getElementById('groupMatchGrid');
+ const ms=data.matches.filter(m=>m.group===g);
+ document.getElementById('groupEditorTitle').innerHTML=`${g} 組｜比賽結果`;
+ box.innerHTML=ms.map((m,i)=>{
+   const cls=resultStateClassName(m);
+   const state=resultStateText(m);
+   return `<div class="groupMatch resultOnly ${cls}">
+     <div class="resultDate">${m.date}<br>第${i+1}戰</div>
+     <div class="resultTeam home">${m.home}</div>
+     <div class="resultScore">${scoreText(m.hs)}</div>
+     <div class="resultVs">VS</div>
+     <div class="resultScore">${scoreText(m.as)}</div>
+     <div class="resultTeam away">${m.away}</div>
+     <div class="resultState ${cls}">${state}</div>
+   </div>`;
+ }).join('');
+}
+function openGroupEditor(g){currentEditGroup=g;renderGroupEditor(g);document.getElementById('groupEditor').classList.add('show')}
+function closeGroupEditor(){document.getElementById('groupEditor').classList.remove('show');currentEditGroup=null}
+
+/* === v15: calmer bracket scale and refreshed copy === */
+function showPage(which){
+ document.getElementById('pageGroups').classList.toggle('active',which==='groups');
+ document.getElementById('pageBracket').classList.toggle('active',which==='bracket');
+ document.getElementById('tabGroups').classList.toggle('active',which==='groups');
+ document.getElementById('tabBracket').classList.toggle('active',which==='bracket');
+ requestAnimationFrame(fitFixedUI);
+}
+function renderBracket(){
+ let q=qualifiers();
+ const byIds=(ids)=>ids.map(id=>ko.find(m=>m.id===id)).filter(Boolean).map(m=>card(m,q)).join('');
+ const roundCol=(title,ids)=>`<section class="round"><h2>${title}</h2>${byIds(ids)}</section>`;
+ const west = `
+  <div class="conference left">
+    <div class="conferenceTitle">左半區</div>
+    ${roundCol('32強',[73,74,75,76,81,82,83,84])}
+    ${roundCol('16強',[89,90,93,94])}
+    ${roundCol('8強',[97,98])}
+    ${roundCol('準決賽',[101])}
+  </div>`;
+ const east = `
+  <div class="conference right">
+    <div class="conferenceTitle">右半區</div>
+    ${roundCol('準決賽',[102])}
+    ${roundCol('8強',[99,100])}
+    ${roundCol('16強',[91,92,95,96])}
+    ${roundCol('32強',[77,78,79,80,85,86,87,88])}
+  </div>`;
+ const finalWinner = winnerOf(ko.find(m=>m.id===104)) || '冠軍待定';
+ const center = `
+  <div class="champCenter">
+    <div class="champBox"><h2>總冠軍戰</h2>${card(ko.find(m=>m.id===104),q)}<div class="championName">冠軍：${finalWinner}</div></div>
+    <div class="finalVs">FINAL</div>
+    <div class="champBox"><h2>季軍戰</h2>${card(ko.find(m=>m.id===103),q)}</div>
+  </div>`;
+ const bracket=document.getElementById('bracket');
+ bracket.className='bracketSplit';
+ bracket.innerHTML=`${west}${center}${east}`;
+ document.getElementById('status').innerHTML=`目前已更新 <b>${data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length}</b> 場小組賽比分；最佳第三名暫列：<b>${q.thirds.join('、')||'尚未產生'}</b>。`;
+ requestAnimationFrame(fitFixedUI);
+}
+function fitFixedUI(){
+ const stage=document.getElementById('bracketStage');
+ const bracket=document.getElementById('bracket');
+ if(!stage || !bracket || !document.getElementById('pageBracket').classList.contains('active')) return;
+ bracket.style.transform='none';
+ bracket.style.left='0px';
+ bracket.style.top='0px';
+ bracket.style.width='100%';
+ bracket.style.height='100%';
+ bracket.style.position='relative';
+ bracket.style.transformOrigin='top left';
+}
+window.addEventListener('resize',()=>requestAnimationFrame(fitFixedUI));
+
+/* === v16: requested group columns and Taiwan-time result labels === */
+function taiwanTimeLabel(m){
+  const raw = m.twTime || m.taiwanTime || m.localTime || m.time || '';
+  return raw ? `台灣時間 ${m.date} ${raw}` : `台灣時間 ${m.date}`;
+}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已更新 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">最佳第三 ${q.thirds.length}/8</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=data.matches.filter(m=>m.group===g && m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+  let rows=r.map((x,i)=>`<tr><td class="pos ${i<2?'q':i==2?'third':''}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td></tr>`).join('');
+  let html=`<section class="group compactGroup readOnlyGroup"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function renderGroupEditor(g){
+ const box=document.getElementById('groupMatchGrid');
+ const ms=data.matches.filter(m=>m.group===g);
+ document.getElementById('groupEditorTitle').innerHTML=`${g} 組｜比賽結果`;
+ box.innerHTML=ms.map((m,i)=>{
+   const cls=resultStateClassName(m);
+   const state=resultStateText(m);
+   return `<div class="groupMatch resultOnly ${cls}">
+     <div class="resultDate"><span class="twLabel">台灣時間</span>${m.date}<br>第${i+1}戰</div>
+     <div class="resultTeam home">${m.home}</div>
+     <div class="resultScore">${scoreText(m.hs)}</div>
+     <div class="resultVs">VS</div>
+     <div class="resultScore">${scoreText(m.as)}</div>
+     <div class="resultTeam away">${m.away}</div>
+     <div class="resultState ${cls}">${state}</div>
+   </div>`;
+ }).join('');
+}
+
+/* === v17: KO card content format === */
+function card(m,q){
+ let ta=labelToTeam(m.a,q), tb=labelToTeam(m.b,q), w=winnerOf(m);
+ const winA=w===ta, winB=w===tb;
+ const state=m.espnState==='in'?'LIVE':(m.espnState==='post'?'完賽':'');
+ const displayDate=state ? `${m.date}｜${state}` : m.date;
+ return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
+   <div class="koTeamsDate"><span class="koCountry left ${winA?'winner':''}">（${ta}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${tb}）</span></div>
+   <div class="koScoreLine">
+     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <em class="koVsPill">VS</em>
+     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+   </div>
+ </div>`;
+}
+
+/* === v18: official group fixtures in Taiwan time + pre-tournament display rules === */
+const OFFICIAL_SCHEDULE_VERSION = 'wc2026-groups-tw-v18';
+const officialGroups = {
+  A:['墨西哥','南非','韓國','捷克'],
+  B:['加拿大','波赫','卡達','瑞士'],
+  C:['巴西','摩洛哥','海地','蘇格蘭'],
+  D:['美國','巴拉圭','澳洲','土耳其'],
+  E:['德國','古拉索','象牙海岸','厄瓜多'],
+  F:['荷蘭','日本','瑞典','突尼西亞'],
+  G:['比利時','埃及','伊朗','紐西蘭'],
+  H:['西班牙','維德角','沙烏地','烏拉圭'],
+  I:['法國','塞內加爾','伊拉克','挪威'],
+  J:['阿根廷','阿爾及利亞','奧地利','約旦'],
+  K:['葡萄牙','民主剛果','烏茲別克','哥倫比亞'],
+  L:['英格蘭','克羅埃西亞','迦納','巴拿馬']
+};
+function groupMatch(id, group, date, twTime, home, away){
+  return {id:'G'+id, group, date, twTime, home, away, hs:null, as:null};
+}
+const officialMatches = [
+  groupMatch(1,'A','6/12','03:00','墨西哥','南非'),
+  groupMatch(2,'B','6/12','08:00','加拿大','卡達'),
+  groupMatch(3,'C','6/13','07:00','巴西','摩洛哥'),
+  groupMatch(4,'B','6/13','10:00','波赫','瑞士'),
+  groupMatch(5,'D','6/14','05:00','美國','巴拉圭'),
+  groupMatch(6,'C','6/14','09:00','海地','蘇格蘭'),
+  groupMatch(7,'E','6/15','01:00','德國','庫拉索'),
+  groupMatch(8,'D','6/15','04:00','澳洲','土耳其'),
+  groupMatch(9,'E','6/15','07:00','象牙海岸','厄瓜多'),
+  groupMatch(10,'G','6/16','01:00','比利時','埃及'),
+  groupMatch(11,'F','6/16','06:00','荷蘭','日本'),
+  groupMatch(12,'G','6/16','09:00','伊朗','紐西蘭'),
+  groupMatch(13,'H','6/17','00:00','西班牙','維德角'),
+  groupMatch(14,'F','6/17','03:00','瑞典','突尼西亞'),
+  groupMatch(15,'H','6/17','06:00','沙烏地','烏拉圭'),
+  groupMatch(16,'J','6/18','00:00','阿根廷','阿爾及利亞'),
+  groupMatch(17,'I','6/18','03:00','法國','塞內加爾'),
+  groupMatch(18,'J','6/18','06:00','奧地利','約旦'),
+  groupMatch(19,'K','6/18','09:00','葡萄牙','剛果民主共和國'),
+  groupMatch(20,'I','6/19','06:00','伊拉克','挪威'),
+  groupMatch(21,'K','6/19','09:00','烏茲別克','哥倫比亞'),
+  groupMatch(22,'L','6/20','03:00','英格蘭','克羅埃西亞'),
+  groupMatch(23,'L','6/20','06:00','迦納','巴拿馬'),
+  groupMatch(24,'A','6/20','09:00','韓國','捷克'),
+  groupMatch(25,'B','6/21','03:00','卡達','瑞士'),
+  groupMatch(26,'A','6/21','06:00','南非','捷克'),
+  groupMatch(27,'B','6/21','09:00','加拿大','波赫'),
+  groupMatch(28,'C','6/22','03:00','摩洛哥','蘇格蘭'),
+  groupMatch(29,'D','6/22','06:00','巴拉圭','澳洲'),
+  groupMatch(30,'C','6/22','09:00','巴西','海地'),
+  groupMatch(31,'E','6/23','03:00','庫拉索','象牙海岸'),
+  groupMatch(32,'D','6/23','06:00','美國','土耳其'),
+  groupMatch(33,'E','6/23','09:00','德國','厄瓜多'),
+  groupMatch(34,'F','6/24','01:00','日本','突尼西亞'),
+  groupMatch(35,'G','6/24','05:00','埃及','紐西蘭'),
+  groupMatch(36,'F','6/24','08:00','荷蘭','瑞典'),
+  groupMatch(37,'G','6/25','01:00','比利時','伊朗'),
+  groupMatch(38,'H','6/25','05:00','維德角','沙烏地'),
+  groupMatch(39,'H','6/25','08:00','西班牙','烏拉圭'),
+  groupMatch(40,'I','6/26','00:00','塞內加爾','伊拉克'),
+  groupMatch(41,'J','6/26','03:00','阿爾及利亞','奧地利'),
+  groupMatch(42,'I','6/26','06:00','法國','挪威'),
+  groupMatch(43,'J','6/26','09:00','阿根廷','約旦'),
+  groupMatch(44,'K','6/27','00:00','剛果民主共和國','烏茲別克'),
+  groupMatch(45,'L','6/27','03:00','克羅埃西亞','迦納'),
+  groupMatch(46,'K','6/27','06:00','葡萄牙','哥倫比亞'),
+  groupMatch(47,'L','6/27','09:00','英格蘭','巴拿馬'),
+  groupMatch(48,'A','6/28','03:00','韓國','墨西哥'),
+  groupMatch(49,'A','6/28','03:00','捷克','南非'),
+  groupMatch(50,'B','6/28','09:00','卡達','波赫'),
+  groupMatch(51,'B','6/28','09:00','瑞士','加拿大'),
+  groupMatch(52,'C','6/29','05:00','摩洛哥','海地'),
+  groupMatch(53,'C','6/29','05:00','蘇格蘭','巴西'),
+  groupMatch(54,'D','6/29','09:00','澳洲','美國'),
+  groupMatch(55,'D','6/29','09:00','土耳其','巴拉圭'),
+  groupMatch(56,'E','6/30','05:00','庫拉索','厄瓜多'),
+  groupMatch(57,'E','6/30','05:00','象牙海岸','德國'),
+  groupMatch(58,'F','6/30','09:00','突尼西亞','荷蘭'),
+  groupMatch(59,'F','6/30','09:00','日本','瑞典'),
+  groupMatch(60,'G','7/1','05:00','伊朗','埃及'),
+  groupMatch(61,'G','7/1','05:00','紐西蘭','比利時'),
+  groupMatch(62,'H','7/1','09:00','烏拉圭','維德角'),
+  groupMatch(63,'H','7/1','09:00','沙烏地','西班牙'),
+  groupMatch(64,'I','7/2','05:00','挪威','塞內加爾'),
+  groupMatch(65,'I','7/2','05:00','伊拉克','法國'),
+  groupMatch(66,'J','7/2','09:00','約旦','阿爾及利亞'),
+  groupMatch(67,'J','7/2','09:00','奧地利','阿根廷'),
+  groupMatch(68,'K','7/3','05:00','哥倫比亞','剛果民主共和國'),
+  groupMatch(69,'K','7/3','05:00','烏茲別克','葡萄牙'),
+  groupMatch(70,'L','7/3','09:00','巴拿馬','克羅埃西亞'),
+  groupMatch(71,'L','7/3','09:00','迦納','英格蘭'),
+  groupMatch(72,'A','7/4','09:00','墨西哥','韓國')
+];
+function installOfficialSchedule(){
+  const previous = data?.matches || [];
+  const scoreByKey = new Map(previous.map(m => [`${m.group}|${m.home}|${m.away}`, m]));
+  data = {
+    scheduleVersion: OFFICIAL_SCHEDULE_VERSION,
+    groups: JSON.parse(JSON.stringify(officialGroups)),
+    matches: officialMatches.map(m => {
+      const prev = scoreByKey.get(`${m.group}|${m.home}|${m.away}`) || scoreByKey.get(`${m.group}|${m.away}|${m.home}`);
+      if(!prev) return {...m};
+      if(prev.home===m.home && prev.away===m.away) return {...m, hs:prev.hs, as:prev.as, espnState:prev.espnState};
+      return {...m, hs:prev.as, as:prev.hs, espnState:prev.espnState};
+    })
+  };
+  localStorage.setItem('wc2026Data', JSON.stringify(data));
+}
+function groupPlayedCount(g){
+  return data.matches.filter(m => m.group===g && m.hs!==null && m.as!==null && m.hs!=='' && m.as!=='').length;
+}
+function groupComplete(g){
+  return groupPlayedCount(g) >= 6;
+}
+function allGroupsComplete(){
+  return Object.keys(data.groups).every(groupComplete);
+}
+function labelReady(label){
+  if(!label) return false;
+  const simple = label.match(/^[12]([A-L])$/);
+  if(simple) return groupComplete(simple[1]);
+  if(label.startsWith('最佳第三')) return allGroupsComplete();
+  const win = label.match(/^勝(\d+)/);
+  const lose = label.match(/^敗(\d+)/);
+  if(win) return Boolean(winnerOf(ko.find(x=>x.id==win[1])));
+  if(lose) return Boolean(loserOf(ko.find(x=>x.id==lose[1])));
+  return true;
+}
+function koDisplayLabel(label,q){
+  if(!labelReady(label)) return '待';
+  if(label.startsWith('最佳第三')) return '最佳第三';
+  return labelToTeam(label,q) || '待';
+}
+function koDateLabel(m){
+  return `${m.date}${m.twTime ? ' ' + m.twTime : ''}`;
+}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ let q=qualifiers();
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已更新 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">晉級名次：小組完賽後顯示</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=groupPlayedCount(g);
+  const complete=groupComplete(g);
+  let rows=r.map((x,i)=>{
+    const posClass = complete ? (i<2?'q':i==2?'third':'') : '';
+    return `<tr><td class="pos ${posClass}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td></tr>`;
+  }).join('');
+  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function renderGroupEditor(g){
+ const box=document.getElementById('groupMatchGrid');
+ const ms=data.matches.filter(m=>m.group===g);
+ document.getElementById('groupEditorTitle').innerHTML=`${g} 組｜比賽結果`;
+ box.innerHTML=ms.map((m,i)=>{
+   const cls=resultStateClassName(m);
+   const state=resultStateText(m);
+   return `<div class="groupMatch resultOnly ${cls}">
+     <div class="resultDate"><span class="twLabel">台灣時間</span>${m.date} ${m.twTime||''}<br>第${i+1}戰</div>
+     <div class="resultTeam home">${m.home}</div>
+     <div class="resultScore">${scoreText(m.hs)}</div>
+     <div class="resultVs">VS</div>
+     <div class="resultScore">${scoreText(m.as)}</div>
+     <div class="resultTeam away">${m.away}</div>
+     <div class="resultState ${cls}">${state}</div>
+   </div>`;
+ }).join('');
+}
+function card(m,q){
+ const ta=koDisplayLabel(m.a,q), tb=koDisplayLabel(m.b,q), w=winnerOf(m);
+ const winA=w && ta!== '待' && w===ta, winB=w && tb!== '待' && w===tb;
+ const displayDate=koDateLabel(m);
+ const pending = (ta==='待' && tb==='待') ? 'pending' : '';
+ return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
+   <div class="koTeamsDate ${pending}"><span class="koCountry left ${winA?'winner':''}">（${ta}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${tb}）</span></div>
+   <div class="koScoreLine">
+     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <em class="koVsPill">VS</em>
+     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+   </div>
+ </div>`;
+}
+const officialMatchesGoGoal = [
+  groupMatch(1,'A','6/12','03:00','南非','墨西哥'),
+  groupMatch(2,'B','6/12','08:00','瑞士','加拿大'),
+  groupMatch(3,'A','6/13','07:00','捷克','墨西哥'),
+  groupMatch(4,'B','6/13','10:00','波赫','卡達'),
+  groupMatch(5,'C','6/14','00:00','蘇格蘭','巴西'),
+  groupMatch(6,'C','6/14','05:30','海地','摩洛哥'),
+  groupMatch(7,'D','6/14','08:30','土耳其','美國'),
+  groupMatch(8,'D','6/15','05:30','澳洲','巴拉圭'),
+  groupMatch(9,'E','6/15','06:00','古拉索','德國'),
+  groupMatch(10,'E','6/15','08:30','厄瓜多','象牙海岸'),
+  groupMatch(11,'F','6/16','00:00','突尼西亞','荷蘭'),
+  groupMatch(12,'F','6/16','03:00','瑞典','日本'),
+  groupMatch(13,'G','6/16','05:30','埃及','比利時'),
+  groupMatch(14,'G','6/16','08:30','伊朗','紐西蘭'),
+  groupMatch(15,'H','6/17','00:00','沙烏地','西班牙'),
+  groupMatch(16,'H','6/17','01:00','烏拉圭','維德角'),
+  groupMatch(17,'I','6/17','03:00','塞內加爾','法國'),
+  groupMatch(18,'I','6/17','05:30','挪威','伊拉克'),
+  groupMatch(19,'J','6/18','00:00','阿爾及利亞','阿根廷'),
+  groupMatch(20,'J','6/18','03:00','奧地利','約旦'),
+  groupMatch(21,'K','6/18','05:30','民主剛果','葡萄牙'),
+  groupMatch(22,'K','6/18','08:30','烏茲別克','哥倫比亞'),
+  groupMatch(23,'L','6/19','03:00','克羅埃西亞','英格蘭'),
+  groupMatch(24,'L','6/19','08:00','迦納','巴拿馬'),
+  groupMatch(25,'A','6/20','10:00','韓國','墨西哥'),
+  groupMatch(26,'A','6/21','07:00','南非','捷克'),
+  groupMatch(27,'B','6/21','07:00','卡達','加拿大'),
+  groupMatch(28,'B','6/21','10:00','瑞士','波赫'),
+  groupMatch(29,'C','6/22','00:00','摩洛哥','巴西'),
+  groupMatch(30,'D','6/22','03:00','巴拉圭','美國'),
+  groupMatch(31,'C','6/22','05:30','海地','蘇格蘭'),
+  groupMatch(32,'D','6/22','08:30','澳洲','土耳其'),
+  groupMatch(33,'E','6/23','02:00','古拉索','象牙海岸'),
+  groupMatch(34,'E','6/23','05:00','德國','厄瓜多'),
+  groupMatch(35,'F','6/23','06:00','日本','荷蘭'),
+  groupMatch(36,'F','6/23','10:00','突尼西亞','瑞典'),
+  groupMatch(37,'G','6/24','00:00','比利時','伊朗'),
+  groupMatch(38,'G','6/24','07:00','紐西蘭','埃及'),
+  groupMatch(39,'H','6/24','10:00','西班牙','烏拉圭'),
+  groupMatch(40,'H','6/25','06:00','維德角','沙烏地'),
+  groupMatch(41,'I','6/25','06:00','伊拉克','塞內加爾'),
+  groupMatch(42,'J','6/25','09:00','阿根廷','奧地利'),
+  groupMatch(43,'I','6/25','10:00','挪威','法國'),
+  groupMatch(44,'J','6/26','02:00','約旦','阿爾及利亞'),
+  groupMatch(45,'K','6/26','03:00','葡萄牙','烏茲別克'),
+  groupMatch(46,'L','6/26','06:00','英格蘭','迦納'),
+  groupMatch(47,'K','6/26','07:00','哥倫比亞','民主剛果'),
+  groupMatch(48,'L','6/26','09:00','巴拿馬','克羅埃西亞'),
+  groupMatch(49,'A','6/27','03:00','墨西哥','韓國'),
+  groupMatch(50,'A','6/27','03:00','捷克','南非'),
+  groupMatch(51,'B','6/27','07:00','卡達','瑞士'),
+  groupMatch(52,'B','6/27','07:00','加拿大','波赫'),
+  groupMatch(53,'C','6/28','05:00','巴西','海地'),
+  groupMatch(54,'C','6/28','05:00','蘇格蘭','摩洛哥'),
+  groupMatch(55,'D','6/28','09:00','美國','澳洲'),
+  groupMatch(56,'D','6/28','09:00','土耳其','巴拉圭'),
+  groupMatch(57,'E','6/29','05:00','厄瓜多','古拉索'),
+  groupMatch(58,'E','6/29','05:00','象牙海岸','德國'),
+  groupMatch(59,'F','6/29','09:00','日本','突尼西亞'),
+  groupMatch(60,'F','6/29','09:00','荷蘭','瑞典'),
+  groupMatch(61,'G','6/30','05:00','埃及','伊朗'),
+  groupMatch(62,'G','6/30','05:00','紐西蘭','比利時'),
+  groupMatch(63,'H','6/30','09:00','烏拉圭','維德角'),
+  groupMatch(64,'H','6/30','09:00','沙烏地','西班牙'),
+  groupMatch(65,'I','7/1','03:00','法國','伊拉克'),
+  groupMatch(66,'I','7/1','03:00','塞內加爾','挪威'),
+  groupMatch(67,'J','7/1','09:00','阿根廷','約旦'),
+  groupMatch(68,'J','7/1','09:00','奧地利','阿爾及利亞'),
+  groupMatch(69,'K','7/2','09:00','葡萄牙','哥倫比亞'),
+  groupMatch(70,'K','7/2','09:00','烏茲別克','民主剛果'),
+  groupMatch(71,'L','7/3','09:00','英格蘭','巴拿馬'),
+  groupMatch(72,'L','7/3','09:00','迦納','克羅埃西亞')
+];
+officialMatches.splice(0, officialMatches.length, ...officialMatchesGoGoal);
+const officialKoTimes = {
+  73:['6/29','03:00'],74:['6/29','05:30'],75:['6/29','09:00'],76:['6/30','01:00'],
+  77:['6/30','03:00'],78:['6/30','05:30'],79:['6/30','08:00'],80:['7/1','00:00'],
+  81:['7/1','01:00'],82:['7/1','05:00'],83:['7/1','07:00'],84:['7/2','00:00'],
+  85:['7/2','01:00'],86:['7/2','05:00'],87:['7/2','07:00'],88:['7/3','00:00'],
+  89:['7/4','03:00'],90:['7/4','09:00'],91:['7/5','01:00'],92:['7/5','04:30'],
+  93:['7/5','09:00'],94:['7/6','04:30'],95:['7/6','09:00'],96:['7/7','03:00'],
+  97:['7/10','09:00'],98:['7/11','04:30'],99:['7/12','00:00'],100:['7/12','04:30'],
+  101:['7/15','04:30'],102:['7/16','04:30'],103:['7/19','00:00'],104:['7/20','00:00']
+};
+const roundRobinPairPattern = [[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]];
+const slotCountersByGroup = {};
+const officialScheduleSlots = officialMatchesGoGoal.map(m => ({id:m.id.replace('G',''), group:m.group, date:m.date, twTime:m.twTime}));
+const uniqueOfficialMatches = officialScheduleSlots.map(slot => {
+  const teams = officialGroups[slot.group];
+  const index = slotCountersByGroup[slot.group] || 0;
+  slotCountersByGroup[slot.group] = index + 1;
+  const pair = roundRobinPairPattern[index] || roundRobinPairPattern[index % roundRobinPairPattern.length];
+  return groupMatch(slot.id, slot.group, slot.date, slot.twTime, teams[pair[0]], teams[pair[1]]);
+});
+officialMatches.splice(0, officialMatches.length, ...uniqueOfficialMatches);
+ko.forEach(m => {
+  const dt = officialKoTimes[m.id];
+  if(dt){ m.date=dt[0]; m.twTime=dt[1]; }
+});
+/* === v19: countdown badge and team flags === */
+const OPENING_KICKOFF_TW = new Date('2026-06-12T03:00:00+08:00');
+const teamFlags = {
+  '墨西哥':'🇲🇽','南非':'🇿🇦','韓國':'🇰🇷','捷克':'🇨🇿',
+  '加拿大':'🇨🇦','波赫':'🇧🇦','卡達':'🇶🇦','瑞士':'🇨🇭',
+  '巴西':'🇧🇷','摩洛哥':'🇲🇦','海地':'🇭🇹','蘇格蘭':'🏴',
+  '美國':'🇺🇸','巴拉圭':'🇵🇾','澳洲':'🇦🇺','土耳其':'🇹🇷',
+  '德國':'🇩🇪','古拉索':'🇨🇼','庫拉索':'🇨🇼','象牙海岸':'🇨🇮','厄瓜多':'🇪🇨',
+  '荷蘭':'🇳🇱','日本':'🇯🇵','瑞典':'🇸🇪','突尼西亞':'🇹🇳',
+  '比利時':'🇧🇪','埃及':'🇪🇬','伊朗':'🇮🇷','紐西蘭':'🇳🇿',
+  '西班牙':'🇪🇸','維德角':'🇨🇻','沙烏地':'🇸🇦','烏拉圭':'🇺🇾',
+  '法國':'🇫🇷','塞內加爾':'🇸🇳','伊拉克':'🇮🇶','挪威':'🇳🇴',
+  '阿根廷':'🇦🇷','阿爾及利亞':'🇩🇿','奧地利':'🇦🇹','約旦':'🇯🇴',
+  '葡萄牙':'🇵🇹','民主剛果':'🇨🇩','剛果民主共和國':'🇨🇩','烏茲別克':'🇺🇿','哥倫比亞':'🇨🇴',
+  '英格蘭':'🏴','克羅埃西亞':'🇭🇷','迦納':'🇬🇭','巴拿馬':'🇵🇦'
+};
+function escapeHTML(text){
+  return String(text ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function flagForTeam(name){
+  return teamFlags[name] || '';
+}
+function teamLabel(name){
+  const clean = escapeHTML(name);
+  const flag = flagForTeam(name);
+  return `<span class="flagTeam">${flag?`<span class="flagEmoji">${flag}</span>`:''}<span class="flagName">${clean}</span></span>`;
+}
+function koTeamLabel(name){
+  if(name === '待') return '待';
+  if(name === '最佳第三') return '最佳第三';
+  return teamLabel(name);
+}
+function updateCountdownBadge(){
+  const el = document.getElementById('syncBadge');
+  if(!el) return;
+  const diff = OPENING_KICKOFF_TW.getTime() - Date.now();
+  el.className = 'syncBadge countdownBadge live';
+  if(diff <= 0){
+    el.innerHTML = `<span class="syncDot"></span><strong>2026 世足賽程進行中</strong>`;
+    return;
+  }
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const mins = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
+  el.innerHTML = `<span class="syncDot"></span><strong>距離開幕戰</strong><span class="countUnit"><b>${days}</b>天</span><span class="countUnit"><b>${String(hours).padStart(2,'0')}</b>時</span><span class="countUnit"><b>${String(mins).padStart(2,'0')}</b>分</span><span class="countUnit"><b>${String(secs).padStart(2,'0')}</b>秒</span>`;
+}
+setSyncBadge = function(){ updateCountdownBadge(); };
+function startCountdownBadge(){
+  updateCountdownBadge();
+  setInterval(updateCountdownBadge, 1000);
+}
+function renderGroups(){
+ const grid=document.getElementById('groupsGrid'); grid.innerHTML='';
+ let played=data.matches.filter(m=>m.hs!==null&&m.as!==null&&m.hs!==''&&m.as!=='').length;
+ let total=data.matches.length;
+ document.getElementById('groupSummary').innerHTML=`<span class="pill">已更新 ${played}/${total} 場</span><span class="pill">12 組 × 每組 4 隊</span><span class="pill">晉級名次：小組完賽後顯示</span>`;
+ Object.keys(data.groups).forEach((g)=>{
+  let r=rankGroup(g);
+  let groupPlayed=groupPlayedCount(g);
+  const complete=groupComplete(g);
+  let rows=r.map((x,i)=>{
+    const posClass = complete ? (i<2?'q':i==2?'third':'') : '';
+    return `<tr><td class="pos ${posClass}">${i+1}</td><td class="team">${teamLabel(x.team)}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td></tr>`;
+  }).join('');
+  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  grid.insertAdjacentHTML('beforeend',html);
+ });
+}
+function renderGroupEditor(g){
+ const box=document.getElementById('groupMatchGrid');
+ const ms=data.matches.filter(m=>m.group===g);
+ document.getElementById('groupEditorTitle').innerHTML=`${g} 組｜比賽結果`;
+ box.innerHTML=ms.map((m,i)=>{
+   const cls=resultStateClassName(m);
+   const state=resultStateText(m);
+   return `<div class="groupMatch resultOnly ${cls}">
+     <div class="resultDate"><span class="twLabel">台灣時間</span>${m.date} ${m.twTime||''}<br>第${i+1}戰</div>
+     <div class="resultTeam home">${teamLabel(m.home)}</div>
+     <div class="resultScore">${scoreText(m.hs)}</div>
+     <div class="resultVs">VS</div>
+     <div class="resultScore">${scoreText(m.as)}</div>
+     <div class="resultTeam away">${teamLabel(m.away)}</div>
+     <div class="resultState ${cls}">${state}</div>
+   </div>`;
+ }).join('');
+}
+function card(m,q){
+ const ta=koDisplayLabel(m.a,q), tb=koDisplayLabel(m.b,q), w=winnerOf(m);
+ const winA=w && ta!== '待' && w===ta, winB=w && tb!== '待' && w===tb;
+ const displayDate=koDateLabel(m);
+ const pending = (ta==='待' && tb==='待') ? 'pending' : '';
+ return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
+   <div class="koTeamsDate ${pending}"><span class="koCountry left ${winA?'winner':''}">（${koTeamLabel(ta)}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${koTeamLabel(tb)}）</span></div>
+   <div class="koScoreLine">
+     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <em class="koVsPill">VS</em>
+     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+   </div>
+ </div>`;
+}
+installOfficialSchedule();
+render();
+startAutoScoreSync();
+startCountdownBadge();
+</script>
+</body>
+</html>
