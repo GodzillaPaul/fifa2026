@@ -1784,13 +1784,49 @@ body:after{
     right:8px!important;
   }
 }
+/* === v27: move group result action into group header === */
+.readOnlyGroup h3{
+  gap:10px!important;
+}
+.readOnlyGroup h3 .groupTitleText{
+  flex:1 1 auto;
+  min-width:0;
+}
+.readOnlyGroup h3 .groupResultBtn.groupResultInHeader{
+  flex:0 0 auto!important;
+  width:auto!important;
+  margin:0!important;
+  padding:5px 10px!important;
+  border:1px solid rgba(255,255,255,.42)!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#fff4aa,#ffc94f)!important;
+  color:#071827!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:1000!important;
+  box-shadow:0 8px 18px rgba(255,200,70,.20),inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
+.readOnlyGroup h3 .groupResultBtn.groupResultInHeader span{
+  margin-left:5px!important;
+  font-size:10px!important;
+  opacity:.72!important;
+}
+.readOnlyGroup > .groupResultBtn:not(.groupResultInHeader){
+  display:none!important;
+}
+@media(max-width:1400px), (max-height:820px){
+  .readOnlyGroup h3 .groupResultBtn.groupResultInHeader{
+    padding:4px 8px!important;
+    font-size:10px!important;
+  }
+}
 </style>
 </head>
 <body>
 <header class="header">
   <div class="kicker">WORLD CUP 2026</div>
   <h1 class="title">2026 世足 決鬥之路</h1>
-  <div class="sub">ESPN 線上比分自動更新 → 小組排名與淘汰賽晉級自動推進</div>
+  <div class="sub">台灣時間賽程｜小組賽與 32 強淘汰賽總覽</div>
   <div class="syncBadge warn" id="syncBadge"><span class="syncDot"></span><span>比分自動同步準備中</span></div>
   <div class="toolbar">
     <button class="btn" onclick="openDataEditor()">編輯賽程/隊名 JSON</button>
@@ -1798,25 +1834,25 @@ body:after{
   </div>
 </header>
 <div class="pageTabs">
-  <button class="tabBtn active" id="tabGroups" onclick="showPage('groups')">第一頁｜世預賽小組</button>
-  <button class="tabBtn" id="tabBracket" onclick="showPage('bracket')">第二頁｜樹枝狀對戰</button>
+  <button class="tabBtn active" id="tabGroups" onclick="showPage('groups')">預賽</button>
+  <button class="tabBtn" id="tabBracket" onclick="showPage('bracket')">32強</button>
 </div>
 <div class="status" id="status"></div>
 <section class="page active" id="pageGroups">
   <div class="groupsHero">
-    <div><strong>世預賽小組賽</strong><br><span class="note">比分由 ESPN 自動更新；每組賽果直接顯示在卡片內，排名與晉級自動計算。</span></div>
+    <div><strong>世界盃小組賽</strong><br><span class="note">各組賽程以台灣時間顯示；比賽結果可從各組標題旁開啟查看。</span></div>
     <div class="miniStat" id="groupSummary"></div>
   </div>
   <div class="groupsGrid" id="groupsGrid"></div>
 </section>
 <section class="page bracketPage" id="pageBracket">
   <div class="groupsHero">
-    <div><strong>淘汰賽樹枝狀賽程</strong><br><span class="note">第一頁產生的晉級隊伍會自動帶入；淘汰賽比分更新後會一路推進到冠軍。</span></div>
+    <div><strong>32 強淘汰賽</strong><br><span class="note">目前先顯示賽程與待定席位；小組賽結束後再帶入晉級隊伍。</span></div>
     <div class="miniStat"><span class="pill">左半區 × 右半區 → 總冠軍</span></div>
   </div>
   <div class="bracketShell"><div class="bracketHint">左半區、右半區一路往中間推進，最後在中央決出總冠軍</div><div class="bracketStage" id="bracketStage"><div class="bracket" id="bracket"></div></div></div>
 </section>
-<div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">ESPN 會自動更新；此版不開放手動輸入比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
+<div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">賽程以台灣時間顯示；開賽後可在此查看比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
 <script>
 const defaultData = {
  groups:{
@@ -2276,13 +2312,21 @@ function fitFixedUI(){
  const stage=document.getElementById('bracketStage');
  const bracket=document.getElementById('bracket');
  if(!stage || !bracket || !document.getElementById('pageBracket').classList.contains('active')) return;
- bracket.style.transform='none';
- bracket.style.left='0px';
- bracket.style.top='0px';
- bracket.style.width='100%';
- bracket.style.height='100%';
- bracket.style.position='relative';
- bracket.style.transformOrigin='top left';
+ bracket.style.setProperty('transform','none');
+ bracket.style.setProperty('position','absolute','important');
+ bracket.style.setProperty('width','2100px','important');
+ bracket.style.setProperty('height','auto','important');
+ bracket.style.setProperty('left','0px','important');
+ bracket.style.setProperty('top','0px','important');
+ bracket.style.setProperty('transform-origin','top left');
+ const stageW=stage.clientWidth;
+ const stageH=stage.clientHeight;
+ const contentW=bracket.scrollWidth || 2100;
+ const contentH=bracket.scrollHeight || stageH;
+ const scale=Math.min(stageW/contentW, stageH/contentH, 1);
+ const left=Math.max(0,(stageW - contentW * scale) / 2);
+ const top=Math.max(0,(stageH - contentH * scale) / 2);
+ bracket.style.setProperty('transform',`translate(${left}px, ${top}px) scale(${scale})`);
 }
 window.addEventListener('resize',()=>requestAnimationFrame(fitFixedUI));
 
@@ -2490,7 +2534,7 @@ function renderGroups(){
     const posClass = complete ? (i<2?'q':i==2?'third':'') : '';
     return `<tr><td class="pos ${posClass}">${i+1}</td><td class="team">${x.team}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td></tr>`;
   }).join('');
-  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3><span class="groupTitleText">${g} 組</span><button class="groupResultBtn groupResultInHeader" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table></section>`;
   grid.insertAdjacentHTML('beforeend',html);
  });
 }
@@ -2692,7 +2736,7 @@ function renderGroups(){
     const posClass = complete ? (i<2?'q':i==2?'third':'') : '';
     return `<tr><td class="pos ${posClass}">${i+1}</td><td class="team">${teamLabel(x.team)}</td><td>${x.p}</td><td><b>${x.pts}</b></td><td>${x.gd}</td></tr>`;
   }).join('');
-  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3>${g} 組 <span>${groupPlayed}/6 場</span></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table><button class="groupResultBtn" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></section>`;
+  let html=`<section class="group compactGroup readOnlyGroup ${complete?'qualified':''}"><h3><span class="groupTitleText">${g} 組</span><button class="groupResultBtn groupResultInHeader" onclick="openGroupEditor('${g}')">比賽結果 <span>${groupPlayed}/6</span></button></h3><table><thead><tr><th>#</th><th>隊伍</th><th>賽</th><th>積</th><th>淨</th></tr></thead><tbody>${rows}</tbody></table></section>`;
   grid.insertAdjacentHTML('beforeend',html);
  });
 }
