@@ -1859,11 +1859,96 @@ body:after{
   gap:8px;
   flex-wrap:wrap;
 }
+.scheduleFilters{
+  display:grid;
+  grid-template-columns:minmax(240px,1fr) minmax(190px,260px) auto;
+  gap:10px;
+  align-items:center;
+  padding:8px 0 2px;
+  animation:scheduleControlsIn .38s ease both;
+}
+.scheduleSearchBox{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.scheduleSearchBox input{
+  width:100%;
+  min-width:0;
+  height:38px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  color:#f4fbff;
+  padding:0 12px;
+  font-weight:900;
+  outline:none;
+  transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+.scheduleSearchBox input::placeholder{color:#9fb7c8}
+.scheduleSearchBox input:focus{
+  border-color:rgba(95,217,255,.65);
+  box-shadow:0 0 0 3px rgba(95,217,255,.14);
+  transform:translateY(-1px);
+}
+.scheduleClearBtn,
+.scheduleTeamSelect{
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;
+  background:rgba(255,255,255,.09);
+  color:#d8edf8;
+  font-weight:1000;
+  cursor:pointer;
+  white-space:nowrap;
+  height:38px;
+  transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+.scheduleClearBtn{padding:0 12px}
+.scheduleTeamSelect{
+  width:100%;
+  min-width:0;
+  padding:0 34px 0 12px;
+  appearance:none;
+  background:
+    linear-gradient(45deg,transparent 50%,#d8edf8 50%) right 15px center/6px 6px no-repeat,
+    linear-gradient(135deg,#d8edf8 50%,transparent 50%) right 9px center/6px 6px no-repeat,
+    rgba(255,255,255,.09);
+}
+.scheduleClearBtn:hover,
+.scheduleTeamSelect:hover{
+  border-color:rgba(95,217,255,.55);
+  transform:translateY(-1px);
+}
+.scheduleTeamSelect:focus{
+  outline:none;
+  border-color:rgba(95,217,255,.65);
+  box-shadow:0 0 0 3px rgba(95,217,255,.14);
+  transform:translateY(-1px);
+}
 .scheduleList{
   flex:1;
   min-height:0;
   overflow:auto;
   padding-right:4px;
+}
+.scheduleList.filterPulse{
+  animation:scheduleListSwap .28s ease both;
+}
+.scheduleDay{
+  animation:scheduleDayIn .28s ease both;
+}
+@keyframes scheduleControlsIn{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes scheduleListSwap{
+  from{opacity:.45;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes scheduleDayIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
 }
 .scheduleDay{
   border:1px solid rgba(255,255,255,.10);
@@ -1935,6 +2020,7 @@ body:after{
 .statePill.live{background:#3dffb0;color:#061521}
 @media(max-width:1200px){
   .scheduleShell{padding:8px}
+  .scheduleFilters{grid-template-columns:1fr}
   .scheduleTable{font-size:11px}
   .scheduleTable th,.scheduleTable td{padding:6px 5px}
   .scheduleStage{width:84px}.scheduleMatchNo{width:58px}.scheduleState{width:70px}.scheduleTime{width:64px}
@@ -2238,6 +2324,49 @@ body:after{
 .scheduleList{
   overflow:visible!important;
   padding-right:0!important;
+}
+.scheduleFilters{
+  grid-template-columns:minmax(240px,1fr) minmax(190px,260px) auto!important;
+  gap:10px!important;
+  padding:8px 0 10px!important;
+  border-bottom:1px solid #edf1ed!important;
+}
+.scheduleSearchBox input,
+.scheduleTeamSelect{
+  height:38px!important;
+  border:1px solid #dbe4e8!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+  border-radius:8px!important;
+  box-shadow:inset 0 1px 0 rgba(23,36,52,.03)!important;
+}
+.scheduleTeamSelect{
+  background:
+    linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%) right 15px center/6px 6px no-repeat,
+    linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%) right 9px center/6px 6px no-repeat,
+    #fff!important;
+}
+.scheduleSearchBox input::placeholder{
+  color:var(--ink-soft)!important;
+}
+.scheduleSearchBox input:focus,
+.scheduleTeamSelect:focus{
+  border-color:var(--brand-blue)!important;
+  box-shadow:0 0 0 3px rgba(12,110,201,.12)!important;
+}
+.scheduleClearBtn,
+.scheduleTeamSelect{
+  border:1px solid #dbe4e8!important;
+  border-radius:8px!important;
+  color:var(--ink)!important;
+  box-shadow:0 2px 8px rgba(23,36,52,.05)!important;
+}
+.scheduleClearBtn{
+  background:#fff!important;
+}
+.scheduleClearBtn:hover,
+.scheduleTeamSelect:hover{
+  border-color:var(--brand-blue)!important;
 }
 .scheduleDay{
   border:1px solid var(--rule)!important;
@@ -2544,6 +2673,15 @@ body:after{
         <div class="note">依台灣時間排序；比分與預賽排名、淘汰賽頁面共用同一份資料。</div>
       </div>
       <div class="scheduleLegend" id="scheduleSummary"></div>
+    </div>
+    <div class="scheduleFilters">
+      <div class="scheduleSearchBox">
+        <input id="scheduleSearchInput" type="search" placeholder="搜尋國家" autocomplete="off" oninput="setScheduleSearch(this.value)">
+      </div>
+      <select id="scheduleTeamSelect" class="scheduleTeamSelect" onchange="setScheduleSearch(this.value)">
+        <option value="">全部隊伍</option>
+      </select>
+      <button type="button" class="scheduleClearBtn" onclick="clearScheduleFilter()">全部</button>
     </div>
     <div class="scheduleList" id="scheduleList"></div>
   </div>
@@ -3663,6 +3801,61 @@ function knockoutScheduleItems(){
     espnState:m.espnState
   }));
 }
+let scheduleSearchQuery='';
+function scheduleFilterTeams(){
+  const teams=[...new Set(Object.values(officialGroups).flat().map(canonicalLocalTeam))];
+  return teams;
+}
+function scheduleTeamAliasNames(team){
+  const teamName=canonicalLocalTeam(team);
+  const names=[teamName];
+  teamAliasRows.forEach(row=>{
+    if(canonicalLocalTeam(row[0])===teamName) names.push(...row);
+  });
+  return names;
+}
+function teamMatchesScheduleFilter(team, query){
+  if(!query) return true;
+  const q=normalizeTeamName(query);
+  const names=scheduleTeamAliasNames(team);
+  return names.some(name=>normalizeTeamName(name).includes(q) || q.includes(normalizeTeamName(name)));
+}
+function teamForScheduleQuery(query){
+  const q=normalizeTeamName(query);
+  if(!q) return '';
+  const teams=scheduleFilterTeams();
+  const exact=teams.find(team=>scheduleTeamAliasNames(team).some(name=>normalizeTeamName(name)===q));
+  if(exact) return exact;
+  const matches=teams.filter(team=>teamMatchesScheduleFilter(team,query));
+  return matches.length===1 ? matches[0] : '';
+}
+function itemMatchesScheduleFilter(item){
+  if(!scheduleSearchQuery) return true;
+  return teamMatchesScheduleFilter(item.home,scheduleSearchQuery) || teamMatchesScheduleFilter(item.away,scheduleSearchQuery);
+}
+function renderScheduleTeamSelect(){
+  const select=document.getElementById('scheduleTeamSelect');
+  if(!select) return;
+  const selectedTeam=teamForScheduleQuery(scheduleSearchQuery);
+  const groupsHTML=Object.entries(officialGroups).map(([group,teams])=>{
+    const options=teams.map(team=>{
+      const local=canonicalLocalTeam(team);
+      const label=`${flagForTeam(local)} ${local}`;
+      return `<option value="${escapeHTML(local)}" ${local===selectedTeam?'selected':''}>${escapeHTML(label)}</option>`;
+    }).join('');
+    return `<optgroup label="${group} 組">${options}</optgroup>`;
+  }).join('');
+  select.innerHTML=`<option value="" ${selectedTeam?'':'selected'}>全部隊伍</option>${groupsHTML}`;
+}
+function setScheduleSearch(value){
+  scheduleSearchQuery=String(value||'').trim();
+  const input=document.getElementById('scheduleSearchInput');
+  if(input && input.value!==scheduleSearchQuery) input.value=scheduleSearchQuery;
+  renderSchedule();
+}
+function clearScheduleFilter(){
+  setScheduleSearch('');
+}
 function scheduleTeamText(name){
   if(name==='待' || name==='最佳第三') return escapeHTML(name);
   return teamLabel(name);
@@ -3685,13 +3878,23 @@ function renderSchedule(){
   const list=document.getElementById('scheduleList');
   if(!summary || !list) return;
   const items=[...groupScheduleItems(), ...knockoutScheduleItems()].sort((a,b)=>scheduleSortValue(a)-scheduleSortValue(b)||Number(a.no)-Number(b.no));
+  renderScheduleTeamSelect();
+  const visibleItems=items.filter(itemMatchesScheduleFilter);
   const played=items.filter(item=>scheduleStatusText(item)==='完賽').length;
-  summary.innerHTML=`<span class="pill">全部 ${items.length} 場</span><span class="pill">已完賽 ${played} 場</span><span class="pill">台灣時間</span>`;
+  const filteredPlayed=visibleItems.filter(item=>scheduleStatusText(item)==='完賽').length;
+  summary.innerHTML=scheduleSearchQuery
+    ? `<span class="pill">${escapeHTML(scheduleSearchQuery)} ${visibleItems.length} 場</span><span class="pill">已完賽 ${filteredPlayed} 場</span><span class="pill">台灣時間</span>`
+    : `<span class="pill">全部 ${items.length} 場</span><span class="pill">已完賽 ${played} 場</span><span class="pill">台灣時間</span>`;
   const byDate=new Map();
-  items.forEach(item=>{
+  visibleItems.forEach(item=>{
     if(!byDate.has(item.date)) byDate.set(item.date, []);
     byDate.get(item.date).push(item);
   });
+  if(!visibleItems.length){
+    list.innerHTML=`<section class="scheduleDay"><div class="scheduleDayTitle"><span>沒有符合的賽程</span><span>0 場</span></div></section>`;
+    restartScheduleListAnimation(list);
+    return;
+  }
   list.innerHTML=[...byDate.entries()].map(([date,dayItems])=>`<section class="scheduleDay">
     <div class="scheduleDayTitle"><span>${escapeHTML(date)}</span><span>${dayItems.length} 場</span></div>
     <table class="scheduleTable">
@@ -3699,6 +3902,12 @@ function renderSchedule(){
       <tbody>${dayItems.map(scheduleRow).join('')}</tbody>
     </table>
   </section>`).join('');
+  restartScheduleListAnimation(list);
+}
+function restartScheduleListAnimation(list){
+  list.classList.remove('filterPulse');
+  void list.offsetWidth;
+  list.classList.add('filterPulse');
 }
 function showPage(which){
  document.getElementById('pageGroups').classList.toggle('active',which==='groups');
