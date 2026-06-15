@@ -2734,18 +2734,47 @@ const ESPN_SYNC = {
   proxyBase: 'https://api.allorigins.win/raw?url='
 };
 
+const ESPN_EVENT_IDS = {
+  G1: '760415', G2: '760414', G3: '760416', G4: '760417',
+  G5: '760420', G6: '760419', G7: '760418', G8: '760421',
+  G9: '760422', G10: '760425', G11: '760423', G12: '760424',
+  G13: '760428', G14: '760426', G15: '760429', G16: '760427',
+  G17: '760432', G18: '760430', G19: '760433', G20: '760431',
+  G21: '760435', G22: '760437', G23: '760434', G24: '760436',
+  G25: '760438', G26: '760439', G27: '760440', G28: '760441',
+  G29: '760442', G30: '760445', G31: '760444', G32: '760443',
+  G33: '760447', G34: '760448', G35: '760446', G36: '760449',
+  G37: '760453', G38: '760451', G39: '760450', G40: '760452',
+  G41: '760456', G42: '760457', G43: '760454', G44: '760455',
+  G45: '760461', G46: '760458', G47: '760460', G48: '760459',
+  G49: '760463', G50: '760462', G51: '760464', G52: '760465',
+  G53: '760466', G54: '760467', G55: '760473', G56: '760468',
+  G57: '760472', G58: '760471', G59: '760470', G60: '760469',
+  G61: '760475', G62: '760474', G63: '760478', G64: '760479',
+  G65: '760477', G66: '760476', G67: '760485', G68: '760480',
+  G69: '760481', G70: '760482', G71: '760484', G72: '760483',
+  73: '760486', 74: '760489', 75: '760488', 76: '760487',
+  77: '760492', 78: '760490', 79: '760491', 80: '760495',
+  81: '760494', 82: '760493', 83: '760496', 84: '760497',
+  85: '760498', 86: '760500', 87: '760501', 88: '760499',
+  89: '760503', 90: '760502', 91: '760504', 92: '760505',
+  93: '760506', 94: '760507', 95: '760509', 96: '760508',
+  97: '760510', 98: '760511', 99: '760512', 100: '760513',
+  101: '760514', 102: '760515', 103: '760516', 104: '760517'
+};
+
 const teamAliasRows = [
  ['墨西哥','Mexico','MEX'],['南非','South Africa','RSA','South Africa'],['韓國','South Korea','Korea Republic','Republic of Korea','KOR'],['捷克','Czechia','Czech Republic','CZE'],
  ['加拿大','Canada','CAN'],['波赫','Bosnia and Herzegovina','Bosnia-Herzegovina','Bosnia','BIH'],['卡達','Qatar','QAT'],['瑞士','Switzerland','SUI'],
  ['巴西','Brazil','BRA'],['摩洛哥','Morocco','MAR'],['海地','Haiti','HAI'],['蘇格蘭','Scotland','SCO'],
  ['美國','United States','USA','USMNT','United States of America'],['巴拉圭','Paraguay','PAR'],['澳洲','Australia','AUS'],['土耳其','Turkey','Türkiye','TUR'],
- ['德國','Germany','GER'],['古拉索','Curacao','Curaçao','CUW'],['象牙海岸','Ivory Coast','Côte d’Ivoire','Cote d Ivoire','CIV'],['厄瓜多','Ecuador','ECU'],
- ['荷蘭','Netherlands','Holland','NED'],['日本','Japan','JPN'],['突尼西亞','Tunisia','TUN'],['紐西蘭','New Zealand','NZL'],
+ ['德國','Germany','GER'],['庫拉索','Curacao','Curaçao','CUW','古拉索'],['象牙海岸','Ivory Coast','Côte d’Ivoire','Cote d Ivoire','CIV'],['厄瓜多','Ecuador','ECU'],
+ ['荷蘭','Netherlands','Holland','NED'],['日本','Japan','JPN'],['瑞典','Sweden','SWE'],['突尼西亞','Tunisia','TUN'],['紐西蘭','New Zealand','NZL'],
  ['比利時','Belgium','BEL'],['埃及','Egypt','EGY'],['伊朗','Iran','IRN'],
- ['西班牙','Spain','ESP'],['維德角','Cape Verde','Cabo Verde','CPV'],['沙烏地','Saudi Arabia','Saudi','KSA'],['烏拉圭','Uruguay','URU'],
+ ['西班牙','Spain','ESP'],['維德角','Cape Verde','Cabo Verde','CPV'],['沙烏地阿拉伯','Saudi Arabia','Saudi','KSA','沙烏地'],['烏拉圭','Uruguay','URU'],
  ['法國','France','FRA'],['塞內加爾','Senegal','SEN'],['挪威','Norway','NOR'],['約旦','Jordan','JOR'],
  ['阿根廷','Argentina','ARG'],['阿爾及利亞','Algeria','ALG'],['奧地利','Austria','AUT'],
- ['葡萄牙','Portugal','POR'],['剛果','Congo DR','DR Congo','Congo','COD'],['烏茲別克','Uzbekistan','UZB'],['哥倫比亞','Colombia','COL'],
+ ['葡萄牙','Portugal','POR'],['剛果民主共和國','Congo DR','DR Congo','Congo','COD','民主剛果','剛果'],['烏茲別克','Uzbekistan','UZB'],['哥倫比亞','Colombia','COL'],
  ['英格蘭','England','ENG'],['克羅埃西亞','Croatia','CRO'],['迦納','Ghana','GHA'],['巴拿馬','Panama','PAN']
 ];
 const aliasToLocal = new Map();
@@ -2755,6 +2784,26 @@ function normalizeTeamName(s){
 }
 teamAliasRows.forEach(row=>row.forEach(alias=>aliasToLocal.set(normalizeTeamName(alias), row[0])));
 Object.values(defaultData.groups).flat().forEach(t=>aliasToLocal.set(normalizeTeamName(t), t));
+function setTeamAliases(localName, aliases){
+  [localName, ...aliases].forEach(alias=>aliasToLocal.set(normalizeTeamName(alias), localName));
+}
+setTeamAliases('庫拉索',['古拉索','Curacao','Curaçao','CUW']);
+setTeamAliases('沙烏地阿拉伯',['沙烏地','Saudi Arabia','Saudi','KSA']);
+setTeamAliases('剛果民主共和國',['民主剛果','剛果','Congo DR','DR Congo','Congo','COD']);
+setTeamAliases('瑞典',['Sweden','SWE']);
+function canonicalLocalTeam(name){
+  return aliasToLocal.get(normalizeTeamName(name)) || name;
+}
+function espnEventIdFor(item){
+  return String(item?.espnId || ESPN_EVENT_IDS[item?.id] || '');
+}
+function scoresForLocalOrder(localHome, localAway, teamA, scoreA, teamB, scoreB){
+  const lh=canonicalLocalTeam(localHome), la=canonicalLocalTeam(localAway);
+  const ta=canonicalLocalTeam(teamA), tb=canonicalLocalTeam(teamB);
+  if(lh===ta && la===tb) return [scoreA, scoreB];
+  if(lh===tb && la===ta) return [scoreB, scoreA];
+  return null;
+}
 function canonicalTeamFromESPN(team){
   const raw = [team?.displayName, team?.shortDisplayName, team?.name, team?.abbreviation, team?.location]
     .filter(Boolean).map(normalizeTeamName);
@@ -2823,25 +2872,51 @@ function scoreIsUsable(event){
   const state=event?.status?.type?.state;
   return state==='in' || state==='post';
 }
-function applyScoreToLocal(dateKey, teamA, scoreA, teamB, scoreB, espnState=''){
+function applyScoreToLocal(dateKey, teamA, scoreA, teamB, scoreB, espnState='', espnId=''){
   if(!teamA || !teamB || scoreA==='' || scoreB==='') return 0;
   let changed=0;
-  const sameTeams=(x,y,a,b)=> (x===a&&y===b) || (x===b&&y===a);
+  const sameTeams=(x,y,a,b)=> {
+    const cx=canonicalLocalTeam(x), cy=canonicalLocalTeam(y), ca=canonicalLocalTeam(a), cb=canonicalLocalTeam(b);
+    return (cx===ca&&cy===cb) || (cx===cb&&cy===ca);
+  };
+  if(espnId){
+    for(const m of data.matches){
+      if(espnEventIdFor(m)!==String(espnId)) continue;
+      const scores=scoresForLocalOrder(m.home,m.away,teamA,scoreA,teamB,scoreB) || [scoreA,scoreB];
+      if(m.hs!==scores[0] || m.as!==scores[1] || m.espnState!==espnState || m.espnId!==String(espnId)){
+        m.hs=scores[0]; m.as=scores[1]; m.espnState=espnState; m.espnId=String(espnId); changed++;
+      }
+    }
+    const q=qualifiers();
+    for(const m of ko){
+      if(espnEventIdFor(m)!==String(espnId)) continue;
+      const localA=labelToTeam(m.a,q), localB=labelToTeam(m.b,q);
+      const scores=scoresForLocalOrder(localA,localB,teamA,scoreA,teamB,scoreB) || [scoreA,scoreB];
+      if(m.ascore!==scores[0] || m.bscore!==scores[1] || m.espnState!==espnState || m.espnId!==String(espnId)){
+        m.ascore=scores[0]; m.bscore=scores[1]; m.espnState=espnState; m.espnId=String(espnId); changed++;
+      }
+    }
+    if(changed) return changed;
+  }
   for(const m of data.matches){
     if(monthDayToDateKey(m.date)!==dateKey) continue;
     if(!sameTeams(m.home,m.away,teamA,teamB)) continue;
-    const newHs = m.home===teamA ? scoreA : scoreB;
-    const newAs = m.away===teamB ? scoreB : scoreA;
-    if(m.hs!==newHs || m.as!==newAs || m.espnState!==espnState){ m.hs=newHs; m.as=newAs; m.espnState=espnState; changed++; }
+    const newHs = canonicalLocalTeam(m.home)===canonicalLocalTeam(teamA) ? scoreA : scoreB;
+    const newAs = canonicalLocalTeam(m.away)===canonicalLocalTeam(teamB) ? scoreB : scoreA;
+    if(m.hs!==newHs || m.as!==newAs || m.espnState!==espnState || (espnId && m.espnId!==String(espnId))){
+      m.hs=newHs; m.as=newAs; m.espnState=espnState; if(espnId) m.espnId=String(espnId); changed++;
+    }
   }
   const q=qualifiers();
   for(const m of ko){
     if(monthDayToDateKey(m.date)!==dateKey) continue;
     const localA=labelToTeam(m.a,q), localB=labelToTeam(m.b,q);
     if(!sameTeams(localA,localB,teamA,teamB)) continue;
-    const newA = localA===teamA ? scoreA : scoreB;
-    const newB = localB===teamB ? scoreB : scoreA;
-    if(m.ascore!==newA || m.bscore!==newB || m.espnState!==espnState){ m.ascore=newA; m.bscore=newB; m.espnState=espnState; changed++; }
+    const newA = canonicalLocalTeam(localA)===canonicalLocalTeam(teamA) ? scoreA : scoreB;
+    const newB = canonicalLocalTeam(localB)===canonicalLocalTeam(teamB) ? scoreB : scoreA;
+    if(m.ascore!==newA || m.bscore!==newB || m.espnState!==espnState || (espnId && m.espnId!==String(espnId))){
+      m.ascore=newA; m.bscore=newB; m.espnState=espnState; if(espnId) m.espnId=String(espnId); changed++;
+    }
   }
   return changed;
 }
@@ -2868,7 +2943,7 @@ async function autoSyncScores(full=false){
         if(!Number.isFinite(hScore)||!Number.isFinite(aScore)) continue;
         seen++;
         const eventDateKey = dateToTaiwanKey(ev?.date || comp?.date || dateKey) || dateKey;
-        touched += applyScoreToLocal(eventDateKey,hTeam,hScore,aTeam,aScore, ev?.status?.type?.state || '');
+        touched += applyScoreToLocal(eventDateKey,hTeam,hScore,aTeam,aScore, ev?.status?.type?.state || '', ev?.id || comp?.id || '');
       }
     }catch(err){
       failed++;
@@ -2880,6 +2955,21 @@ async function autoSyncScores(full=false){
   if(failed && !seen) setSyncBadge(`ESPN 暫時連不上，${time} 會再試`, 'error');
   else setSyncBadge(`ESPN 自動同步中｜${time}｜更新 ${touched} 筆`, touched?'live':'warn');
 }
+function auditEspnFixtures(){
+  const items=[...data.matches, ...ko];
+  const ids=items.map(item=>espnEventIdFor(item)).filter(Boolean);
+  const duplicated=[...new Set(ids.filter((id,i)=>ids.indexOf(id)!==i))];
+  const missing=items.filter(item=>!espnEventIdFor(item)).map(item=>item.id);
+  const report={
+    total:items.length,
+    linked:ids.length,
+    missing,
+    duplicated
+  };
+  console.table(report);
+  return report;
+}
+window.auditEspnFixtures=auditEspnFixtures;
 function startAutoScoreSync(){
   autoSyncScores(true);
   setInterval(()=>autoSyncScores(false), ESPN_SYNC.intervalMs);
@@ -3201,9 +3291,10 @@ function installOfficialSchedule(){
     groups: JSON.parse(JSON.stringify(officialGroups)),
     matches: officialMatches.map(m => {
       const prev = scoreByKey.get(`${m.group}|${m.home}|${m.away}`) || scoreByKey.get(`${m.group}|${m.away}|${m.home}`);
-      if(!prev) return {...m};
-      if(prev.home===m.home && prev.away===m.away) return {...m, hs:prev.hs, as:prev.as, espnState:prev.espnState};
-      return {...m, hs:prev.as, as:prev.hs, espnState:prev.espnState};
+      const espnId = espnEventIdFor(m);
+      if(!prev) return {...m, espnId};
+      if(prev.home===m.home && prev.away===m.away) return {...m, hs:prev.hs, as:prev.as, espnState:prev.espnState, espnId:prev.espnId || espnId};
+      return {...m, hs:prev.as, as:prev.hs, espnState:prev.espnState, espnId:prev.espnId || espnId};
     })
   };
   localStorage.setItem('wc2026Data', JSON.stringify(data));
@@ -3493,21 +3584,27 @@ const verifiedResults = [
   {group:'A', home:'墨西哥', away:'南非', hs:2, as:0},
   {group:'A', home:'韓國', away:'捷克', hs:2, as:1},
   {group:'B', home:'加拿大', away:'波赫', hs:1, as:1},
-  {group:'D', home:'美國', away:'巴拉圭', hs:4, as:1}
+  {group:'D', home:'美國', away:'巴拉圭', hs:4, as:1},
+  {group:'B', home:'卡達', away:'瑞士', hs:1, as:1},
+  {group:'C', home:'巴西', away:'摩洛哥', hs:1, as:1},
+  {group:'C', home:'海地', away:'蘇格蘭', hs:0, as:1},
+  {group:'D', home:'澳洲', away:'土耳其', hs:2, as:0},
+  {group:'E', home:'德國', away:'庫拉索', hs:7, as:1},
+  {group:'F', home:'荷蘭', away:'日本', hs:2, as:2},
+  {group:'E', home:'象牙海岸', away:'厄瓜多', hs:1, as:0}
 ];
 function sameFixture(m, result){
-  return m.group===result.group && (
-    (m.home===result.home && m.away===result.away) ||
-    (m.home===result.away && m.away===result.home)
-  );
+  const mh=canonicalLocalTeam(m.home), ma=canonicalLocalTeam(m.away);
+  const rh=canonicalLocalTeam(result.home), ra=canonicalLocalTeam(result.away);
+  return m.group===result.group && ((mh===rh && ma===ra) || (mh===ra && ma===rh));
 }
 function seedVerifiedResults(){
   let changed=0;
   verifiedResults.forEach(result=>{
     const match=data.matches.find(m=>sameFixture(m,result));
     if(!match) return;
-    const homeScore = match.home===result.home ? result.hs : result.as;
-    const awayScore = match.away===result.away ? result.as : result.hs;
+    const homeScore = canonicalLocalTeam(match.home)===canonicalLocalTeam(result.home) ? result.hs : result.as;
+    const awayScore = canonicalLocalTeam(match.away)===canonicalLocalTeam(result.away) ? result.as : result.hs;
     if(match.hs!==homeScore || match.as!==awayScore || match.espnState!=='post'){
       match.hs=homeScore;
       match.as=awayScore;
@@ -3734,7 +3831,9 @@ function applyMarieClaireSourceSchedule(){
     m.twTime=meta[2];
     m.a=meta[3];
     m.b=meta[4];
+    m.espnId=espnEventIdFor(m);
   });
+  localStorage.setItem('wc2026KO', JSON.stringify(ko));
 }
 applyMarieClaireSourceSchedule();
 installOfficialSchedule();
