@@ -1820,13 +1820,703 @@ body:after{
     font-size:10px!important;
   }
 }
+
+/* === v28: full schedule tab === */
+.schedulePage{
+  max-width:none!important;
+}
+.scheduleShell{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow:hidden;
+  border:1px solid rgba(159,232,255,.16);
+  border-radius:14px;
+  background:rgba(6,25,40,.64);
+  box-shadow:0 16px 34px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.08);
+  padding:12px;
+}
+.scheduleToolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.scheduleToolbar h2{
+  margin:0;
+  color:#fff1a0;
+  font-size:19px;
+  line-height:1.1;
+}
+.scheduleToolbar .note{
+  margin-top:3px;
+}
+.scheduleLegend{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.scheduleList{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  padding-right:4px;
+}
+.scheduleDay{
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  overflow:hidden;
+  background:rgba(255,255,255,.045);
+  margin-bottom:10px;
+}
+.scheduleDay:last-child{
+  margin-bottom:0;
+}
+.scheduleDayTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:9px 12px;
+  background:linear-gradient(90deg,rgba(217,69,43,.86),rgba(240,166,59,.76));
+  color:#fff;
+  font-weight:1000;
+}
+.scheduleDayTitle span:last-child{
+  color:#fff4bd;
+  font-size:12px;
+}
+.scheduleTable{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:13px;
+}
+.scheduleTable th,.scheduleTable td{
+  padding:8px 9px;
+  border-bottom:1px solid rgba(255,255,255,.075);
+  text-align:left;
+  vertical-align:middle;
+}
+.scheduleTable th{
+  color:#9fe8ff;
+  background:rgba(0,0,0,.18);
+  font-size:12px;
+}
+.scheduleTime{width:82px;color:#fff1a0;font-weight:1000}
+.scheduleStage{width:108px;color:#bcd8e7;font-weight:900}
+.scheduleMatchNo{width:76px;color:#9fe8ff;font-weight:900}
+.scheduleScore{text-align:center!important;font-weight:1000}
+.scheduleState{width:84px;text-align:center!important}
+.scheduleTeam{
+  min-width:0;
+  font-weight:1000;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.scheduleTeam.away{text-align:right}
+.statePill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:56px;
+  border-radius:999px;
+  padding:5px 8px;
+  background:rgba(255,255,255,.10);
+  color:#d8edf8;
+  font-size:12px;
+  font-weight:1000;
+}
+.statePill.final{background:#ffe100;color:#061521}
+.statePill.live{background:#3dffb0;color:#061521}
+@media(max-width:1200px){
+  .scheduleShell{padding:8px}
+  .scheduleTable{font-size:11px}
+  .scheduleTable th,.scheduleTable td{padding:6px 5px}
+  .scheduleStage{width:84px}.scheduleMatchNo{width:58px}.scheduleState{width:70px}.scheduleTime{width:64px}
+}
+
+/* === v29: light sports data app + natural page scrolling === */
+:root{
+  --page-bg:#f5f7f2;
+  --surface:#ffffff;
+  --surface-soft:#eef5ec;
+  --ink:#172434;
+  --ink-soft:#5a6b78;
+  --rule:#dbe3dc;
+  --brand-blue:#163b5c;
+  --grass:#2f7d4f;
+  --gold:#d9a923;
+  --coral:#d55a3c;
+  --live:#18a568;
+  --final:#f2c84b;
+}
+html,
+body{
+  width:auto!important;
+  height:auto!important;
+  min-height:100%!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:auto!important;
+  background:var(--page-bg)!important;
+  color:var(--ink)!important;
+  letter-spacing:0!important;
+}
+body{
+  min-height:100vh!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.82),rgba(245,247,242,.96) 34%,rgba(235,244,237,.96)),
+    repeating-linear-gradient(90deg,rgba(22,59,92,.035) 0 1px,transparent 1px 112px)!important;
+}
+body:before,
+body:after{
+  display:none!important;
+}
+.header{
+  position:relative!important;
+  height:auto!important;
+  min-height:132px!important;
+  display:grid!important;
+  align-content:center!important;
+  gap:5px!important;
+  padding:24px 24px 18px!important;
+  background:
+    linear-gradient(120deg,rgba(22,59,92,.96),rgba(32,95,74,.94) 56%,rgba(217,169,35,.82)),
+    linear-gradient(180deg,#ffffff,#f5f7f2)!important;
+  border-bottom:1px solid rgba(22,59,92,.16)!important;
+  box-shadow:0 10px 30px rgba(23,36,52,.10)!important;
+  color:#fff!important;
+  text-align:center!important;
+  z-index:5!important;
+}
+.kicker{
+  color:#dff3ea!important;
+  font-size:12px!important;
+  letter-spacing:0!important;
+}
+.title{
+  margin:0!important;
+  color:#fff8cf!important;
+  font-size:48px!important;
+  line-height:1.02!important;
+  letter-spacing:0!important;
+  text-shadow:0 4px 18px rgba(0,0,0,.28)!important;
+}
+.sub{
+  color:#ecf8f2!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  opacity:1!important;
+}
+.syncBadge{
+  justify-self:center!important;
+  margin-top:4px!important;
+  border:1px solid rgba(255,255,255,.34)!important;
+  background:rgba(255,255,255,.16)!important;
+  color:#fff!important;
+  border-radius:8px!important;
+  box-shadow:none!important;
+}
+.syncDot{
+  background:#7bedb8!important;
+}
+.countUnit{
+  color:#fff!important;
+}
+.toolbar{
+  position:absolute!important;
+  top:18px!important;
+  right:20px!important;
+  margin:0!important;
+  max-width:none!important;
+}
+.btn,
+.toolbar .btn,
+.closeX{
+  border:1px solid rgba(22,59,92,.18)!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:var(--brand-blue)!important;
+  box-shadow:0 6px 18px rgba(23,36,52,.10)!important;
+  font-weight:900!important;
+}
+.btn:hover,
+.tabBtn:hover,
+.groupResultBtn:hover{
+  transform:translateY(-1px)!important;
+}
+.pageTabs{
+  position:sticky!important;
+  top:0!important;
+  left:auto!important;
+  z-index:30!important;
+  display:flex!important;
+  width:100%!important;
+  justify-content:center!important;
+  gap:6px!important;
+  margin:0!important;
+  padding:10px 16px!important;
+  border:0!important;
+  border-bottom:1px solid var(--rule)!important;
+  border-radius:0!important;
+  background:rgba(255,255,255,.92)!important;
+  box-shadow:0 10px 22px rgba(23,36,52,.08)!important;
+  backdrop-filter:blur(12px)!important;
+}
+.tabBtn{
+  width:auto!important;
+  min-width:86px!important;
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  padding:10px 16px!important;
+  background:#fff!important;
+  color:var(--brand-blue)!important;
+  box-shadow:none!important;
+  letter-spacing:0!important;
+}
+.tabBtn.active{
+  border-color:transparent!important;
+  background:var(--brand-blue)!important;
+  color:#fff!important;
+  box-shadow:0 8px 18px rgba(22,59,92,.18)!important;
+}
+.page{
+  display:none!important;
+  width:min(1440px,100%)!important;
+  height:auto!important;
+  min-height:auto!important;
+  max-width:1440px!important;
+  overflow:visible!important;
+  padding:18px 20px 44px!important;
+  margin:0 auto!important;
+}
+.page.active{
+  display:block!important;
+}
+.groupsHero,
+.scheduleShell,
+.bracketShell{
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.92)!important;
+  box-shadow:0 12px 28px rgba(23,36,52,.08)!important;
+  color:var(--ink)!important;
+}
+.groupsHero{
+  height:auto!important;
+  min-height:0!important;
+  width:100%!important;
+  margin:0 0 14px!important;
+  padding:14px 16px!important;
+}
+.groupsHero strong,
+.scheduleToolbar h2{
+  color:var(--brand-blue)!important;
+  font-size:20px!important;
+  letter-spacing:0!important;
+}
+.note{
+  color:var(--ink-soft)!important;
+  font-size:13px!important;
+  line-height:1.45!important;
+}
+.miniStat,
+.scheduleLegend{
+  gap:8px!important;
+}
+.pill{
+  border:1px solid #cddbd1!important;
+  border-radius:8px!important;
+  background:var(--surface-soft)!important;
+  color:var(--brand-blue)!important;
+  box-shadow:none!important;
+}
+.groupsGrid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(292px,1fr))!important;
+  grid-template-rows:none!important;
+  gap:14px!important;
+  overflow:visible!important;
+  align-items:stretch!important;
+}
+.group{
+  min-height:0!important;
+  height:auto!important;
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:var(--surface)!important;
+  box-shadow:0 10px 22px rgba(23,36,52,.07)!important;
+  overflow:hidden!important;
+  opacity:1!important;
+  animation:none!important;
+  transform:none!important;
+}
+.group h3{
+  height:auto!important;
+  min-height:40px!important;
+  padding:10px 12px!important;
+  background:linear-gradient(90deg,var(--brand-blue),var(--grass))!important;
+  color:#fff!important;
+  text-shadow:none!important;
+}
+.group h3 span{
+  color:#eef9f1!important;
+}
+.groupTitleText{
+  color:#fff!important;
+}
+.readOnlyGroup{
+  height:auto!important;
+  max-height:none!important;
+}
+.readOnlyGroup table,
+.group table{
+  height:auto!important;
+  flex:initial!important;
+  table-layout:fixed!important;
+  font-size:13px!important;
+  color:var(--ink)!important;
+}
+.group th,
+.group td,
+.readOnlyGroup th,
+.readOnlyGroup td{
+  border-bottom:1px solid #edf1ed!important;
+  color:var(--ink)!important;
+  padding:9px 8px!important;
+}
+.group th{
+  background:#f4f8f5!important;
+  color:var(--ink-soft)!important;
+}
+.team{
+  max-width:none!important;
+}
+.flagTeam{
+  color:var(--ink)!important;
+}
+.pos.q{
+  background:rgba(47,125,79,.14)!important;
+  color:#16623e!important;
+}
+.pos.third{
+  color:#9a6a00!important;
+}
+.groupResultBtn,
+.readOnlyGroup h3 .groupResultBtn.groupResultInHeader{
+  margin:0!important;
+  width:auto!important;
+  border:1px solid rgba(255,255,255,.36)!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  padding:6px 9px!important;
+}
+.schedulePage{
+  max-width:1440px!important;
+}
+.scheduleShell{
+  display:block!important;
+  min-height:0!important;
+  overflow:visible!important;
+  padding:14px!important;
+}
+.scheduleToolbar{
+  position:sticky!important;
+  top:61px!important;
+  z-index:12!important;
+  padding:10px 0 12px!important;
+  background:rgba(255,255,255,.94)!important;
+  border-bottom:1px solid #edf1ed!important;
+}
+.scheduleList{
+  overflow:visible!important;
+  padding-right:0!important;
+}
+.scheduleDay{
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  box-shadow:0 8px 18px rgba(23,36,52,.06)!important;
+}
+.scheduleDayTitle{
+  position:static!important;
+  top:auto!important;
+  z-index:10!important;
+  border-radius:8px 8px 0 0!important;
+  background:linear-gradient(90deg,var(--coral),var(--gold))!important;
+  color:#fff!important;
+}
+.scheduleTable{
+  color:var(--ink)!important;
+  font-size:14px!important;
+}
+.scheduleTable th{
+  background:#f4f8f5!important;
+  color:var(--ink-soft)!important;
+}
+.scheduleTable th,
+.scheduleTable td{
+  border-bottom:1px solid #edf1ed!important;
+  color:var(--ink)!important;
+  padding:11px 10px!important;
+}
+.scheduleTime{
+  color:#8c6500!important;
+}
+.scheduleStage,
+.scheduleMatchNo{
+  color:var(--brand-blue)!important;
+}
+.scheduleScore{
+  color:var(--ink)!important;
+}
+.resultVs{
+  color:var(--gold)!important;
+}
+.statePill,
+.resultState{
+  min-width:58px!important;
+  border-radius:8px!important;
+  background:#e8edf2!important;
+  color:var(--ink-soft)!important;
+}
+.statePill.final,
+.resultState.final{
+  background:var(--final)!important;
+  color:#3a2d00!important;
+}
+.statePill.live,
+.resultState.live{
+  background:var(--live)!important;
+  color:#fff!important;
+}
+.bracketPage{
+  max-width:1600px!important;
+}
+#pageBracket{
+  padding:18px 20px 44px!important;
+}
+#pageBracket > .groupsHero{
+  display:flex!important;
+}
+.bracketShell,
+#pageBracket .bracketShell{
+  position:relative!important;
+  min-height:680px!important;
+  overflow:auto!important;
+  padding:14px!important;
+}
+.bracketStage,
+#pageBracket .bracketStage{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  min-height:630px!important;
+  overflow:auto!important;
+}
+#pageBracket .bracketSplit{
+  position:relative!important;
+  min-width:2100px!important;
+}
+#pageBracket .conferenceTitle,
+#pageBracket .round h2{
+  color:var(--brand-blue)!important;
+  text-shadow:none!important;
+}
+#pageBracket .ko{
+  border:1px solid var(--rule)!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+  box-shadow:0 8px 18px rgba(23,36,52,.08)!important;
+  opacity:1!important;
+}
+#pageBracket .ko.done{
+  border:2px solid var(--gold)!important;
+}
+#pageBracket .koCountry,
+#pageBracket .koDateCenter,
+#pageBracket .koScorePill{
+  color:var(--ink)!important;
+}
+#pageBracket .koScorePill{
+  background:#f4f8f5!important;
+  border-color:#dfe7e1!important;
+}
+#pageBracket .koVsPill,
+.finalVs{
+  background:var(--brand-blue)!important;
+  color:#fff!important;
+  border-radius:8px!important;
+}
+.champBox{
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+  box-shadow:0 8px 18px rgba(23,36,52,.08)!important;
+}
+.champBox h2{
+  color:var(--brand-blue)!important;
+}
+.championName{
+  border-radius:8px!important;
+  background:linear-gradient(180deg,#fff4bf,#f0c84a)!important;
+  color:#2e2a10!important;
+}
+.groupEditor.show{
+  display:flex!important;
+}
+.groupEditorCard,
+.modalCard{
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+  box-shadow:0 24px 70px rgba(23,36,52,.22)!important;
+}
+.groupEditorHead h2,
+.modalCard h2{
+  color:var(--brand-blue)!important;
+}
+.groupEditorHead .subLine{
+  color:var(--ink-soft)!important;
+}
+.groupMatch.resultOnly{
+  border:1px solid var(--rule)!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+}
+.resultDate{
+  color:var(--brand-blue)!important;
+}
+.resultTeam{
+  color:var(--ink)!important;
+}
+.resultScore{
+  background:#f4f8f5!important;
+  color:var(--ink)!important;
+}
+.modal textarea{
+  background:#f7faf8!important;
+  color:var(--ink)!important;
+  border:1px solid var(--rule)!important;
+}
+.landscapeWarn{
+  display:none!important;
+}
+@media (orientation:portrait){
+  .landscapeWarn{
+    display:none!important;
+  }
+}
+@media(max-width:900px){
+  .header{
+    padding:18px 14px 14px!important;
+    min-height:128px!important;
+  }
+  .title{
+    font-size:34px!important;
+  }
+  .toolbar{
+    position:static!important;
+    justify-content:center!important;
+    margin-top:8px!important;
+  }
+  .pageTabs{
+    justify-content:flex-start!important;
+    overflow-x:auto!important;
+    padding:8px 10px!important;
+  }
+  .tabBtn{
+    min-width:74px!important;
+    flex:0 0 auto!important;
+    padding:9px 12px!important;
+  }
+  .page{
+    padding:12px 10px 32px!important;
+  }
+  .groupsGrid{
+    grid-template-columns:1fr!important;
+  }
+  .groupsHero,
+  .scheduleToolbar{
+    align-items:flex-start!important;
+  }
+  .scheduleToolbar{
+    top:50px!important;
+  }
+  .scheduleDayTitle{
+    top:auto!important;
+  }
+  .scheduleTable{
+    font-size:12px!important;
+    min-width:0!important;
+    display:block!important;
+  }
+  .scheduleTable thead{
+    display:none!important;
+  }
+  .scheduleTable tbody,
+  .scheduleTable tr,
+  .scheduleTable td{
+    display:block!important;
+  }
+  .scheduleTable tr{
+    display:grid!important;
+    grid-template-columns:68px minmax(0,1fr) 70px!important;
+    grid-template-areas:
+      "time home state"
+      "match score state"
+      "stage away state"!important;
+    align-items:center!important;
+    gap:5px 9px!important;
+    padding:10px 12px!important;
+    border-bottom:1px solid #edf1ed!important;
+  }
+  .scheduleTable td{
+    padding:0!important;
+    border:0!important;
+  }
+  .scheduleTime{grid-area:time!important}
+  .scheduleStage{grid-area:stage!important;width:auto!important}
+  .scheduleMatchNo{grid-area:match!important;width:auto!important}
+  .scheduleTeam.home{grid-area:home!important}
+  .scheduleTeam.away{
+    grid-area:away!important;
+    text-align:left!important;
+  }
+  .scheduleScore{grid-area:score!important;text-align:left!important}
+  .scheduleState{
+    grid-area:state!important;
+    width:auto!important;
+    align-self:center!important;
+  }
+  .scheduleDay{
+    overflow:hidden!important;
+  }
+  .groupMatch.resultOnly{
+    grid-template-columns:74px minmax(0,1fr) 42px 28px 42px minmax(0,1fr) 60px!important;
+  }
+}
 </style>
 </head>
 <body>
 <header class="header">
   <div class="kicker">WORLD CUP 2026</div>
   <h1 class="title">2026 世足 決鬥之路</h1>
-  <div class="sub">台灣時間賽程｜小組賽與 32 強淘汰賽總覽</div>
+  <div class="sub">台灣時間賽程｜小組賽、完整時刻表與 32 強淘汰賽總覽</div>
   <div class="syncBadge warn" id="syncBadge"><span class="syncDot"></span><span>比分自動同步準備中</span></div>
   <div class="toolbar">
     <button class="btn" onclick="openDataEditor()">編輯賽程/隊名 JSON</button>
@@ -1835,6 +2525,7 @@ body:after{
 </header>
 <div class="pageTabs">
   <button class="tabBtn active" id="tabGroups" onclick="showPage('groups')">預賽</button>
+  <button class="tabBtn" id="tabSchedule" onclick="showPage('schedule')">賽程</button>
   <button class="tabBtn" id="tabBracket" onclick="showPage('bracket')">32強</button>
 </div>
 <div class="status" id="status"></div>
@@ -1844,6 +2535,18 @@ body:after{
     <div class="miniStat" id="groupSummary"></div>
   </div>
   <div class="groupsGrid" id="groupsGrid"></div>
+</section>
+<section class="page schedulePage" id="pageSchedule">
+  <div class="scheduleShell">
+    <div class="scheduleToolbar">
+      <div>
+        <h2>完整賽程時刻表</h2>
+        <div class="note">依台灣時間排序；比分與預賽排名、淘汰賽頁面共用同一份資料。</div>
+      </div>
+      <div class="scheduleLegend" id="scheduleSummary"></div>
+    </div>
+    <div class="scheduleList" id="scheduleList"></div>
+  </div>
 </section>
 <section class="page bracketPage" id="pageBracket">
   <div class="groupsHero">
@@ -2077,6 +2780,18 @@ function todayKey(offsetDays=0){
   dt.setDate(dt.getDate()+offsetDays);
   return `${dt.getFullYear()}${String(dt.getMonth()+1).padStart(2,'0')}${String(dt.getDate()).padStart(2,'0')}`;
 }
+function dateToTaiwanKey(value){
+  const dt=new Date(value);
+  if(Number.isNaN(dt.getTime())) return '';
+  const parts=new Intl.DateTimeFormat('en-CA',{
+    timeZone:'Asia/Taipei',
+    year:'numeric',
+    month:'2-digit',
+    day:'2-digit'
+  }).formatToParts(dt);
+  const byType=Object.fromEntries(parts.map(p=>[p.type,p.value]));
+  return `${byType.year}${byType.month}${byType.day}`;
+}
 function scheduledDateKeysForInitialSync(){
   const cutoff=Number(todayKey(1));
   const keys=new Set([...data.matches.map(m=>monthDayToDateKey(m.date)), ...ko.map(m=>monthDayToDateKey(m.date))].filter(Boolean));
@@ -2152,7 +2867,8 @@ async function autoSyncScores(full=false){
         const hScore=Number(home.score), aScore=Number(away.score);
         if(!Number.isFinite(hScore)||!Number.isFinite(aScore)) continue;
         seen++;
-        touched += applyScoreToLocal(dateKey,hTeam,hScore,aTeam,aScore, ev?.status?.type?.state || '');
+        const eventDateKey = dateToTaiwanKey(ev?.date || comp?.date || dateKey) || dateKey;
+        touched += applyScoreToLocal(eventDateKey,hTeam,hScore,aTeam,aScore, ev?.status?.type?.state || '');
       }
     }catch(err){
       failed++;
@@ -2772,7 +3488,257 @@ function card(m,q){
    </div>
  </div>`;
 }
+
+const verifiedResults = [
+  {group:'A', home:'墨西哥', away:'南非', hs:2, as:0},
+  {group:'A', home:'韓國', away:'捷克', hs:2, as:1},
+  {group:'B', home:'加拿大', away:'波赫', hs:1, as:1},
+  {group:'D', home:'美國', away:'巴拉圭', hs:4, as:1}
+];
+function sameFixture(m, result){
+  return m.group===result.group && (
+    (m.home===result.home && m.away===result.away) ||
+    (m.home===result.away && m.away===result.home)
+  );
+}
+function seedVerifiedResults(){
+  let changed=0;
+  verifiedResults.forEach(result=>{
+    const match=data.matches.find(m=>sameFixture(m,result));
+    if(!match) return;
+    const homeScore = match.home===result.home ? result.hs : result.as;
+    const awayScore = match.away===result.away ? result.as : result.hs;
+    if(match.hs!==homeScore || match.as!==awayScore || match.espnState!=='post'){
+      match.hs=homeScore;
+      match.as=awayScore;
+      match.espnState='post';
+      changed++;
+    }
+  });
+  if(changed) silentSaveData();
+}
+function scheduleSortValue(item){
+  const [month,day]=String(item.date||'').split('/').map(v=>parseInt(v,10)||0);
+  const [hour,min]=String(item.twTime||'00:00').split(':').map(v=>parseInt(v,10)||0);
+  return new Date(2026, month-1, day, hour, min).getTime();
+}
+function hasScoreValue(value){
+  return value!==null && value!==undefined && value!=='';
+}
+function scheduleStatusText(item){
+  if(item.espnState==='in') return 'LIVE';
+  if(item.espnState==='post') return '完賽';
+  if(hasScoreValue(item.hs) && hasScoreValue(item.as)) return '完賽';
+  if(hasScoreValue(item.ascore) && hasScoreValue(item.bscore)) return '完賽';
+  return '未賽';
+}
+function scheduleStatusClass(item){
+  if(item.espnState==='in') return 'live';
+  if(scheduleStatusText(item)==='完賽') return 'final';
+  return '';
+}
+function groupScheduleItems(){
+  return data.matches.map(m=>({
+    type:'group',
+    date:m.date,
+    twTime:m.twTime||'',
+    stage:`${m.group} 組`,
+    no:m.id.replace('G',''),
+    home:m.home,
+    away:m.away,
+    hs:m.hs,
+    as:m.as,
+    espnState:m.espnState
+  }));
+}
+function knockoutScheduleItems(){
+  const q=qualifiers();
+  return ko.map(m=>({
+    type:'ko',
+    date:m.date,
+    twTime:m.twTime||'',
+    stage:m.round,
+    no:m.id,
+    home:koDisplayLabel(m.a,q),
+    away:koDisplayLabel(m.b,q),
+    hs:m.ascore,
+    as:m.bscore,
+    espnState:m.espnState
+  }));
+}
+function scheduleTeamText(name){
+  if(name==='待' || name==='最佳第三') return escapeHTML(name);
+  return teamLabel(name);
+}
+function scheduleRow(item){
+  const status=scheduleStatusText(item);
+  const cls=scheduleStatusClass(item);
+  return `<tr>
+    <td class="scheduleTime">${escapeHTML(item.twTime||'--:--')}</td>
+    <td class="scheduleStage">${escapeHTML(item.stage)}</td>
+    <td class="scheduleMatchNo">#${escapeHTML(item.no)}</td>
+    <td class="scheduleTeam home">${scheduleTeamText(item.home)}</td>
+    <td class="scheduleScore">${scoreText(item.hs)} <span class="resultVs">VS</span> ${scoreText(item.as)}</td>
+    <td class="scheduleTeam away">${scheduleTeamText(item.away)}</td>
+    <td class="scheduleState"><span class="statePill ${cls}">${status}</span></td>
+  </tr>`;
+}
+function renderSchedule(){
+  const summary=document.getElementById('scheduleSummary');
+  const list=document.getElementById('scheduleList');
+  if(!summary || !list) return;
+  const items=[...groupScheduleItems(), ...knockoutScheduleItems()].sort((a,b)=>scheduleSortValue(a)-scheduleSortValue(b)||Number(a.no)-Number(b.no));
+  const played=items.filter(item=>scheduleStatusText(item)==='完賽').length;
+  summary.innerHTML=`<span class="pill">全部 ${items.length} 場</span><span class="pill">已完賽 ${played} 場</span><span class="pill">台灣時間</span>`;
+  const byDate=new Map();
+  items.forEach(item=>{
+    if(!byDate.has(item.date)) byDate.set(item.date, []);
+    byDate.get(item.date).push(item);
+  });
+  list.innerHTML=[...byDate.entries()].map(([date,dayItems])=>`<section class="scheduleDay">
+    <div class="scheduleDayTitle"><span>${escapeHTML(date)}</span><span>${dayItems.length} 場</span></div>
+    <table class="scheduleTable">
+      <thead><tr><th>時間</th><th>階段</th><th>場次</th><th>主隊</th><th class="scheduleScore">比分</th><th class="scheduleTeam away">客隊</th><th class="scheduleState">狀態</th></tr></thead>
+      <tbody>${dayItems.map(scheduleRow).join('')}</tbody>
+    </table>
+  </section>`).join('');
+}
+function showPage(which){
+ document.getElementById('pageGroups').classList.toggle('active',which==='groups');
+ document.getElementById('pageSchedule').classList.toggle('active',which==='schedule');
+ document.getElementById('pageBracket').classList.toggle('active',which==='bracket');
+ document.getElementById('tabGroups').classList.toggle('active',which==='groups');
+ document.getElementById('tabSchedule').classList.toggle('active',which==='schedule');
+ document.getElementById('tabBracket').classList.toggle('active',which==='bracket');
+ requestAnimationFrame(fitFixedUI);
+}
+function render(){renderGroups();renderSchedule();renderBracket();}
+function fitFixedUI(){
+ const stage=document.getElementById('bracketStage');
+ const bracket=document.getElementById('bracket');
+ const page=document.getElementById('pageBracket');
+ if(!stage || !bracket || !page?.classList.contains('active')) return;
+ bracket.style.position='relative';
+ bracket.style.left='0';
+ bracket.style.top='0';
+ bracket.style.width='2100px';
+ bracket.style.height='auto';
+ bracket.style.transformOrigin='top left';
+ if(stage.clientWidth < 980){
+   bracket.style.transform='none';
+   return;
+ }
+ bracket.style.transform='none';
+ const contentW=bracket.scrollWidth || 2100;
+ const contentH=bracket.scrollHeight || 620;
+ const scale=Math.min(stage.clientWidth/contentW, stage.clientHeight/contentH, 1);
+ bracket.style.transform=`scale(${Math.max(scale,.62)})`;
+}
+function applyMarieClaireSourceSchedule(){
+  officialGroups.E[1]='庫拉索';
+  officialGroups.H[2]='沙烏地阿拉伯';
+  officialGroups.K[1]='剛果民主共和國';
+  teamFlags['庫拉索']='🇨🇼';
+  teamFlags['沙烏地阿拉伯']='🇸🇦';
+  teamFlags['剛果民主共和國']='🇨🇩';
+  const sourceMatches = [
+    groupMatch(1,'A','6/12','03:00','墨西哥','南非'),
+    groupMatch(2,'A','6/12','10:00','韓國','捷克'),
+    groupMatch(3,'B','6/13','03:00','加拿大','波赫'),
+    groupMatch(4,'D','6/13','09:00','美國','巴拉圭'),
+    groupMatch(5,'B','6/14','03:00','卡達','瑞士'),
+    groupMatch(6,'C','6/14','06:00','巴西','摩洛哥'),
+    groupMatch(7,'C','6/14','09:00','海地','蘇格蘭'),
+    groupMatch(8,'D','6/14','12:00','澳洲','土耳其'),
+    groupMatch(9,'E','6/15','01:00','德國','庫拉索'),
+    groupMatch(10,'F','6/15','04:00','荷蘭','日本'),
+    groupMatch(11,'E','6/15','07:00','象牙海岸','厄瓜多'),
+    groupMatch(12,'F','6/15','10:00','瑞典','突尼西亞'),
+    groupMatch(13,'H','6/16','00:00','西班牙','維德角'),
+    groupMatch(14,'G','6/16','03:00','比利時','埃及'),
+    groupMatch(15,'H','6/16','06:00','沙烏地阿拉伯','烏拉圭'),
+    groupMatch(16,'G','6/16','09:00','伊朗','紐西蘭'),
+    groupMatch(17,'I','6/17','03:00','法國','塞內加爾'),
+    groupMatch(18,'I','6/17','06:00','伊拉克','挪威'),
+    groupMatch(19,'J','6/17','09:00','阿根廷','阿爾及利亞'),
+    groupMatch(20,'J','6/17','12:00','奧地利','約旦'),
+    groupMatch(21,'K','6/18','01:00','葡萄牙','剛果民主共和國'),
+    groupMatch(22,'L','6/18','04:00','英格蘭','克羅埃西亞'),
+    groupMatch(23,'L','6/18','07:00','迦納','巴拿馬'),
+    groupMatch(24,'K','6/18','10:00','烏茲別克','哥倫比亞'),
+    groupMatch(25,'A','6/19','00:00','捷克','南非'),
+    groupMatch(26,'B','6/19','03:00','瑞士','波赫'),
+    groupMatch(27,'B','6/19','06:00','加拿大','卡達'),
+    groupMatch(28,'A','6/19','09:00','墨西哥','韓國'),
+    groupMatch(29,'D','6/20','03:00','美國','澳洲'),
+    groupMatch(30,'C','6/20','06:00','蘇格蘭','摩洛哥'),
+    groupMatch(31,'C','6/20','08:30','巴西','海地'),
+    groupMatch(32,'D','6/20','11:00','土耳其','巴拉圭'),
+    groupMatch(33,'F','6/21','01:00','荷蘭','瑞典'),
+    groupMatch(34,'E','6/21','04:00','德國','象牙海岸'),
+    groupMatch(35,'E','6/21','08:00','厄瓜多','庫拉索'),
+    groupMatch(36,'F','6/21','12:00','突尼西亞','日本'),
+    groupMatch(37,'H','6/22','00:00','西班牙','沙烏地阿拉伯'),
+    groupMatch(38,'G','6/22','03:00','比利時','伊朗'),
+    groupMatch(39,'H','6/22','06:00','烏拉圭','維德角'),
+    groupMatch(40,'G','6/22','09:00','紐西蘭','埃及'),
+    groupMatch(41,'J','6/23','01:00','阿根廷','奧地利'),
+    groupMatch(42,'I','6/23','05:00','法國','伊拉克'),
+    groupMatch(43,'I','6/23','08:00','挪威','塞內加爾'),
+    groupMatch(44,'J','6/23','11:00','約旦','阿爾及利亞'),
+    groupMatch(45,'K','6/24','01:00','葡萄牙','烏茲別克'),
+    groupMatch(46,'L','6/24','04:00','英格蘭','迦納'),
+    groupMatch(47,'L','6/24','07:00','巴拿馬','克羅埃西亞'),
+    groupMatch(48,'K','6/24','10:00','哥倫比亞','剛果民主共和國'),
+    groupMatch(49,'B','6/25','03:00','瑞士','加拿大'),
+    groupMatch(50,'B','6/25','03:00','波赫','卡達'),
+    groupMatch(51,'C','6/25','06:00','摩洛哥','海地'),
+    groupMatch(52,'C','6/25','06:00','蘇格蘭','巴西'),
+    groupMatch(53,'A','6/25','09:00','南非','韓國'),
+    groupMatch(54,'A','6/25','09:00','捷克','墨西哥'),
+    groupMatch(55,'E','6/26','04:00','庫拉索','象牙海岸'),
+    groupMatch(56,'E','6/26','04:00','厄瓜多','德國'),
+    groupMatch(57,'F','6/26','07:00','突尼西亞','荷蘭'),
+    groupMatch(58,'F','6/26','07:00','日本','瑞典'),
+    groupMatch(59,'D','6/26','10:00','土耳其','美國'),
+    groupMatch(60,'D','6/26','10:00','巴拉圭','澳洲'),
+    groupMatch(61,'I','6/27','03:00','挪威','法國'),
+    groupMatch(62,'I','6/27','03:00','塞內加爾','伊拉克'),
+    groupMatch(63,'H','6/27','08:00','維德角','沙烏地阿拉伯'),
+    groupMatch(64,'H','6/27','08:00','烏拉圭','西班牙'),
+    groupMatch(65,'G','6/27','11:00','紐西蘭','比利時'),
+    groupMatch(66,'G','6/27','11:00','埃及','伊朗'),
+    groupMatch(67,'L','6/28','05:00','巴拿馬','英格蘭'),
+    groupMatch(68,'L','6/28','05:00','克羅埃西亞','迦納'),
+    groupMatch(69,'K','6/28','07:30','哥倫比亞','葡萄牙'),
+    groupMatch(70,'K','6/28','07:30','剛果民主共和國','烏茲別克'),
+    groupMatch(71,'J','6/28','10:00','阿爾及利亞','奧地利'),
+    groupMatch(72,'J','6/28','10:00','約旦','阿根廷')
+  ];
+  officialMatches.splice(0, officialMatches.length, ...sourceMatches);
+  const koMeta = {
+    73:['32強','6/29','03:00','2A','2B'],76:['32強','6/30','01:00','1C','2F'],74:['32強','6/30','04:30','1E','最佳第三 A/B/C/D/F'],75:['32強','6/30','09:00','1F','2C'],
+    78:['32強','7/1','01:00','2E','2I'],77:['32強','7/1','05:00','1I','最佳第三 C/D/F/G/H'],79:['32強','7/1','09:00','1A','最佳第三 C/E/F/H/I'],80:['32強','7/2','00:00','1L','最佳第三 E/H/I/J/K'],
+    82:['32強','7/2','04:00','1G','最佳第三 A/E/H/I/J'],81:['32強','7/2','08:00','1D','最佳第三 B/E/F/I/J'],84:['32強','7/3','03:00','1H','2J'],83:['32強','7/3','07:00','2K','2L'],
+    85:['32強','7/3','11:00','1B','最佳第三 E/F/G/I/J'],88:['32強','7/4','02:00','2D','2G'],86:['32強','7/4','06:00','1J','2H'],87:['32強','7/4','09:30','1K','最佳第三 D/E/I/J/L'],
+    90:['16強','7/5','01:00','勝73','勝75'],89:['16強','7/5','05:00','勝74','勝77'],91:['16強','7/6','04:00','勝76','勝78'],92:['16強','7/6','08:00','勝79','勝80'],
+    93:['16強','7/7','03:00','勝83','勝84'],94:['16強','7/7','08:00','勝81','勝82'],95:['16強','7/8','00:00','勝86','勝88'],96:['16強','7/8','04:00','勝85','勝87'],
+    97:['8強','7/10','04:00','勝89','勝90'],98:['8強','7/11','03:00','勝93','勝94'],99:['8強','7/12','05:00','勝91','勝92'],100:['8強','7/12','09:00','勝95','勝96'],
+    101:['準決賽','7/15','03:00','勝97','勝98'],102:['準決賽','7/16','03:00','勝99','勝100'],103:['季軍戰','7/19','05:00','敗101','敗102'],104:['決賽','7/20','03:00','勝101','勝102']
+  };
+  ko.forEach(m=>{
+    const meta=koMeta[m.id];
+    if(!meta) return;
+    m.round=meta[0];
+    m.date=meta[1];
+    m.twTime=meta[2];
+    m.a=meta[3];
+    m.b=meta[4];
+  });
+}
+applyMarieClaireSourceSchedule();
 installOfficialSchedule();
+seedVerifiedResults();
 render();
 startAutoScoreSync();
 startCountdownBadge();
