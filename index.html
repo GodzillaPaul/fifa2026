@@ -2639,6 +2639,37 @@ body:after{
     grid-template-columns:74px minmax(0,1fr) 42px 28px 42px minmax(0,1fr) 60px!important;
   }
 }
+/* === v19: 統計資訊面板 === */
+.statsCard{width:min(860px,96vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.statsHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+.statsHead h2{margin:0}
+.statsSource{color:#9fc0d2;font-size:12px;font-weight:800;margin-top:4px}
+.statsHeadBtns{display:flex;gap:8px;align-items:center}
+.statsTabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.statsTab{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#dff5ff;border-radius:999px;padding:8px 16px;font-weight:900;cursor:pointer;font-size:13px}
+.statsTab.active{background:linear-gradient(180deg,#ffe957,#ffbe20);color:#092034;border:0}
+.statsBody{overflow:auto;flex:1;min-height:120px}
+.statsNote{color:#9fc0d2;font-size:13px;line-height:1.6;padding:18px 6px;text-align:center}
+.statTable{width:100%;border-collapse:collapse;font-size:13.5px}
+.statTable th,.statTable td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.1);text-align:center}
+.statTable th{color:#9fd0ff;background:rgba(0,0,0,.22);position:sticky;top:0;font-size:12px}
+.statTable td.rankCol{width:34px;color:#ffe100;font-weight:1000}
+.statTable td.nameCol,.statTable th.nameCol{text-align:left;font-weight:800}
+.statTable td.teamCol,.statTable th.teamCol{text-align:left;color:#cfeaff}
+.statTable td.big{font-weight:1000;color:#fff;font-size:15px}
+.statTable tr:nth-child(-n+3) td.rankCol{color:#3dffb0}
+.statGroupGrid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px}
+.statGroupCard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
+.statGroupCard h4{margin:0;padding:8px 12px;background:linear-gradient(90deg,#e9451c,#f79b24);font-size:14px}
+.statGroupCard table{width:100%;border-collapse:collapse;font-size:12px}
+.statGroupCard th,.statGroupCard td{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.08);text-align:center}
+.statGroupCard th{color:#9fd0ff;background:rgba(0,0,0,.18)}
+.statGroupCard td.team{text-align:left;font-weight:800}
+.statGroupCard td.qpos{color:#3dffb0;font-weight:1000}
+.cardPill{display:inline-block;min-width:22px;border-radius:6px;font-weight:1000;padding:2px 6px;color:#061521}
+.cardPill.yc{background:#ffd400}
+.cardPill.rc{background:#ff4d4d;color:#fff}
+@media(max-width:720px){.statGroupGrid{grid-template-columns:1fr}.statsTab{padding:7px 12px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -2649,6 +2680,7 @@ body:after{
   <div class="syncBadge warn" id="syncBadge"><span class="syncDot"></span><span>比分自動同步準備中</span></div>
   <div class="toolbar">
     <button class="btn" onclick="openDataEditor()">編輯賽程/隊名 JSON</button>
+    <button class="btn" onclick="openStatsModal()">統計資訊</button>
     <button class="btn" onclick="window.print()">列印賽程表</button>
   </div>
 </header>
@@ -2693,7 +2725,7 @@ body:after{
   </div>
   <div class="bracketShell"><div class="bracketHint">左半區、右半區一路往中間推進，最後在中央決出總冠軍</div><div class="bracketStage" id="bracketStage"><div class="bracket" id="bracket"></div></div></div>
 </section>
-<div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">賽程以台灣時間顯示；開賽後可在此查看比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
+<div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">賽程以台灣時間顯示；開賽後可在此查看比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="statsModal"><div class="modalCard statsCard"><div class="statsHead"><div><h2>統計資訊</h2><div class="statsSource" id="statsSource">資料來源：ESPN 世界盃即時數據</div></div><div class="statsHeadBtns"><button class="btn" id="statsRefreshBtn" onclick="refreshStats()">重新整理</button><button class="closeX" onclick="closeStatsModal()">關閉</button></div></div><div class="statsTabs"><button class="statsTab active" data-stab="scorers" onclick="switchStatsTab('scorers')">射手榜</button><button class="statsTab" data-stab="teams" onclick="switchStatsTab('teams')">球隊數據</button><button class="statsTab" data-stab="groups" onclick="switchStatsTab('groups')">小組排名</button><button class="statsTab" data-stab="cards" onclick="switchStatsTab('cards')">紀律</button></div><div class="statsBody" id="statsBody"></div></div></div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
 <script>
 const defaultData = {
  groups:{
@@ -2910,7 +2942,7 @@ const teamAliasRows = [
  ['荷蘭','Netherlands','Holland','NED'],['日本','Japan','JPN'],['瑞典','Sweden','SWE'],['突尼西亞','Tunisia','TUN'],['紐西蘭','New Zealand','NZL'],
  ['比利時','Belgium','BEL'],['埃及','Egypt','EGY'],['伊朗','Iran','IRN'],
  ['西班牙','Spain','ESP'],['維德角','Cape Verde','Cabo Verde','CPV'],['沙烏地阿拉伯','Saudi Arabia','Saudi','KSA','沙烏地'],['烏拉圭','Uruguay','URU'],
- ['法國','France','FRA'],['塞內加爾','Senegal','SEN'],['挪威','Norway','NOR'],['約旦','Jordan','JOR'],
+ ['法國','France','FRA'],['塞內加爾','Senegal','SEN'],['伊拉克','Iraq','IRQ'],['挪威','Norway','NOR'],['約旦','Jordan','JOR'],
  ['阿根廷','Argentina','ARG'],['阿爾及利亞','Algeria','ALG'],['奧地利','Austria','AUT'],
  ['葡萄牙','Portugal','POR'],['剛果民主共和國','Congo DR','DR Congo','Congo','COD','民主剛果','剛果'],['烏茲別克','Uzbekistan','UZB'],['哥倫比亞','Colombia','COL'],
  ['英格蘭','England','ENG'],['克羅埃西亞','Croatia','CRO'],['迦納','Ghana','GHA'],['巴拿馬','Panama','PAN']
@@ -2929,6 +2961,7 @@ setTeamAliases('庫拉索',['古拉索','Curacao','Curaçao','CUW']);
 setTeamAliases('沙烏地阿拉伯',['沙烏地','Saudi Arabia','Saudi','KSA']);
 setTeamAliases('剛果民主共和國',['民主剛果','剛果','Congo DR','DR Congo','Congo','COD']);
 setTeamAliases('瑞典',['Sweden','SWE']);
+setTeamAliases('伊拉克',['Iraq','IRQ','伊拉克共和國']);
 function canonicalLocalTeam(name){
   return aliasToLocal.get(normalizeTeamName(name)) || name;
 }
@@ -3073,6 +3106,7 @@ async function autoSyncScores(full=false){
         const comp=ev.competitions?.[0];
         const cs=comp?.competitors||[];
         if(cs.length<2) continue;
+        captureEventStats(ev, comp, cs);
         const home=cs.find(c=>c.homeAway==='home') || cs[0];
         const away=cs.find(c=>c.homeAway==='away') || cs[1];
         const hTeam=canonicalTeamFromESPN(home.team);
@@ -3089,6 +3123,9 @@ async function autoSyncScores(full=false){
     }
   }
   if(touched){ silentSaveData(); render(); }
+  statsLastUpdated=Date.now();
+  persistEspnStats();
+  if(typeof statsModalOpen==='function' && statsModalOpen()) renderStatsModal();
   const time=new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
   if(failed && !seen) setSyncBadge(`ESPN 暫時連不上，${time} 會再試`, 'error');
   else setSyncBadge(`ESPN 自動同步中｜${time}｜更新 ${touched} 筆`, touched?'live':'warn');
@@ -4044,6 +4081,127 @@ function applyMarieClaireSourceSchedule(){
   });
   localStorage.setItem('wc2026KO', JSON.stringify(ko));
 }
+/* === v19: 統計資訊（從 ESPN 世界盃即時數據彙整：射手榜、球隊數據、小組排名、紀律）=== */
+let espnEventStats = (()=>{ try{ return JSON.parse(localStorage.getItem('wc2026Stats')||'{}')||{}; }catch(e){ return {}; } })();
+let statsActiveTab = 'scorers';
+let statsLastUpdated = Number(localStorage.getItem('wc2026StatsTime')||0) || 0;
+
+function captureEventStats(ev, comp, cs){
+  if(!comp) return;
+  const eid=String(ev?.id||comp?.id||'');
+  if(!eid) return;
+  const teamMap={};
+  (cs||[]).forEach(c=>{ if(c?.team?.id) teamMap[String(c.team.id)] = canonicalTeamFromESPN(c.team) || c.team.displayName || ''; });
+  const details=Array.isArray(comp.details)?comp.details:[];
+  espnEventStats[eid]={
+    date: ev?.date||comp?.date||'',
+    state: ev?.status?.type?.state||comp?.status?.type?.state||'',
+    teams: teamMap,
+    plays: details.map(d=>({
+      tid:String(d?.team?.id||''),
+      scoringPlay:!!d.scoringPlay, penaltyKick:!!d.penaltyKick, ownGoal:!!d.ownGoal, shootout:!!d.shootout,
+      yellowCard:!!d.yellowCard, redCard:!!d.redCard,
+      athletes:(d.athletesInvolved||[]).map(a=>({id:String(a.id||''), name:a.displayName||a.fullName||a.shortName||'', tid:String(a?.team?.id||d?.team?.id||'')}))
+    }))
+  };
+}
+function persistEspnStats(){
+  try{ localStorage.setItem('wc2026Stats', JSON.stringify(espnEventStats)); localStorage.setItem('wc2026StatsTime', String(statsLastUpdated)); }catch(e){}
+}
+function computeStats(){
+  const scorers={}, cards={};
+  Object.values(espnEventStats).forEach(ev=>{
+    (ev.plays||[]).forEach(p=>{
+      const a=p.athletes&&p.athletes[0];
+      const teamLocal=(a&&ev.teams&&ev.teams[a.tid])||(ev.teams&&ev.teams[p.tid])||'';
+      if(p.scoringPlay && !p.shootout && !p.ownGoal && a && a.id){
+        const s=scorers[a.id]||(scorers[a.id]={name:a.name||'—', team:teamLocal, goals:0, pk:0});
+        s.goals++; if(p.penaltyKick) s.pk++; if(!s.team) s.team=teamLocal;
+      }
+      if((p.yellowCard||p.redCard) && a && a.id){
+        const c=cards[a.id]||(cards[a.id]={name:a.name||'—', team:teamLocal, yc:0, rc:0});
+        if(p.yellowCard) c.yc++; if(p.redCard) c.rc++; if(!c.team) c.team=teamLocal;
+      }
+    });
+  });
+  const scorerList=Object.values(scorers).filter(s=>s.goals>0).sort((x,y)=>y.goals-x.goals||y.pk-x.pk||x.name.localeCompare(y.name));
+  const cardList=Object.values(cards).filter(c=>c.yc>0||c.rc>0).sort((x,y)=>(y.rc-x.rc)||(y.yc-x.yc)||x.name.localeCompare(y.name));
+  return {scorerList, cardList};
+}
+function teamStatRows(){
+  const rows=[];
+  Object.keys(data.groups).forEach(g=>{ rankGroup(g).forEach(r=>rows.push({...r, group:g})); });
+  return rows;
+}
+function statFlag(name){ const f=(typeof flagForTeam==='function')?flagForTeam(name):''; return f?f+' ':''; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function renderStatsScorers(){
+  const {scorerList}=computeStats();
+  if(!scorerList.length) return `<div class="statsNote">目前還沒有可彙整的進球資料。<br>比賽開始（ESPN 標記為進行中／完賽）後會自動帶入。</div>`;
+  const rows=scorerList.slice(0,40).map((s,i)=>`<tr><td class="rankCol">${i+1}</td><td class="nameCol">${esc(s.name)}</td><td class="teamCol">${statFlag(s.team)}${esc(s.team||'—')}</td><td class="big">${s.goals}</td><td>${s.pk||0}</td></tr>`).join('');
+  return `<table class="statTable"><thead><tr><th>#</th><th class="nameCol">球員</th><th class="teamCol">球隊</th><th>進球</th><th>含PK</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderStatsTeams(){
+  const rows=teamStatRows().filter(r=>r.p>0).sort((x,y)=>y.gf-x.gf||y.gd-x.gd||x.ga-y.ga);
+  if(!rows.length) return `<div class="statsNote">目前還沒有任何比賽結果，球隊數據會在比分進來後自動更新。</div>`;
+  const body=rows.map((r,i)=>`<tr><td class="rankCol">${i+1}</td><td class="nameCol">${statFlag(r.team)}${esc(r.team)}</td><td>${r.group}</td><td>${r.p}</td><td class="big">${r.gf}</td><td>${r.ga}</td><td>${r.gd>0?'+':''}${r.gd}</td></tr>`).join('');
+  return `<table class="statTable"><thead><tr><th>#</th><th class="nameCol">球隊</th><th>組</th><th>賽</th><th>進球</th><th>失球</th><th>淨勝</th></tr></thead><tbody>${body}</tbody></table>`;
+}
+function renderStatsGroups(){
+  const cards=Object.keys(data.groups).map(g=>{
+    const r=rankGroup(g);
+    const rows=r.map((x,i)=>`<tr><td class="${i<2?'qpos':''}">${i+1}</td><td class="team">${statFlag(x.team)}${esc(x.team)}</td><td>${x.p}</td><td>${x.pts}</td><td>${x.gd>0?'+':''}${x.gd}</td><td>${x.gf}</td></tr>`).join('');
+    return `<div class="statGroupCard"><h4>${g} 組</h4><table><thead><tr><th>#</th><th style="text-align:left">隊伍</th><th>賽</th><th>積</th><th>淨</th><th>進</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join('');
+  return `<div class="statGroupGrid">${cards}</div>`;
+}
+function renderStatsCards(){
+  const {cardList}=computeStats();
+  if(!cardList.length) return `<div class="statsNote">目前還沒有黃牌／紅牌紀錄，會在比賽開始後自動帶入。</div>`;
+  const rows=cardList.slice(0,40).map((c,i)=>`<tr><td class="rankCol">${i+1}</td><td class="nameCol">${esc(c.name)}</td><td class="teamCol">${statFlag(c.team)}${esc(c.team||'—')}</td><td><span class="cardPill yc">${c.yc}</span></td><td>${c.rc?`<span class="cardPill rc">${c.rc}</span>`:'0'}</td></tr>`).join('');
+  return `<table class="statTable"><thead><tr><th>#</th><th class="nameCol">球員</th><th class="teamCol">球隊</th><th>黃牌</th><th>紅牌</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderStatsModal(){
+  const body=document.getElementById('statsBody');
+  if(!body) return;
+  let html='';
+  if(statsActiveTab==='scorers') html=renderStatsScorers();
+  else if(statsActiveTab==='teams') html=renderStatsTeams();
+  else if(statsActiveTab==='groups') html=renderStatsGroups();
+  else if(statsActiveTab==='cards') html=renderStatsCards();
+  body.innerHTML=html;
+  const src=document.getElementById('statsSource');
+  if(src){
+    const t=statsLastUpdated?new Date(statsLastUpdated).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}):'—';
+    src.textContent=`資料來源：ESPN 世界盃即時數據｜最後更新 ${t}`;
+  }
+}
+function switchStatsTab(tab){
+  statsActiveTab=tab;
+  document.querySelectorAll('.statsTab').forEach(b=>b.classList.toggle('active', b.dataset.stab===tab));
+  renderStatsModal();
+}
+function statsModalOpen(){ const m=document.getElementById('statsModal'); return m&&m.classList.contains('show'); }
+function openStatsModal(){
+  const m=document.getElementById('statsModal');
+  if(!m) return;
+  m.classList.add('show');
+  renderStatsModal();
+  refreshStats();
+}
+function closeStatsModal(){ const m=document.getElementById('statsModal'); if(m) m.classList.remove('show'); }
+async function refreshStats(){
+  const btn=document.getElementById('statsRefreshBtn');
+  if(btn){ btn.disabled=true; btn.textContent='更新中…'; }
+  try{ await autoSyncScores(true); }
+  catch(e){ console.warn('refreshStats failed', e); }
+  finally{ if(btn){ btn.disabled=false; btn.textContent='重新整理'; } renderStatsModal(); }
+}
+window.openStatsModal=openStatsModal;
+window.closeStatsModal=closeStatsModal;
+window.switchStatsTab=switchStatsTab;
+window.refreshStats=refreshStats;
+
 applyMarieClaireSourceSchedule();
 installOfficialSchedule();
 seedVerifiedResults();
