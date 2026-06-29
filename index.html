@@ -3012,13 +3012,26 @@ function dateToTaiwanKey(value){
   const byType=Object.fromEntries(parts.map(p=>[p.type,p.value]));
   return `${byType.year}${byType.month}${byType.day}`;
 }
+function shiftDateKey(key, delta){
+  const s=String(key); if(s.length!==8) return '';
+  const dt=new Date(Date.UTC(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8)));
+  dt.setUTCDate(dt.getUTCDate()+delta);
+  return `${dt.getUTCFullYear()}${String(dt.getUTCMonth()+1).padStart(2,'0')}${String(dt.getUTCDate()).padStart(2,'0')}`;
+}
+// ESPN 以「美國當地日期」歸檔賽事，台灣晚開的比賽常落在前一天 bucket；
+// 因此每個台灣賽程日都同時抓前一天／後一天，避免漏掉（例如開幕日 6/11）。
+function withNeighborDateKeys(keys){
+  const out=new Set();
+  keys.forEach(k=>{ if(!k) return; out.add(k); const p=shiftDateKey(k,-1); if(p) out.add(p); const n=shiftDateKey(k,1); if(n) out.add(n); });
+  return out;
+}
 function scheduledDateKeysForInitialSync(){
   const cutoff=Number(todayKey(1));
-  const keys=new Set([...data.matches.map(m=>monthDayToDateKey(m.date)), ...ko.map(m=>monthDayToDateKey(m.date))].filter(Boolean));
-  return [...keys].filter(k=>Number(k)<=cutoff).sort();
+  const base=[...data.matches.map(m=>monthDayToDateKey(m.date)), ...ko.map(m=>monthDayToDateKey(m.date))].filter(Boolean);
+  return [...withNeighborDateKeys(base)].filter(k=>Number(k)<=cutoff).sort();
 }
 function liveWindowDateKeys(){
-  return [todayKey(-1),todayKey(0),todayKey(1)];
+  return [...withNeighborDateKeys([todayKey(0)])].sort();
 }
 function setSyncBadge(text,state='warn'){
   const el=document.getElementById('syncBadge');
