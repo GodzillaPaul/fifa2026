@@ -2670,6 +2670,44 @@ body:after{
 .cardPill.yc{background:#ffd400}
 .cardPill.rc{background:#ff4d4d;color:#fff}
 @media(max-width:720px){.statGroupGrid{grid-template-columns:1fr}.statsTab{padding:7px 12px;font-size:12px}}
+/* === v20: Google 式水平淘汰賽括號（升級 UI/動畫/互動）=== */
+#bracket .gbk{position:relative;display:flex;gap:46px;padding:8px 14px 22px;min-width:max-content;align-items:stretch;font-family:inherit}
+.gbk-col{display:flex;flex-direction:column;min-width:190px}
+.gbk-col-champ{min-width:200px;justify-content:center}
+.gbk-round{text-align:center;font-weight:1000;color:#ffe36a;font-size:14px;letter-spacing:.08em;margin-bottom:12px;text-shadow:0 2px 12px rgba(255,210,0,.25)}
+.gbk-cells{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:10px}
+.gbk-match{position:relative;background:linear-gradient(180deg,#ffffff,#eaf2fb);color:#0a1f33;border-radius:12px;padding:7px 9px;box-shadow:0 8px 20px rgba(0,0,0,.22);border:1.5px solid transparent;z-index:1;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,opacity .2s ease}
+.gbk-match:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.34)}
+.gbk-meta{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:#5b7186;margin-bottom:5px}
+.gbk-live{background:#e23b2e;color:#fff;border-radius:6px;padding:1px 6px;font-size:9px;font-weight:1000;animation:gbkPulse 1.4s infinite}
+@keyframes gbkPulse{0%,100%{box-shadow:0 0 0 0 rgba(226,59,46,.5)}50%{box-shadow:0 0 0 5px rgba(226,59,46,0)}}
+.gbk-row{display:grid;grid-template-columns:20px 1fr 22px;align-items:center;gap:6px;padding:3px 3px;font-size:13px;font-weight:800;border-radius:7px}
+.gbk-row.win{background:rgba(0,150,80,.16);color:#06502f}
+.gbk-row.win .gbk-score{color:#06502f}
+.gbk-row+.gbk-row{margin-top:2px}
+.gbk-flag{font-size:15px;line-height:1;text-align:center}
+.gbk-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbk-score{text-align:center;font-weight:1000;color:#0a1f33}
+.gbk-lines{position:absolute;left:0;top:0;z-index:0;overflow:visible;pointer-events:none}
+.gbk-line{fill:none;stroke:rgba(255,255,255,.26);stroke-width:2;transition:stroke .2s ease,stroke-width .2s ease}
+.gbk-line.on{stroke:#ffd54a;stroke-width:3}
+.gbk.gbk-dim .gbk-match{opacity:.38;filter:saturate(.6)}
+.gbk.gbk-dim .gbk-match.on{opacity:1;filter:none}
+.gbk.gbk-dim .gbk-col-champ{opacity:.38}
+.gbk.gbk-dim .gbk-col-champ.on{opacity:1}
+.gbk-match.on{border-color:#ffd54a;box-shadow:0 12px 26px rgba(255,200,0,.3)}
+.gbk-champ-cells{justify-content:center;align-items:center;gap:8px;text-align:center}
+.gbk-trophy{font-size:46px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.4))}
+.gbk-champ-name{font-weight:1000;color:#0a1f33;background:linear-gradient(180deg,#ffe36a,#ffbf36);border-radius:12px;padding:9px 14px;min-width:140px;box-shadow:0 10px 24px rgba(255,190,0,.3)}
+.gbk-third{margin-top:16px;width:100%}
+.gbk-third-title{text-align:center;font-size:11px;font-weight:900;color:#bcd0e0;margin-bottom:5px}
+.gbk-reveal .gbk-match{animation:gbkIn .5s ease both}
+.gbk-reveal .gbk-col:nth-child(2) .gbk-match{animation-delay:.10s}
+.gbk-reveal .gbk-col:nth-child(3) .gbk-match{animation-delay:.20s}
+.gbk-reveal .gbk-col:nth-child(4) .gbk-match{animation-delay:.30s}
+.gbk-reveal .gbk-col:nth-child(5) .gbk-match{animation-delay:.40s}
+.gbk-reveal .gbk-col-champ{animation:gbkIn .55s ease .5s both}
+@keyframes gbkIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
 </style>
 </head>
 <body>
@@ -2720,10 +2758,10 @@ body:after{
 </section>
 <section class="page bracketPage" id="pageBracket">
   <div class="groupsHero">
-    <div><strong>32 強淘汰賽</strong><br><span class="note">目前先顯示賽程與待定席位；小組賽結束後再帶入晉級隊伍。</span></div>
-    <div class="miniStat"><span class="pill">左半區 × 右半區 → 總冠軍</span></div>
+    <div><strong>32 強淘汰賽</strong><br><span class="note">由左到右：32強 → 16強 → 8強 → 準決賽 → 冠軍；資料以 ESPN 為準，席位確定後自動帶入。</span></div>
+    <div class="miniStat"><span class="pill">ESPN 賽程</span><span class="pill">左右滑動瀏覽</span><span class="pill">游標可highlight晉級路線</span></div>
   </div>
-  <div class="bracketShell"><div class="bracketHint">左半區、右半區一路往中間推進，最後在中央決出總冠軍</div><div class="bracketStage" id="bracketStage"><div class="bracket" id="bracket"></div></div></div>
+  <div class="bracketShell"><div class="bracketHint">由左至右一路晉級到最右側冠軍；游標移到任一場會highlight該隊的晉級路線。</div><div class="bracketStage" id="bracketStage"><div class="bracket" id="bracket"></div></div></div>
 </section>
 <div class="groupEditor" id="groupEditor"><div class="groupEditorCard"><div class="groupEditorHead"><div><h2 id="groupEditorTitle">比賽結果</h2><div class="subLine">賽程以台灣時間顯示；開賽後可在此查看比分。</div></div><button class="closeX" onclick="closeGroupEditor()">關閉</button></div><div class="groupMatchGrid" id="groupMatchGrid"></div></div></div><div class="landscapeWarn">請將裝置轉成<span>橫式</span><br>這版是固定大螢幕介面，不做上下滑動。</div><div class="modal" id="statsModal"><div class="modalCard statsCard"><div class="statsHead"><div><h2>統計資訊</h2><div class="statsSource" id="statsSource">資料來源：ESPN 世界盃即時數據</div></div><div class="statsHeadBtns"><button class="btn" id="statsRefreshBtn" onclick="refreshStats()">重新整理</button><button class="closeX" onclick="closeStatsModal()">關閉</button></div></div><div class="statsTabs"><button class="statsTab active" data-stab="scorers" onclick="switchStatsTab('scorers')">射手榜</button><button class="statsTab" data-stab="teams" onclick="switchStatsTab('teams')">球隊數據</button><button class="statsTab" data-stab="groups" onclick="switchStatsTab('groups')">小組排名</button><button class="statsTab" data-stab="cards" onclick="switchStatsTab('cards')">紀律</button></div><div class="statsBody" id="statsBody"></div></div></div><div class="modal" id="modal"><div class="modalCard"><h2>編輯賽程資料 JSON</h2><p class="note">第一版先走「手動輸入比分，自動計算晉級」。之後要串 API，我們可以保留同一份資料格式，直接加上自動更新來源。</p><textarea id="jsonText"></textarea><div class="toolbar"><button class="btn primary" onclick="applyJson()">套用資料</button><button class="btn" onclick="closeModal()">取消</button></div></div></div>
 <script>
@@ -3104,6 +3142,51 @@ function applyScoreToLocal(dateKey, teamA, scoreA, teamB, scoreB, espnState='', 
   }
   return changed;
 }
+// ESPN 的 scoreboard 對淘汰賽常回傳舊的佔位（2A/2B、RD32 Winner）；
+// 改用逐場 summary 端點抓「已定案」的晉級隊伍與（若有）比分，補足 scoreboard 的不足。
+async function fetchEspnSummary(eventId){
+  const url='https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event='+eventId;
+  try{ const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error('sum '+r.status); return await r.json(); }
+  catch(e){ const p=ESPN_SYNC.proxyBase+encodeURIComponent(url); const r=await fetch(p,{cache:'no-store'}); if(!r.ok) throw new Error('sumProxy '+r.status); return await r.json(); }
+}
+function applyKoSummary(m, json){
+  const comp = json && json.header && json.header.competitions && json.header.competitions[0];
+  if(!comp) return 0;
+  const cs = comp.competitors||[]; if(cs.length<2) return 0;
+  const home = cs.find(c=>c.homeAway==='home')||cs[0];
+  const away = cs.find(c=>c.homeAway==='away')||cs[1];
+  const state = (comp.status&&comp.status.type&&comp.status.type.state)||'';
+  let changed=0;
+  if(home&&home.team&&home.team.isActive){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&m.espnA!==hl){ m.espnA=hl; changed++; } }
+  if(away&&away.team&&away.team.isActive){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&m.espnB!==al){ m.espnB=al; changed++; } }
+  const hs = home&&home.score!=null&&home.score!=='' ? Number(home.score) : NaN;
+  const as = away&&away.score!=null&&away.score!=='' ? Number(away.score) : NaN;
+  if((state==='post'||state==='in') && Number.isFinite(hs) && Number.isFinite(as)){
+    if(m.ascore!==hs || m.bscore!==as || m.espnState!==state){ m.ascore=hs; m.bscore=as; m.espnState=state; changed++; }
+  }
+  // PK 大戰：抓 shootoutScore 決定勝方（正規賽平手時）
+  const hp = home&&home.shootoutScore!=null&&home.shootoutScore!=='' ? Number(home.shootoutScore) : NaN;
+  const ap = away&&away.shootoutScore!=null&&away.shootoutScore!=='' ? Number(away.shootoutScore) : NaN;
+  if(Number.isFinite(hp) && Number.isFinite(ap)){
+    if(m.apen!==hp || m.bpen!==ap){ m.apen=hp; m.bpen=ap; changed++; }
+  }
+  return changed;
+}
+async function syncKoViaSummary(){
+  const cutoff = Number(todayKey(3));
+  const targets = ko.filter(m=>{
+    const eid = ESPN_EVENT_IDS[m.id] || m.espnId; if(!eid) return false;
+    const dk = Number(monthDayToDateKey(m.date)); if(!dk || dk>cutoff) return false;
+    return !(m.espnA && m.espnB && m.espnState==='post');   // 持續抓到該場完賽（含比分/PK）為止
+  }).slice(0, 12);                           // 每輪最多 12 場，避免過載
+  let changed=0;
+  for(const m of targets){
+    const eid = ESPN_EVENT_IDS[m.id] || m.espnId;
+    try{ const j=await fetchEspnSummary(eid); changed += applyKoSummary(m, j); }catch(e){ /* 略過單場失敗 */ }
+  }
+  if(changed) localStorage.setItem('wc2026KO', JSON.stringify(ko));
+  return changed;
+}
 async function autoSyncScores(full=false){
   if(!ESPN_SYNC.enabled) return;
   const dates = full ? scheduledDateKeysForInitialSync() : liveWindowDateKeys();
@@ -3115,10 +3198,12 @@ async function autoSyncScores(full=false){
       const json=await fetchEspnScoreboard(dateKey);
       const events=json?.events||[];
       for(const ev of events){
-        if(!scoreIsUsable(ev)) continue;
         const comp=ev.competitions?.[0];
         const cs=comp?.competitors||[];
         if(cs.length<2) continue;
+        // 淘汰賽隊伍在開賽前（pre）就會定案，需在 scoreIsUsable 過濾前先抓
+        touched += captureKoTeams(ev, comp, cs);
+        if(!scoreIsUsable(ev)) continue;
         captureEventStats(ev, comp, cs);
         const home=cs.find(c=>c.homeAway==='home') || cs[0];
         const away=cs.find(c=>c.homeAway==='away') || cs[1];
@@ -3135,6 +3220,8 @@ async function autoSyncScores(full=false){
       console.warn('ESPN sync failed',dateKey,err);
     }
   }
+  // 淘汰賽：scoreboard 給的是佔位，改用 summary 端點補抓已定案的晉級隊伍
+  try{ const koChanged = await syncKoViaSummary(); if(koChanged) touched += koChanged; }catch(e){ console.warn('KO summary sync failed', e); }
   if(touched){ silentSaveData(); render(); }
   statsLastUpdated=Date.now();
   persistEspnStats();
@@ -3371,9 +3458,9 @@ function card(m,q){
  return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
    <div class="koTeamsDate"><span class="koCountry left ${winA?'winner':''}">（${ta}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${tb}）</span></div>
    <div class="koScoreLine">
-     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'a')}</strong>
      <em class="koVsPill">VS</em>
-     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'b')}</strong>
    </div>
  </div>`;
 }
@@ -3472,18 +3559,12 @@ const officialMatches = [
   groupMatch(72,'A','7/4','09:00','墨西哥','韓國')
 ];
 function installOfficialSchedule(){
-  const previous = data?.matches || [];
-  const scoreByKey = new Map(previous.map(m => [`${m.group}|${m.home}|${m.away}`, m]));
+  // 純 ESPN：每次載入都以空白比分重建小組賽，之後只由 ESPN 同步帶入真實結果，
+  // 不保留瀏覽器殘留、也不注入任何硬編碼假比分。
   data = {
     scheduleVersion: OFFICIAL_SCHEDULE_VERSION,
     groups: JSON.parse(JSON.stringify(officialGroups)),
-    matches: officialMatches.map(m => {
-      const prev = scoreByKey.get(`${m.group}|${m.home}|${m.away}`) || scoreByKey.get(`${m.group}|${m.away}|${m.home}`);
-      const espnId = espnEventIdFor(m);
-      if(!prev) return {...m, espnId};
-      if(prev.home===m.home && prev.away===m.away) return {...m, hs:prev.hs, as:prev.as, espnState:prev.espnState, espnId:prev.espnId || espnId};
-      return {...m, hs:prev.as, as:prev.hs, espnState:prev.espnState, espnId:prev.espnId || espnId};
-    })
+    matches: officialMatches.map(m => ({...m, hs:null, as:null, espnState:'', espnId: espnEventIdFor(m)}))
   };
   localStorage.setItem('wc2026Data', JSON.stringify(data));
 }
@@ -3511,6 +3592,52 @@ function koDisplayLabel(label,q){
   if(!labelReady(label)) return '待';
   if(label.startsWith('最佳第三')) return '最佳第三';
   return labelToTeam(label,q) || '待';
+}
+// 把席位代碼轉成可讀的中文佔位（在 ESPN 尚未定案前顯示，不做本地猜測）。
+function seedLabel(label){
+  if(!label) return '待';
+  const win=label.match(/^勝(\d+)/); if(win) return `第${win[1]}場勝者`;
+  const lose=label.match(/^敗(\d+)/); if(lose) return `第${lose[1]}場敗者`;
+  if(label.startsWith('最佳第三')) return label;
+  const sp=label.match(/^([12])([A-L])$/); if(sp) return `${sp[2]}組第${sp[1]==='1'?'1':'2'}`;
+  return label;
+}
+// 淘汰賽對戰隊伍：只採用 ESPN 已定案的隊伍（含最佳第三的官方分配）；
+// ESPN 還沒抽出真正隊伍前，一律顯示席位佔位，不用本地積分猜測，避免帶錯隊。
+function koRealTeamName(name){ return knownLocalTeam(name) ? name : ''; }
+function koMatchWinnerTeam(id){
+  const m = ko.find(x=>x.id===id);
+  if(!m || !koScoreConfirmed(m)) return '';
+  const s = koWinnerSide(m); if(!s) return '';
+  return koRealTeamName(koDisplaySide(m, s));
+}
+function koMatchLoserTeam(id){
+  const m = ko.find(x=>x.id===id);
+  if(!m || !koScoreConfirmed(m)) return '';
+  const s = koWinnerSide(m); if(!s) return '';
+  return koRealTeamName(koDisplaySide(m, s==='a'?'b':'a'));
+}
+// 淘汰賽對戰隊伍：1) ESPN 已定案的真實隊伍優先；2)「勝N／敗N」在第 N 場經 ESPN 確認完賽後
+// 自動帶入勝／負者（32強踢完 → 自動晉級 16強，依此類推）；3) 小組席位維持等 ESPN，不本地猜測。
+function koDisplaySide(m, side, q){
+  const espn = side==='a' ? m.espnA : m.espnB;
+  if(espn) return espn;
+  const label = side==='a' ? m.a : m.b;
+  const w = String(label||'').match(/^勝(\d+)$/); if(w){ const t=koMatchWinnerTeam(+w[1]); if(t) return t; }
+  const l = String(label||'').match(/^敗(\d+)$/); if(l){ const t=koMatchLoserTeam(+l[1]); if(t) return t; }
+  return seedLabel(label);
+}
+// 淘汰賽比分只在 ESPN 確認（進行中／完賽）時顯示，否則留白，避免顯示殘留或推測比分。
+function koScoreConfirmed(m){ return m && (m.espnState==='in' || m.espnState==='post'); }
+function hasPens(m){ return m && m.apen!=null && m.apen!=='' && m.bpen!=null && m.bpen!==''; }
+function koSideScore(m, side){
+  if(!koScoreConfirmed(m)) return '—';
+  const base = scoreText(side==='a'?m.ascore:m.bscore);
+  if(hasPens(m)){ const pen = side==='a'?m.apen:m.bpen; return `${base} (${pen})`; }  // PK 大戰：顯示 1 (4)
+  return base;
+}
+function knownLocalTeam(name){
+  return !!name && Object.values(officialGroups).some(arr=>arr.includes(name));
 }
 function koDateLabel(m){
   return `${m.date}${m.twTime ? ' ' + m.twTime : ''}`;
@@ -3552,16 +3679,18 @@ function renderGroupEditor(g){
  }).join('');
 }
 function card(m,q){
- const ta=koDisplayLabel(m.a,q), tb=koDisplayLabel(m.b,q), w=winnerOf(m);
- const winA=w && ta!== '待' && w===ta, winB=w && tb!== '待' && w===tb;
+ const ta=koDisplaySide(m,'a',q), tb=koDisplaySide(m,'b',q);
+ let w='';
+ if(koScoreConfirmed(m)&&+m.ascore!==+m.bscore){ w=(+m.ascore>+m.bscore)?ta:tb; }
+ const winA=w && w===ta, winB=w && w===tb;
  const displayDate=koDateLabel(m);
  const pending = (ta==='待' && tb==='待') ? 'pending' : '';
  return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
    <div class="koTeamsDate ${pending}"><span class="koCountry left ${winA?'winner':''}">（${ta}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${tb}）</span></div>
    <div class="koScoreLine">
-     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'a')}</strong>
      <em class="koVsPill">VS</em>
-     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'b')}</strong>
    </div>
  </div>`;
 }
@@ -3754,16 +3883,18 @@ function renderGroupEditor(g){
  }).join('');
 }
 function card(m,q){
- const ta=koDisplayLabel(m.a,q), tb=koDisplayLabel(m.b,q), w=winnerOf(m);
- const winA=w && ta!== '待' && w===ta, winB=w && tb!== '待' && w===tb;
+ const ta=koDisplaySide(m,'a',q), tb=koDisplaySide(m,'b',q);
+ let w='';
+ if(koScoreConfirmed(m)&&+m.ascore!==+m.bscore){ w=(+m.ascore>+m.bscore)?ta:tb; }
+ const winA=w && w===ta, winB=w && w===tb;
  const displayDate=koDateLabel(m);
  const pending = (ta==='待' && tb==='待') ? 'pending' : '';
  return `<div class="ko ${w?'done':''} ${m.round==='決賽'?'finalCard':''}">
    <div class="koTeamsDate ${pending}"><span class="koCountry left ${winA?'winner':''}">（${koTeamLabel(ta)}）</span><span class="koDateCenter">${displayDate}</span><span class="koCountry right ${winB?'winner':''}">（${koTeamLabel(tb)}）</span></div>
    <div class="koScoreLine">
-     <strong class="koScorePill">${scoreText(m.ascore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'a')}</strong>
      <em class="koVsPill">VS</em>
-     <strong class="koScorePill">${scoreText(m.bscore)}</strong>
+     <strong class="koScorePill">${koSideScore(m,'b')}</strong>
    </div>
  </div>`;
 }
@@ -3844,10 +3975,10 @@ function knockoutScheduleItems(){
     twTime:m.twTime||'',
     stage:m.round,
     no:m.id,
-    home:koDisplayLabel(m.a,q),
-    away:koDisplayLabel(m.b,q),
-    hs:m.ascore,
-    as:m.bscore,
+    home:koDisplaySide(m,'a',q),
+    away:koDisplaySide(m,'b',q),
+    hs:koScoreConfirmed(m)?m.ascore:null,
+    as:koScoreConfirmed(m)?m.bscore:null,
     espnState:m.espnState
   }));
 }
@@ -4090,7 +4221,10 @@ function applyMarieClaireSourceSchedule(){
     m.twTime=meta[2];
     m.a=meta[3];
     m.b=meta[4];
-    m.espnId=espnEventIdFor(m);
+    m.espnId=ESPN_EVENT_IDS[m.id] || m.espnId || '';
+    // 清掉殘留／推測的淘汰賽隊伍與比分，之後只由 ESPN 重新帶入（純 ESPN 來源）。
+    m.espnA=undefined; m.espnB=undefined;
+    m.ascore=null; m.bscore=null; m.espnState=''; m.apen=null; m.bpen=null;
   });
   localStorage.setItem('wc2026KO', JSON.stringify(ko));
 }
@@ -4117,6 +4251,20 @@ function captureEventStats(ev, comp, cs){
       athletes:(d.athletesInvolved||[]).map(a=>({id:String(a.id||''), name:a.displayName||a.fullName||a.shortName||'', tid:String(a?.team?.id||d?.team?.id||'')}))
     }))
   };
+}
+// 從 ESPN 的淘汰賽賽程抓「已定案」的對戰隊伍（含最佳第三的官方分配）。
+// ESPN 還沒抽出真正隊伍時，competitor 是 2A／1C／3RD 之類佔位（isActive=false），略過。
+function captureKoTeams(ev, comp, cs){
+  const eid=String(ev?.id||comp?.id||'');
+  if(!eid) return 0;
+  const koM=ko.find(m=>espnEventIdFor(m)===eid);
+  if(!koM) return 0;
+  const home=(cs||[]).find(c=>c.homeAway==='home')||(cs||[])[0];
+  const away=(cs||[]).find(c=>c.homeAway==='away')||(cs||[])[1];
+  let changed=0;
+  if(home&&home.team&&home.team.isActive){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&koM.espnA!==hl){ koM.espnA=hl; changed++; } }
+  if(away&&away.team&&away.team.isActive){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&koM.espnB!==al){ koM.espnB=al; changed++; } }
+  return changed;
 }
 function persistEspnStats(){
   try{ localStorage.setItem('wc2026Stats', JSON.stringify(espnEventStats)); localStorage.setItem('wc2026StatsTime', String(statsLastUpdated)); }catch(e){}
@@ -4215,9 +4363,120 @@ window.closeStatsModal=closeStatsModal;
 window.switchStatsTab=switchStatsTab;
 window.refreshStats=refreshStats;
 
+/* === v20: Google 式水平淘汰賽渲染（覆寫舊的 renderBracket / fitFixedUI）=== */
+let gbkRevealed=false;
+let gbkNextMap={};
+// 真正的晉級關係要看對戰標籤（勝73…），template 內的 next 欄位是舊的、已和官方賽程不一致。
+function koLabelNext(){
+  const map={};
+  ko.forEach(n=>{ [n.a,n.b].forEach(lab=>{ const mm=String(lab||'').match(/^勝(\d+)$/); if(mm) map[mm[1]]=n.id; }); });
+  return map;
+}
+function gbkFlag(name){ const f=(typeof flagForTeam==='function')?flagForTeam(name):''; return f?`<span class="gbk-flag">${f}</span>`:`<span class="gbk-flag"></span>`; }
+function koWinnerSide(m){
+  if(!koScoreConfirmed(m)) return '';
+  if(+m.ascore>+m.bscore) return 'a';
+  if(+m.bscore>+m.ascore) return 'b';
+  if(hasPens(m)){ if(+m.apen>+m.bpen) return 'a'; if(+m.bpen>+m.apen) return 'b'; }  // 平手看 PK
+  return '';
+}
+function koWinnerName(m){ const s=koWinnerSide(m); return s?koDisplaySide(m,s):''; }
+function gbkMatchHTML(m,q){
+  if(!m) return '';
+  const ta=koDisplaySide(m,'a',q), tb=koDisplaySide(m,'b',q);
+  const ws=koWinnerSide(m), live=m.espnState==='in';
+  return `<div class="gbk-match${live?' live':''}" data-id="${m.id}" data-next="${gbkNextMap[m.id]||''}" tabindex="0">
+    <div class="gbk-meta"><span>${m.date||''}${m.twTime?' '+m.twTime:''}</span>${live?'<span class="gbk-live">LIVE</span>':''}</div>
+    <div class="gbk-row${ws==='a'?' win':''}">${gbkFlag(ta)}<span class="gbk-name">${ta}</span><span class="gbk-score">${koSideScore(m,'a')}</span></div>
+    <div class="gbk-row${ws==='b'?' win':''}">${gbkFlag(tb)}<span class="gbk-name">${tb}</span><span class="gbk-score">${koSideScore(m,'b')}</span></div>
+  </div>`;
+}
+function gbkCol(title, ids, q){
+  const cards=ids.map(id=>ko.find(m=>m.id===id)).filter(Boolean).map(m=>gbkMatchHTML(m,q)).join('');
+  return `<div class="gbk-col"><div class="gbk-round">${title}</div><div class="gbk-cells">${cards}</div></div>`;
+}
+function renderBracket(){
+  const wrap=document.getElementById('bracket');
+  if(!wrap) return;
+  const q=qualifiers();
+  gbkNextMap=koLabelNext();
+  const R32=[74,77,73,75,83,84,81,82,76,78,79,80,86,88,85,87];
+  const R16=[89,90,93,94,91,92,95,96];
+  const QF=[97,98,99,100];
+  const SF=[101,102];
+  const finalM=ko.find(m=>m.id===104), thirdM=ko.find(m=>m.id===103);
+  const champ=koWinnerName(finalM);
+  wrap.innerHTML=`<div class="gbk">
+    ${gbkCol('32強',R32,q)}
+    ${gbkCol('16強',R16,q)}
+    ${gbkCol('8強',QF,q)}
+    ${gbkCol('準決賽',SF,q)}
+    <div class="gbk-col gbk-col-final"><div class="gbk-round">決賽</div><div class="gbk-cells">${gbkMatchHTML(finalM,q)}</div></div>
+    <div class="gbk-col gbk-col-champ"><div class="gbk-round">冠軍</div><div class="gbk-cells gbk-champ-cells"><div class="gbk-trophy">🏆</div><div class="gbk-champ-name">${champ||'冠軍待定'}</div><div class="gbk-third"><div class="gbk-third-title">季軍戰</div>${gbkMatchHTML(thirdM,q)}</div></div></div>
+  </div>`;
+  wrap.style.cssText='position:static;transform:none;width:auto;height:auto;left:auto;top:auto;';
+  const stage=document.getElementById('bracketStage');
+  if(stage) stage.style.cssText='position:static;overflow:auto;width:100%;height:auto;max-height:calc(100vh - 210px);';
+  wrap.onmouseover=(e)=>{ const c=e.target.closest('.gbk-match'); if(c) gbkHighlight(c); };
+  wrap.onmouseout=(e)=>{ const c=e.target.closest('.gbk-match'); if(c) gbkClearHighlight(); };
+  const statusEl=document.getElementById('status');
+  if(statusEl) statusEl.innerHTML=`32 強淘汰賽賽程以 ESPN 為準；席位確定後自動帶入隊伍與比分。游標移到任一場可highlight晉級路線。`;
+  requestAnimationFrame(buildBracketConnectors);
+}
+function buildBracketConnectors(){
+  const wrap=document.getElementById('bracket'); if(!wrap) return;
+  const gbk=wrap.querySelector('.gbk'); if(!gbk) return;
+  if(!gbk.offsetWidth) return; // 隱藏時不畫，等切到此頁再畫
+  const old=gbk.querySelector('svg.gbk-lines'); if(old) old.remove();
+  const base=gbk.getBoundingClientRect();
+  const W=gbk.scrollWidth, H=gbk.scrollHeight;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('class','gbk-lines'); svg.setAttribute('width',W); svg.setAttribute('height',H);
+  const byId={}; gbk.querySelectorAll('.gbk-match').forEach(c=>byId[c.dataset.id]=c);
+  const reveal=gbk.classList.contains('gbk-reveal');
+  const paths=[];
+  const add=(fromEl,toEl,fromId)=>{
+    const fr=fromEl.getBoundingClientRect(), tr=toEl.getBoundingClientRect();
+    const sx=fr.right-base.left, sy=fr.top+fr.height/2-base.top;
+    const ex=tr.left-base.left, ey=tr.top+tr.height/2-base.top;
+    const mx=(sx+ex)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M ${sx} ${sy} H ${mx} V ${ey} H ${ex}`);
+    p.setAttribute('class','gbk-line'); p.setAttribute('data-from',fromId);
+    svg.appendChild(p); paths.push(p);
+  };
+  gbk.querySelectorAll('.gbk-match').forEach(c=>{ const nx=c.dataset.next; if(nx&&byId[nx]) add(c,byId[nx],c.dataset.id); });
+  const finalCard=byId['104'], champCol=gbk.querySelector('.gbk-col-champ');
+  if(finalCard&&champCol){ const cc=champCol.querySelector('.gbk-champ-cells'); if(cc) add(finalCard,cc,'104champ'); }
+  gbk.insertBefore(svg,gbk.firstChild);
+  if(reveal){ paths.forEach((p,i)=>{ const len=p.getTotalLength(); p.style.strokeDasharray=len; p.style.strokeDashoffset=len; p.style.transition=`stroke-dashoffset .55s ease ${0.06*i+0.2}s`; requestAnimationFrame(()=>{ p.style.strokeDashoffset='0'; }); }); }
+}
+function gbkHighlight(card){
+  const gbk=card.closest('.gbk'); if(!gbk) return;
+  gbk.classList.add('gbk-dim');
+  const ids=[]; let cur=card;
+  while(cur){ cur.classList.add('on'); ids.push(cur.dataset.id); const nx=cur.dataset.next; cur=nx?gbk.querySelector(`.gbk-match[data-id="${nx}"]`):null; }
+  gbk.querySelectorAll('path.gbk-line').forEach(p=>{ if(ids.indexOf(p.getAttribute('data-from'))>=0) p.classList.add('on'); });
+  if(ids.indexOf('104')>=0){ const ch=gbk.querySelector('.gbk-col-champ'); if(ch) ch.classList.add('on'); const cp=gbk.querySelector('path[data-from="104champ"]'); if(cp) cp.classList.add('on'); }
+}
+function gbkClearHighlight(){
+  const gbk=document.querySelector('#bracket .gbk'); if(!gbk) return;
+  gbk.classList.remove('gbk-dim');
+  gbk.querySelectorAll('.on').forEach(el=>el.classList.remove('on'));
+}
+function fitFixedUI(){
+  const page=document.getElementById('pageBracket'), wrap=document.getElementById('bracket'), stage=document.getElementById('bracketStage');
+  if(!page||!wrap||!stage||!page.classList.contains('active')) return;
+  stage.style.cssText='position:static;overflow:auto;width:100%;height:auto;max-height:calc(100vh - 210px);';
+  wrap.style.cssText='position:static;transform:none;width:auto;height:auto;left:auto;top:auto;';
+  const gbk=wrap.querySelector('.gbk'); if(!gbk) return;
+  if(!gbkRevealed){ gbkRevealed=true; gbk.classList.add('gbk-reveal'); setTimeout(()=>{ const g=document.querySelector('#bracket .gbk'); if(g) g.classList.remove('gbk-reveal'); },1700); }
+  requestAnimationFrame(buildBracketConnectors);
+}
+
 applyMarieClaireSourceSchedule();
 installOfficialSchedule();
-seedVerifiedResults();
+// seedVerifiedResults(); // 已停用：純 ESPN，不注入硬編碼假比分
 render();
 startAutoScoreSync();
 startCountdownBadge();
