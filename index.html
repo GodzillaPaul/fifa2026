@@ -3157,8 +3157,10 @@ function applyKoSummary(m, json){
   const away = cs.find(c=>c.homeAway==='away')||cs[1];
   const state = (comp.status&&comp.status.type&&comp.status.type.state)||'';
   let changed=0;
-  if(home&&home.team&&home.team.isActive){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&m.espnA!==hl){ m.espnA=hl; changed++; } }
-  if(away&&away.team&&away.team.isActive){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&m.espnB!==al){ m.espnB=al; changed++; } }
+  // ESPN scoreboard 會給真實隊伍 isActive=true，但 summary 在隊伍已定案時
+  // 常常直接省略 isActive。只排除明確的 false，避免把已晉級隊伍擋掉。
+  if(home&&home.team&&home.team.isActive!==false){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&m.espnA!==hl){ m.espnA=hl; changed++; } }
+  if(away&&away.team&&away.team.isActive!==false){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&m.espnB!==al){ m.espnB=al; changed++; } }
   const hs = home&&home.score!=null&&home.score!=='' ? Number(home.score) : NaN;
   const as = away&&away.score!=null&&away.score!=='' ? Number(away.score) : NaN;
   if((state==='post'||state==='in') && Number.isFinite(hs) && Number.isFinite(as)){
@@ -3172,13 +3174,18 @@ function applyKoSummary(m, json){
   }
   return changed;
 }
-async function syncKoViaSummary(){
+async function syncKoViaSummary(full=false){
   const cutoff = Number(todayKey(3));
   const targets = ko.filter(m=>{
     const eid = ESPN_EVENT_IDS[m.id] || m.espnId; if(!eid) return false;
-    const dk = Number(monthDayToDateKey(m.date)); if(!dk || dk>cutoff) return false;
-    return !(m.espnA && m.espnB && m.espnState==='post');   // 持續抓到該場完賽（含比分/PK）為止
-  }).slice(0, 12);                           // 每輪最多 12 場，避免過載
+    const dk = Number(monthDayToDateKey(m.date)); if(!dk) return false;
+    const missingTeams = !(m.espnA && m.espnB);
+    const needsResult = m.espnState!=='post' && dk<=cutoff;
+    // 首次開啟時完整補抓 16 場 32 強，不再因「最多 12 場」漏掉後 4 場。
+    if(full && m.round==='32強') return missingTeams || needsResult;
+    if(dk>cutoff) return false;
+    return missingTeams || needsResult;       // 近期場次持續抓到完賽（含比分/PK）為止
+  }).slice(0, full ? 20 : 12);
   let changed=0;
   for(const m of targets){
     const eid = ESPN_EVENT_IDS[m.id] || m.espnId;
@@ -3221,7 +3228,7 @@ async function autoSyncScores(full=false){
     }
   }
   // 淘汰賽：scoreboard 給的是佔位，改用 summary 端點補抓已定案的晉級隊伍
-  try{ const koChanged = await syncKoViaSummary(); if(koChanged) touched += koChanged; }catch(e){ console.warn('KO summary sync failed', e); }
+  try{ const koChanged = await syncKoViaSummary(full); if(koChanged) touched += koChanged; }catch(e){ console.warn('KO summary sync failed', e); }
   if(touched){ silentSaveData(); render(); }
   statsLastUpdated=Date.now();
   persistEspnStats();
@@ -4222,9 +4229,13 @@ function applyMarieClaireSourceSchedule(){
     m.a=meta[3];
     m.b=meta[4];
     m.espnId=ESPN_EVENT_IDS[m.id] || m.espnId || '';
-    // 清掉殘留／推測的淘汰賽隊伍與比分，之後只由 ESPN 重新帶入（純 ESPN 來源）。
-    m.espnA=undefined; m.espnB=undefined;
-    m.ascore=null; m.bscore=null; m.espnState=''; m.apen=null; m.bpen=null;
+    // 保留上次已由 ESPN 確認的隊伍與比分，避免每次重載都先把 32 強清空。
+    // 非本屆 48 隊的異常值才捨棄，後續仍會由 ESPN 同步覆蓋。
+    m.espnA=knownLocalTeam(canonicalLocalTeam(m.espnA)) ? canonicalLocalTeam(m.espnA) : undefined;
+    m.espnB=knownLocalTeam(canonicalLocalTeam(m.espnB)) ? canonicalLocalTeam(m.espnB) : undefined;
+    if(m.espnState!=='in' && m.espnState!=='post'){
+      m.ascore=null; m.bscore=null; m.espnState=''; m.apen=null; m.bpen=null;
+    }
   });
   localStorage.setItem('wc2026KO', JSON.stringify(ko));
 }
@@ -4262,8 +4273,8 @@ function captureKoTeams(ev, comp, cs){
   const home=(cs||[]).find(c=>c.homeAway==='home')||(cs||[])[0];
   const away=(cs||[]).find(c=>c.homeAway==='away')||(cs||[])[1];
   let changed=0;
-  if(home&&home.team&&home.team.isActive){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&koM.espnA!==hl){ koM.espnA=hl; changed++; } }
-  if(away&&away.team&&away.team.isActive){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&koM.espnB!==al){ koM.espnB=al; changed++; } }
+  if(home&&home.team&&home.team.isActive!==false){ const hl=canonicalTeamFromESPN(home.team); if(knownLocalTeam(hl)&&koM.espnA!==hl){ koM.espnA=hl; changed++; } }
+  if(away&&away.team&&away.team.isActive!==false){ const al=canonicalTeamFromESPN(away.team); if(knownLocalTeam(al)&&koM.espnB!==al){ koM.espnB=al; changed++; } }
   return changed;
 }
 function persistEspnStats(){
